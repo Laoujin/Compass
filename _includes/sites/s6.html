@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | default: site.title | default: 'Atlas' }}</title>
   {%- if site.description -%}<meta name="description" content="{{ site.description }}">{%- endif -%}
-  <link rel="icon" type="image/png" href="{{ '/assets/icon.png' | relative_url }}">
-  <link rel="apple-touch-icon" href="{{ '/assets/icon.png' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/palettes/' | append: site.palette | append: '.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/base.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/sites/' | append: site.skeleton | append: '.css' | relative_url }}">
+  <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
 </head>
 <body>
   {%- assign entries = site.pages | where: "type", "research" | sort: 'date' | reverse -%}

@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | default: site.title | default: 'Atlas' }}</title>
   {%- if site.description -%}<meta name="description" content="{{ site.description }}">{%- endif -%}
-  <link rel="icon" type="image/png" href="{{ '/assets/icon.png' | relative_url }}">
-  <link rel="apple-touch-icon" href="{{ '/assets/icon.png' | relative_url }}">
+  <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ '/assets/palettes/' | append: site.palette | append: '.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/base.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/sites/' | append: site.skeleton | append: '.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/cards/' | append: site.card | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
 </head>
 <body>
   {%- assign entries = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
@@ -22,7 +22,7 @@
 
   <div class="s3">
     <header class="s3-topbar">
-      <div class="s3-brand"><img class="s3-mark" src="{{ '/assets/icon.png' | relative_url }}" alt=""> {{ site.title | default: 'Atlas' }}</div>
+      <div class="s3-brand"><img class="s3-mark" src="{{ '/icon.png' | prepend: site.assets_base | relative_url }}" alt=""> {{ site.title | default: 'Atlas' }}</div>
       <div class="s3-spacer"></div>
       {%- if site.scout_repo -%}
       <a class="s3-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
