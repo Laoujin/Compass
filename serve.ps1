@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Build every atlas-seed skeleton (or palette/card) into its own subdir of
+    Build every compass skeleton (or palette/card) into its own subdir of
     _previews/ and serve the whole lot on http://localhost:4000/.
 
 .EXAMPLE
