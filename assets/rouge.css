@@ -1,0 +1,97 @@
+/* Rouge syntax highlighting — palette-aware where possible.
+   Targets the <span class="…"> tokens Rouge emits inside .highlight blocks.
+   Kramdown wraps fenced blocks as:
+     <div class="language-X highlighter-rouge">
+       <div class="highlight">
+         <pre class="highlight"><code>…spans…</code></pre>
+       </div>
+     </div>
+   so the token rules below all live under .highlight. */
+
+.highlight                          { background: transparent; }
+.highlight pre,
+.highlight code                     { background: transparent; color: var(--pal-fg); }
+
+/* Comments */
+.highlight .c,
+.highlight .ch,
+.highlight .cd,
+.highlight .cm,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs                      { color: var(--pal-fg-faint); font-style: italic; }
+.highlight .cp                      { color: var(--pal-fg-muted); }
+
+/* Errors */
+.highlight .err                     { color: #b91c1c; background: rgba(185, 28, 28, .08); }
+
+/* Keywords */
+.highlight .k,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr,
+.highlight .kv                      { color: var(--d-expedition); font-weight: 600; }
+.highlight .kt                      { color: var(--pal-accent); font-weight: 600; }
+
+/* Strings */
+.highlight .s,
+.highlight .sa,
+.highlight .sb,
+.highlight .sc,
+.highlight .dl,
+.highlight .sd,
+.highlight .s2,
+.highlight .sh,
+.highlight .sx,
+.highlight .sr,
+.highlight .s1,
+.highlight .ss                      { color: var(--d-recon); }
+.highlight .se,
+.highlight .si                      { color: var(--d-recon); font-weight: 600; }
+
+/* Numbers */
+.highlight .m,
+.highlight .mb,
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo,
+.highlight .il                      { color: #c2410c; }
+
+/* Names */
+.highlight .nf                      { color: var(--d-survey); font-weight: 600; }
+.highlight .nc,
+.highlight .nn                      { color: var(--d-survey); }
+.highlight .nb,
+.highlight .bp                      { color: var(--pal-accent); }
+.highlight .no                      { color: var(--fmt-md); }
+.highlight .nd                      { color: var(--d-expedition); font-style: italic; }
+.highlight .nt                      { color: var(--d-survey); }
+.highlight .na                      { color: var(--d-recon); }
+.highlight .nv,
+.highlight .vc,
+.highlight .vg,
+.highlight .vi                      { color: var(--pal-fg); }
+
+/* Operators / punctuation */
+.highlight .o,
+.highlight .ow,
+.highlight .p                       { color: var(--pal-fg-muted); }
+
+/* Generic (diff / output) */
+.highlight .gd                      { color: #b91c1c; background: rgba(185, 28, 28, .08); }
+.highlight .gi                      { color: var(--fmt-md); background: rgba(4, 120, 87, .08); }
+.highlight .gh,
+.highlight .gu                      { color: var(--pal-accent); font-weight: 600; }
+.highlight .gp                      { color: var(--pal-fg-faint); }
+.highlight .ge                      { font-style: italic; }
+.highlight .gs                      { font-weight: 600; }
+.highlight .gr,
+.highlight .gt                      { color: #b91c1c; }
+
+/* Wrapper sanity — let the surrounding <pre> styling carry padding/border. */
+.research-article .highlighter-rouge { margin: 0 0 22px; }
+.research-article .highlighter-rouge .highlight { margin: 0; }
+.research-article .highlighter-rouge pre.highlight { margin: 0; }
