@@ -12,8 +12,8 @@
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
 </head>
 <body>
-  {%- assign entries = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
-  {%- assign first = entries | first -%}
+  {%- include entries.html -%}
+  {%- assign first = featured -%}
 
   <div class="s6">
     <div class="s6-tabs">
@@ -39,7 +39,7 @@
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span><span class="s6-caret">_</span></p>
     </div>
     <footer class="s6-statusbar">
-      <span>{{ site.title | default: 'atlas' | downcase }} · {{ entries | size }} entries{% if first %} · last run {{ first.date | date: "%Y-%m-%d" }}{% endif %}</span>
+      <span>{{ site.title | default: 'atlas' | downcase }} · {{ entry_count }} entries{% if first %} · last run {{ first.date | date: "%Y-%m-%d" }}{% endif %}</span>
       {%- if site.scout_repo -%}<span><a href="https://github.com/{{ site.scout_repo }}">scout ↗</a></span>{%- endif -%}
     </footer>
   </div>

@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
 </head>
 <body>
-  {%- assign entries = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
+  {%- include entries.html -%}
   {%- assign all_tags = '' | split: '' -%}
   {%- for e in entries -%}{%- for t in e.tags -%}{%- unless all_tags contains t -%}{%- assign all_tags = all_tags | push: t -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
 
@@ -32,7 +32,7 @@
       <aside class="s3-sidenav">
         <h4>Filter</h4>
         <ul>
-          <li class="active">All <span class="c">{{ entries | size }}</span></li>
+          <li class="active">All <span class="c">{{ entry_count }}</span></li>
         </ul>
         <h4>Depth</h4>
         <ul>

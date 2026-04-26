@@ -1,0 +1,17 @@
+{%- comment -%}
+Sets these variables for the caller:
+  entries     — research entries with a title, sorted by date desc
+  featured    — entries | first  (nil when there are no entries)
+  entry_count — entries | size
+
+Why we filter by title: defaults in _config.yml apply `type: research` to every
+file under research/, including intermediates like outline.md. Those files have
+no title and would otherwise render as empty ghost cards.
+{%- endcomment -%}
+{%- assign entries = "" | split: "," -%}
+{%- assign _all = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
+{%- for _e in _all -%}
+  {%- if _e.title -%}{%- assign entries = entries | push: _e -%}{%- endif -%}
+{%- endfor -%}
+{%- assign featured = entries | first -%}
+{%- assign entry_count = entries | size -%}

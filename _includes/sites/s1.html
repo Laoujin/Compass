@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
 </head>
 <body>
-  {%- assign entries = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
+  {%- include entries.html -%}
   {%- assign all_tags = '' | split: '' -%}
   {%- for e in entries -%}{%- for t in e.tags -%}{%- unless all_tags contains t -%}{%- assign all_tags = all_tags | push: t -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
 
@@ -31,7 +31,7 @@
     </header>
 
     <nav class="s1-filter">
-      <span class="chip solid">All · {{ entries | size }}</span>
+      <span class="chip solid">All · {{ entry_count }}</span>
       {%- for t in all_tags -%}
         {%- assign c = 0 -%}
         {%- for e in entries -%}{%- if e.tags contains t -%}{%- assign c = c | plus: 1 -%}{%- endif -%}{%- endfor -%}

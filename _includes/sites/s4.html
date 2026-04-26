@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
 </head>
 <body>
-  {%- assign entries = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
+  {%- include entries.html -%}
   {%- assign latest = entries | slice: 0, 5 -%}
 
   <div class="s4">
