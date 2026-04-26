@@ -46,7 +46,6 @@
     <nav class="research-tabs" role="tablist">
       <button class="research-tab is-active" role="tab" data-tab="findings" type="button">Findings</button>
       {% if page.citations %}<button class="research-tab" role="tab" data-tab="citations" type="button">Citations <span class="tab-count">{{ page.citations }}</span></button>{% endif %}
-      <button class="research-tab" role="tab" data-tab="raw" type="button">Raw .{{ page.format | default: 'md' }}</button>
     </nav>
   </div>
 
@@ -83,20 +82,6 @@
   </section>
   {% endif %}
 
-  <!-- Raw -->
-  <section class="research-panel" data-panel="raw">
-    <div class="raw-wrap">
-      <div class="raw-head">
-        <h2>Raw .{{ page.format | default: 'md' }} source</h2>
-        <div class="raw-actions">
-          <button class="raw-btn" id="raw-copy" type="button">📋 Copy</button>
-          {% if site.atlas_repo %}<a class="raw-btn" href="https://github.com/{{ site.atlas_repo }}/blob/main{{ page.url }}index.{{ page.format | default: 'md' }}" target="_blank" rel="noopener">↗ View on GitHub</a>{% endif %}
-        </div>
-      </div>
-      <pre class="raw-pre" id="raw-md" data-src="{{ page.url | append: 'index.source.md' | relative_url }}">Click the Raw tab to load…</pre>
-    </div>
-  </section>
-
   <footer class="research-provenance">
     <div class="provenance-inner">
       <h3>How this was made</h3>
@@ -114,7 +99,10 @@
       {% endif %}
       <div class="ribbon">
         <span>Scout researches. {{ site.title }} remembers.</span>
-        <span>{% if page.issue and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}">Issue #{{ page.issue }} ↗</a>{% endif %}</span>
+        <span class="ribbon-links">
+          {% if site.atlas_repo %}<a href="https://github.com/{{ site.atlas_repo }}/blob/main{{ page.url }}index.{{ page.format | default: 'md' }}" target="_blank" rel="noopener">Raw .{{ page.format | default: 'md' }} ↗</a>{% endif %}
+          {% if page.issue and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener">Issue #{{ page.issue }} ↗</a>{% endif %}
+        </span>
       </div>
     </div>
   </footer>

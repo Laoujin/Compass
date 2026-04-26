@@ -90,7 +90,6 @@
       history.replaceState(null, '', location.pathname + location.search + newHash);
     }
     if (name === 'citations') loadCitations();
-    if (name === 'raw') loadRaw();
   }
 
   tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
@@ -153,49 +152,6 @@
       const q = filterInput.value.toLowerCase();
       $$('.citation-card', $('#citation-list')).forEach(card => {
         card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
-      });
-    });
-  }
-
-  // ---------- Raw .md lazy load ----------
-  let rawLoaded = false;
-  function loadRaw() {
-    if (rawLoaded) return;
-    rawLoaded = true;
-
-    const pre = $('#raw-md');
-    if (!pre) return;
-    const url = pre.dataset.src;
-    if (!url) return;
-
-    pre.textContent = 'Loading…';
-
-    fetch(url)
-      .then(r => r.ok ? r.text() : Promise.reject(new Error('HTTP ' + r.status)))
-      .then(text => { pre.textContent = text; })
-      .catch(err => {
-        pre.textContent =
-          'Could not load raw source (' + err.message + ').\n\n' +
-          'The Jekyll plugin _plugins/keep_raw_md.rb is what copies index.md → index.source.md ' +
-          'into the built site. If you\'re seeing this, the build either skipped that plugin ' +
-          '(GitHub Pages auto-build runs in safe mode and ignores custom plugins — build via ' +
-          'Actions instead), or the plugin failed. Use "View on GitHub" above as a fallback.';
-      });
-  }
-
-  const copyBtn = $('#raw-copy');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', () => {
-      const pre = $('#raw-md');
-      if (!pre) return;
-      const text = pre.textContent || '';
-      navigator.clipboard.writeText(text).then(() => {
-        const old = copyBtn.textContent;
-        copyBtn.textContent = '✓ Copied';
-        setTimeout(() => { copyBtn.textContent = old; }, 1500);
-      }).catch(() => {
-        copyBtn.textContent = '⚠ Copy failed';
-        setTimeout(() => { copyBtn.textContent = '📋 Copy'; }, 1500);
       });
     });
   }

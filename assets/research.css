@@ -487,6 +487,11 @@ body.research-page {
   color: var(--pal-surface);
   text-decoration: underline;
 }
+.research-provenance .ribbon-links {
+  display: inline-flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
 
 /* =========================================================================
    Citations panel
@@ -553,56 +558,6 @@ body.research-page {
   grid-column: 1 / -1;
   color: var(--pal-fg-muted);
   font-style: italic;
-  margin: 0;
-}
-
-/* =========================================================================
-   Raw panel
-   ========================================================================= */
-.raw-wrap {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 48px 24px 80px;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
-.raw-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
-}
-.raw-head h2 {
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 28px;
-  margin: 0;
-}
-.raw-actions {
-  display: flex; gap: 8px;
-}
-.raw-btn {
-  background: var(--pal-surface);
-  border: 1px solid var(--pal-border);
-  padding: 6px 12px;
-  font: inherit;
-  font-size: 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  color: var(--pal-fg-muted);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.raw-btn:hover { border-color: var(--pal-accent); color: var(--pal-accent); }
-.raw-pre {
-  background: var(--pal-surface);
-  border: 1px solid var(--pal-border);
-  border-radius: 6px;
-  padding: 22px 24px;
-  overflow: auto;
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--pal-fg-muted);
-  white-space: pre-wrap;
   margin: 0;
 }
 
