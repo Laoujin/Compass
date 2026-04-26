@@ -9,31 +9,117 @@
   <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
   <link rel="stylesheet" href="{{ '/research.css' | prepend: site.assets_base | relative_url }}">
 </head>
 <body class="research-page">
-  <header class="research-hero">
-    <a href="{{ '/' | relative_url }}" class="research-back">← {{ site.title }}</a>
-    {% if page.title %}<h1>{{ page.title }}</h1>{% endif %}
-    {% assign depth_label = page.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
-    <p class="research-meta">
-      {% if page.depth %}<span class="depth-badge depth-{{ depth_label }}">{{ depth_label }}</span>{% endif %}
-      {% if page.format %}<span class="fmt-pill fmt-{{ page.format }}">.{{ page.format }}</span>{% endif %}
-      {% if page.date %}<time>{{ page.date | date: "%Y-%m-%d" }}</time>{% endif %}
-      {% if page.citations %}<span>{{ page.citations }} sources</span>{% endif %}
-      {% if page.reading_time_min %}<span>~{{ page.reading_time_min }} min</span>{% endif %}
-    </p>
-    {% if page.topic %}<p class="research-topic">{{ page.topic }}</p>{% endif %}
-  </header>
-  <main class="research-main">
-    {{ content }}
-  </main>
-  <footer class="research-footer">
-    <p>Scout researches. Atlas remembers.</p>
+
+  {% assign depth_label = page.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
+  {% if page.cover %}{% assign cover_url = page.url | append: page.cover | relative_url %}{% endif %}
+
+  <a class="research-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+
+  <!-- Cover -->
+  <section class="research-cover"{% if cover_url %} style="--cover-img: url('{{ cover_url }}');"{% endif %}>
+    <div class="research-cover-text">
+      <div class="research-kicker">
+        <span class="kicker-site">{{ site.title }}</span>
+        {% if page.depth %}<span class="depth-badge depth-{{ depth_label }}">{{ depth_label }}</span>{% endif %}
+        {% if page.date %}<time>{{ page.date | date: "%Y-%m-%d" }}</time>{% endif %}
+      </div>
+      {% if page.title %}<h1>{{ page.title }}</h1>{% endif %}
+      {% if page.summary %}<p class="research-summary">{{ page.summary }}</p>{% endif %}
+      <div class="research-stack">
+        {% if page.citations %}<span><b>{{ page.citations }}</b> sources</span>{% endif %}
+        {% if page.reading_time_min %}<span><b>~{{ page.reading_time_min }}</b> min read</span>{% endif %}
+        {% if page.format %}<span class="fmt-pill fmt-{{ page.format }}">.{{ page.format }}</span>{% endif %}
+        {% if page.issue %}<span><b>#{{ page.issue }}</b></span>{% endif %}
+        {% if page.tags %}<span class="research-tags-inline">{{ page.tags | join: ' · ' }}</span>{% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs -->
+  <div class="research-tabs-wrap">
+    <nav class="research-tabs" role="tablist">
+      <button class="research-tab is-active" role="tab" data-tab="findings" type="button">Findings</button>
+      {% if page.citations %}<button class="research-tab" role="tab" data-tab="citations" type="button">Citations <span class="tab-count">{{ page.citations }}</span></button>{% endif %}
+      <button class="research-tab" role="tab" data-tab="raw" type="button">Raw .{{ page.format | default: 'md' }}</button>
+    </nav>
+  </div>
+
+  <!-- Findings -->
+  <section class="research-panel is-active" data-panel="findings">
+    <div class="research-findings-layout">
+      <nav class="research-toc" aria-label="On this page">
+        <div class="toc-label">On this page</div>
+        <ol class="toc-list"></ol>
+        {% if page.reading_time_min %}
+          <div class="toc-label">Reading</div>
+          <div class="research-progress" aria-hidden="true"><div class="research-progress-fill"></div></div>
+          <div class="research-progress-text"><span class="cur">0</span> of {{ page.reading_time_min }} min</div>
+        {% endif %}
+      </nav>
+      <article class="research-article">
+        {{ content }}
+      </article>
+    </div>
+  </section>
+
+  <!-- Citations -->
+  {% if page.citations %}
+  <section class="research-panel" data-panel="citations">
+    <div class="citations-wrap">
+      <div class="citations-head">
+        <h2>Citations · {{ page.citations }} sources</h2>
+        <input class="citations-filter" type="search" placeholder="Filter by domain or keyword…">
+      </div>
+      <div class="citation-list" id="citation-list" data-src="{{ page.url | append: 'citations.jsonl' | relative_url }}">
+        <p class="citation-loading">Click the Citations tab to load…</p>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Raw -->
+  <section class="research-panel" data-panel="raw">
+    <div class="raw-wrap">
+      <div class="raw-head">
+        <h2>Raw .{{ page.format | default: 'md' }} source</h2>
+        <div class="raw-actions">
+          <button class="raw-btn" id="raw-copy" type="button">📋 Copy</button>
+          {% if site.atlas_repo %}<a class="raw-btn" href="https://github.com/{{ site.atlas_repo }}/blob/main/atlas{{ page.url }}index.{{ page.format | default: 'md' }}">↗ View on GitHub</a>{% endif %}
+        </div>
+      </div>
+      <pre class="raw-pre" id="raw-md" data-src="{{ page.url | append: 'index.' | append: page.format | default: 'md' | relative_url }}">Click the Raw tab to load…</pre>
+    </div>
+  </section>
+
+  <footer class="research-provenance">
+    <div class="provenance-inner">
+      <h3>How this was made</h3>
+      <div class="pgrid">
+        {% if depth_label %}<div class="pcell"><div class="lbl">Depth</div><div class="val">{{ depth_label | capitalize }}</div></div>{% endif %}
+        {% if page.cost_usd %}<div class="pcell"><div class="lbl">Cost</div><div class="val">${{ page.cost_usd }}</div></div>{% endif %}
+        {% if page.duration_sec %}{% assign mins = page.duration_sec | divided_by: 60 %}{% assign secs = page.duration_sec | modulo: 60 %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ mins }} min {{ secs }}s</div></div>{% endif %}
+        {% if page.citations %}<div class="pcell"><div class="lbl">Sources</div><div class="val">{{ page.citations }}</div></div>{% endif %}
+        {% if page.format %}<div class="pcell"><div class="lbl">Format</div><div class="val">.{{ page.format }}</div></div>{% endif %}
+        {% if page.date %}<div class="pcell"><div class="lbl">Date</div><div class="val">{{ page.date | date: "%-d %b %Y" }}</div></div>{% endif %}
+      </div>
+      {% if page.topic_raw %}
+        <div class="prompt-lbl">Original prompt to Scout</div>
+        <div class="prompt-block">{{ page.topic_raw }}</div>
+      {% endif %}
+      <div class="ribbon">
+        <span>Scout researches. {{ site.title }} remembers.</span>
+        <span>{% if page.issue and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}">Issue #{{ page.issue }} ↗</a>{% endif %}</span>
+      </div>
+    </div>
   </footer>
+
+  <script defer src="{{ '/research.js' | prepend: site.assets_base | relative_url }}"></script>
   <script defer src="{{ '/table-cards.js' | prepend: site.assets_base | relative_url }}"></script>
 </body>
 </html>
