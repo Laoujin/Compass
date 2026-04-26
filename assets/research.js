@@ -176,9 +176,10 @@
       .catch(err => {
         pre.textContent =
           'Could not load raw source (' + err.message + ').\n\n' +
-          'Note: Jekyll converts index.md → index.html and does not serve the .md file. ' +
-          'To enable inline raw view, configure Jekyll to also keep the .md as a static file, ' +
-          'or use the "View on GitHub" button above.';
+          'The Jekyll plugin _plugins/keep_raw_md.rb is what copies index.md → index.source.md ' +
+          'into the built site. If you\'re seeing this, the build either skipped that plugin ' +
+          '(GitHub Pages auto-build runs in safe mode and ignores custom plugins — build via ' +
+          'Actions instead), or the plugin failed. Use "View on GitHub" above as a fallback.';
       });
   }
 

@@ -90,10 +90,10 @@
         <h2>Raw .{{ page.format | default: 'md' }} source</h2>
         <div class="raw-actions">
           <button class="raw-btn" id="raw-copy" type="button">📋 Copy</button>
-          {% if site.atlas_repo %}<a class="raw-btn" href="https://github.com/{{ site.atlas_repo }}/blob/main/atlas{{ page.url }}index.{{ page.format | default: 'md' }}">↗ View on GitHub</a>{% endif %}
+          {% if site.atlas_repo %}<a class="raw-btn" href="https://github.com/{{ site.atlas_repo }}/blob/main{{ page.url }}index.{{ page.format | default: 'md' }}" target="_blank" rel="noopener">↗ View on GitHub</a>{% endif %}
         </div>
       </div>
-      <pre class="raw-pre" id="raw-md" data-src="{{ page.url | append: 'index.' | append: page.format | default: 'md' | relative_url }}">Click the Raw tab to load…</pre>
+      <pre class="raw-pre" id="raw-md" data-src="{{ page.url | append: 'index.source.md' | relative_url }}">Click the Raw tab to load…</pre>
     </div>
   </section>
 
