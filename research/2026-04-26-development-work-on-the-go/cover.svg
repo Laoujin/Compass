@@ -1,61 +1,74 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#0f172a"/>
       <stop offset="1" stop-color="#312e81"/>
     </linearGradient>
   </defs>
-  <rect width="800" height="800" fill="url(#bg)"/>
-  <!-- code rain (decorative, fills full bleed) -->
-  <g fill="#22d3ee" opacity="0.16" font-family="ui-monospace, monospace" font-size="14">
-    <text x="30"  y="50"  >gh pr create</text>
-    <text x="30"  y="100" >git push origin</text>
-    <text x="30"  y="150" >docker compose up</text>
-    <text x="30"  y="200" >atlas-checkout/</text>
-    <text x="30"  y="250" >scout/run.sh</text>
-    <text x="30"  y="300" >ssh nas:/srv/</text>
-    <text x="30"  y="350" >caddy reload</text>
-    <text x="30"  y="400" >gh issue close</text>
-    <text x="30"  y="450" >run-decompose</text>
-    <text x="30"  y="500" >slack:approve</text>
-    <text x="30"  y="550" >dns add A *</text>
-    <text x="30"  y="600" >restart proxy</text>
-    <text x="30"  y="650" >tail -f logs</text>
-    <text x="30"  y="700" >scout/sharpen</text>
-    <text x="30"  y="750" >gh pr checks</text>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <!-- Code rain (decorative, full bleed) -->
+  <g fill="#22d3ee" opacity="0.16" font-family="ui-monospace, monospace" font-size="16">
+    <text x="40"  y="60"  >gh pr create</text>
+    <text x="40"  y="120" >git push origin</text>
+    <text x="40"  y="180" >docker compose up</text>
+    <text x="40"  y="240" >atlas-checkout/</text>
+    <text x="40"  y="300" >scout/run.sh</text>
+    <text x="40"  y="360" >ssh nas:/srv/</text>
+    <text x="40"  y="420" >caddy reload</text>
+    <text x="40"  y="480" >gh issue close</text>
+    <text x="40"  y="540" >run-decompose</text>
+    <text x="40"  y="600" >slack:approve</text>
+    <text x="40"  y="660" >dns add A *</text>
+    <text x="40"  y="720" >restart proxy</text>
+    <text x="40"  y="780" >tail -f logs</text>
+    <text x="40"  y="840" >scout/sharpen</text>
+    <!-- Right column too -->
+    <text x="1280" y="60"  >gh pr checks</text>
+    <text x="1280" y="120" >2026-04-26</text>
+    <text x="1280" y="180" >atlas push</text>
+    <text x="1280" y="240" >run-decompose</text>
+    <text x="1280" y="300" >gh api</text>
+    <text x="1280" y="360" >slack:thread</text>
+    <text x="1280" y="420" >ec2-stop</text>
+    <text x="1280" y="480" >hyper-v on</text>
+    <text x="1280" y="540" >dnsmasq</text>
+    <text x="1280" y="600" >wireguard</text>
+    <text x="1280" y="660" >prometheus</text>
+    <text x="1280" y="720" >tailscale up</text>
+    <text x="1280" y="780" >restic backup</text>
+    <text x="1280" y="840" >gh release</text>
   </g>
   <!-- Phone (centered subject, prominent) -->
-  <g transform="translate(330,180)">
-    <rect width="180" height="360" rx="26" fill="#1e293b" stroke="#475569" stroke-width="4"/>
-    <rect x="14" y="44" width="152" height="270" rx="6" fill="#0f172a"/>
-    <!-- chat bubbles -->
-    <rect x="28"  y="68"  width="105" height="28" rx="14" fill="#22d3ee"/>
-    <rect x="50"  y="108" width="90"  height="26" rx="13" fill="#334155"/>
-    <rect x="28"  y="148" width="120" height="28" rx="14" fill="#22d3ee"/>
-    <rect x="60"  y="188" width="75"  height="26" rx="13" fill="#a78bfa"/>
-    <rect x="28"  y="228" width="100" height="28" rx="14" fill="#22d3ee"/>
-    <rect x="50"  y="268" width="80"  height="26" rx="13" fill="#334155"/>
-    <!-- speaker dot + home indicator -->
-    <circle cx="90" cy="32" r="4" fill="#475569"/>
-    <rect x="60" y="332" width="60" height="4" rx="2" fill="#475569"/>
+  <g transform="translate(700,200)">
+    <rect width="200" height="500" rx="32" fill="#1e293b" stroke="#475569" stroke-width="5"/>
+    <rect x="16" y="50" width="168" height="390" rx="8" fill="#0f172a"/>
+    <rect x="32"  y="80"  width="120" height="32" rx="16" fill="#22d3ee"/>
+    <rect x="60"  y="124" width="100" height="30" rx="15" fill="#334155"/>
+    <rect x="32"  y="166" width="140" height="32" rx="16" fill="#22d3ee"/>
+    <rect x="68"  y="210" width="84"  height="30" rx="15" fill="#a78bfa"/>
+    <rect x="32"  y="252" width="115" height="32" rx="16" fill="#22d3ee"/>
+    <rect x="56"  y="296" width="92"  height="30" rx="15" fill="#334155"/>
+    <rect x="32"  y="338" width="130" height="32" rx="16" fill="#22d3ee"/>
+    <rect x="60"  y="382" width="80"  height="30" rx="15" fill="#a78bfa"/>
+    <circle cx="100" cy="36" r="5" fill="#475569"/>
+    <rect x="60" y="464" width="80" height="5" rx="3" fill="#475569"/>
   </g>
-  <!-- Laptop (lower right, partial overlap) -->
-  <g transform="translate(450,520)">
-    <rect width="240" height="150" rx="8" fill="#1e293b" stroke="#475569" stroke-width="3"/>
-    <rect x="8" y="8" width="224" height="134" rx="3" fill="#0f172a"/>
-    <g fill="#22d3ee" opacity="0.75">
-      <rect x="20" y="22" width="90"  height="4"/>
-      <rect x="20" y="34" width="120" height="4"/>
-      <rect x="32" y="46" width="60"  height="4"/>
-      <rect x="32" y="58" width="105" height="4"/>
-      <rect x="20" y="70" width="75"  height="4"/>
-      <rect x="20" y="82" width="135" height="4"/>
-      <rect x="32" y="94" width="90"  height="4" fill="#a78bfa"/>
-      <rect x="20" y="106" width="150" height="4"/>
-      <rect x="20" y="118" width="60"  height="4"/>
-      <rect x="20" y="130" width="100" height="4"/>
+  <!-- Laptop (right of phone) -->
+  <g transform="translate(960,440)">
+    <rect width="320" height="200" rx="10" fill="#1e293b" stroke="#475569" stroke-width="3"/>
+    <rect x="10" y="10" width="300" height="180" rx="4" fill="#0f172a"/>
+    <g fill="#22d3ee" opacity="0.8">
+      <rect x="26" y="28"  width="120" height="5"/>
+      <rect x="26" y="44"  width="160" height="5"/>
+      <rect x="42" y="60"  width="80"  height="5"/>
+      <rect x="42" y="76"  width="140" height="5"/>
+      <rect x="26" y="92"  width="100" height="5"/>
+      <rect x="26" y="108" width="180" height="5"/>
+      <rect x="42" y="124" width="120" height="5" fill="#a78bfa"/>
+      <rect x="26" y="140" width="200" height="5"/>
+      <rect x="26" y="156" width="80"  height="5"/>
+      <rect x="26" y="172" width="140" height="5"/>
     </g>
-    <!-- base -->
-    <path d="M-15 150 L255 150 L240 165 L0 165 Z" fill="#475569"/>
+    <path d="M-20 200 L340 200 L320 220 L0 220 Z" fill="#475569"/>
   </g>
 </svg>

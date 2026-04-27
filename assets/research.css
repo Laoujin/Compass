@@ -710,33 +710,5 @@ body.research-page {
 /* Home-grid card chip when an entry has children (a parent expedition).
    Lives inside .card-top alongside the depth-badge so positioning stays
    consistent with non-expedition cards. */
-/* Angles badge — replaces the format pill on parent expedition cards.
-   Hardcoded contrast so it reads on every palette: solid deep purple
-   background, white text, a thin matching ring, and a soft shadow to
-   lift it off the card cover. */
-.angles-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font: 700 12px/1.3 ui-monospace, Menlo, monospace;
-  background: #6d28d9;
-  color: #ffffff;
-  border: 1px solid #4c1d95;
-  white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  text-transform: lowercase;
-  letter-spacing: 0.02em;
-}
-.angles-chip::before {
-  content: '⌥';
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
-}
-.card-expedition {
-  box-shadow:
-    inset 0 0 0 2px color-mix(in srgb, var(--d-expedition) 50%, transparent),
-    0 2px 8px color-mix(in srgb, var(--d-expedition) 18%, transparent);
-}
+/* (.angles-chip and .card-expedition moved to base.css — those styles
+   need to load on the home grid too, where research.css isn't pulled.) */
