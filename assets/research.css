@@ -38,9 +38,9 @@ body.research-page {
   background:
     linear-gradient(to right,
       var(--cover-bg-top) 0%,
-      var(--cover-bg-top) 28%,
-      transparent 62%),
-    var(--cover-img, none) right -2vw center / contain no-repeat,
+      var(--cover-bg-top) 22%,
+      transparent 58%),
+    var(--cover-img, none) center center / cover no-repeat,
     linear-gradient(to bottom, var(--cover-bg-top), var(--cover-bg-bottom));
   height: 70vh;
   min-height: 480px;
@@ -712,14 +712,26 @@ body.research-page {
    consistent with non-expedition cards. */
 .card-top-left { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .angles-chip {
-  display: inline-block;
-  padding: 2px 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
   border-radius: 999px;
-  font: 600 10.5px/1.4 ui-monospace, Menlo, monospace;
+  font: 700 11.5px/1.4 ui-monospace, Menlo, monospace;
   background: var(--d-expedition);
   color: var(--pal-surface);
   white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+.angles-chip::before {
+  content: '⌥';
+  font-size: 13px;
+  line-height: 1;
 }
 .card-expedition {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--d-expedition) 35%, transparent);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--d-expedition) 50%, transparent),
+    0 2px 8px color-mix(in srgb, var(--d-expedition) 18%, transparent);
 }
