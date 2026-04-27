@@ -313,7 +313,11 @@ body.research-page {
   line-height: 1.7;
   color: var(--pal-fg);
 }
-.research-article > * { grid-column: content; }
+/* min-width: 0 keeps grid items from blowing the content track wider than
+   its declared track size — without it, a <pre> with a long unbreakable
+   line (Dockerfiles, log lines) expands the track past 100% on mobile and
+   triggers document-level horizontal scroll. */
+.research-article > * { grid-column: content; min-width: 0; }
 .research-article > table { grid-column: full; }
 .research-article > p { margin: 0 0 22px; }
 
