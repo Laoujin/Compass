@@ -40,7 +40,7 @@
     </div>
     <footer class="s6-statusbar">
       <span>{{ site.title | default: 'atlas' | downcase }} · {{ entry_count }} entries{% if first %} · last run {{ first.date | date: "%Y-%m-%d" }}{% endif %}</span>
-      {%- if site.scout_repo -%}<span><a href="https://github.com/{{ site.scout_repo }}">scout ↗</a></span>{%- endif -%}
+      {%- if site.scout_repo -%}<span><a href="https://github.com/{{ site.scout_repo }}">scout ↗</a> · <a href="https://github.com/Laoujin/Compass">compass ↗</a></span>{%- endif -%}
     </footer>
   </div>
 </body>
