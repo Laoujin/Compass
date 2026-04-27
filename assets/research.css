@@ -472,19 +472,20 @@ body.research-page {
 /* =========================================================================
    Provenance band (dark) at end of Findings
    ========================================================================= */
-/* "Green thing" footer — sage-on-charcoal palette restored from the
-   original 6-magazine-plus.html wireframe. Hardcoded greens so the
-   look survives palette swaps; the dark base still picks up the
-   palette's foreground color so it harmonises in both light and
-   dark themes. */
+/* "Green thing" footer — full sage-on-deep-green palette from the
+   1-magazine wireframe. All colors hardcoded so the footer reads the
+   same way on any palette (rust/paper/cartography/midnight/...) —
+   var(--pal-fg) was rendering black on rust where the wireframe
+   wanted dark green. No inner max-width: content spans the section's
+   full padding, matching the wireframe's edge-to-edge layout. */
 .research-provenance {
-  background: var(--pal-fg);
+  background: #1a2e1f;
   color: #dce5d1;
   margin-top: 80px;
   padding: 60px 8vw;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
-.provenance-inner { max-width: 1280px; margin: 0 auto; }
+.provenance-inner { margin: 0 auto; }
 .research-provenance h3 {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
