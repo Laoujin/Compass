@@ -8,6 +8,9 @@ cover: cover.svg
 synthesis: true
 citations: 50
 reading_time_min: 22
+cost_usd: 3.18
+duration_sec: 14580
+issue: 13
 hue: 0
 children:
   - slug: slack-claude-code-remote-control

@@ -1,28 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#0c0a09"/>
       <stop offset="1" stop-color="#7c2d12"/>
     </linearGradient>
   </defs>
-  <rect width="600" height="400" fill="url(#bg)"/>
-  <!-- Phone (dimmed) -->
-  <g transform="translate(290,80)" opacity="0.85">
-    <rect width="120" height="240" rx="18" fill="#1c1917" stroke="#57534e" stroke-width="3"/>
-    <rect x="10" y="30" width="100" height="180" rx="4" fill="#0c0a09"/>
-    <rect x="20"  y="50"  width="70" height="20" rx="10" fill="#fb923c"/>
-    <rect x="34"  y="80"  width="60" height="18" rx="9"  fill="#44403c"/>
-    <rect x="20"  y="108" width="80" height="20" rx="10" fill="#fb923c"/>
-    <rect x="40"  y="138" width="50" height="18" rx="9"  fill="#44403c"/>
-    <circle cx="60" cy="22" r="3" fill="#57534e"/>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <!-- Same code-rain decoration but in muted amber -->
+  <g fill="#fb923c" opacity="0.13" font-family="ui-monospace, monospace" font-size="14">
+    <text x="30"  y="50"  >gh pr create</text>
+    <text x="30"  y="100" >git push origin</text>
+    <text x="30"  y="150" >TIMEOUT after 4h</text>
+    <text x="30"  y="200" >atlas-checkout/</text>
+    <text x="30"  y="250" >scout/run.sh</text>
+    <text x="30"  y="300" >EXIT 124</text>
+    <text x="30"  y="350" >caddy reload</text>
+    <text x="30"  y="400" >gh issue stays open</text>
+    <text x="30"  y="450" >run-decompose</text>
+    <text x="30"  y="500" >2 of 3 succeeded</text>
+    <text x="30"  y="550" >dns add A *</text>
+    <text x="30"  y="600" >restart proxy</text>
+    <text x="30"  y="650" >tail -f logs</text>
+    <text x="30"  y="700" >scout/sharpen</text>
+    <text x="30"  y="750" >gh pr checks</text>
   </g>
-  <!-- timeout/warning glyph -->
-  <g transform="translate(430,200)">
-    <polygon points="60,0 120,110 0,110" fill="#f59e0b" stroke="#fbbf24" stroke-width="3"/>
-    <text x="60" y="78" text-anchor="middle" fill="#1c1917" font-family="ui-sans-serif, system-ui" font-weight="800" font-size="56">!</text>
+  <!-- Phone (dimmed, signaling partial) -->
+  <g transform="translate(330,180)" opacity="0.85">
+    <rect width="180" height="360" rx="26" fill="#1c1917" stroke="#57534e" stroke-width="4"/>
+    <rect x="14" y="44" width="152" height="270" rx="6" fill="#0c0a09"/>
+    <rect x="28"  y="68"  width="105" height="28" rx="14" fill="#fb923c"/>
+    <rect x="50"  y="108" width="90"  height="26" rx="13" fill="#44403c"/>
+    <rect x="28"  y="148" width="120" height="28" rx="14" fill="#fb923c"/>
+    <rect x="60"  y="188" width="75"  height="26" rx="13" fill="#44403c"/>
+    <rect x="28"  y="228" width="100" height="28" rx="14" fill="#fb923c"/>
+    <rect x="50"  y="268" width="80"  height="26" rx="13" fill="#44403c"/>
+    <circle cx="90" cy="32" r="4" fill="#57534e"/>
+    <rect x="60" y="332" width="60" height="4" rx="2" fill="#57534e"/>
   </g>
-  <!-- broken/dashed wire -->
-  <g stroke="#fb923c" stroke-width="3" fill="none" opacity="0.7" stroke-dasharray="6 6">
-    <path d="M120 280 Q220 240 290 320"/>
+  <!-- timeout/warning glyph (centered, big) -->
+  <g transform="translate(540,420)">
+    <polygon points="100,0 200,180 0,180" fill="#f59e0b" stroke="#fbbf24" stroke-width="5"/>
+    <text x="100" y="135" text-anchor="middle" fill="#1c1917" font-family="ui-sans-serif, system-ui" font-weight="800" font-size="100">!</text>
+  </g>
+  <!-- broken/dashed wires -->
+  <g stroke="#fb923c" stroke-width="4" fill="none" opacity="0.65" stroke-dasharray="8 8">
+    <path d="M120 580 Q220 520 320 620"/>
+    <path d="M520 660 Q620 720 720 640"/>
   </g>
 </svg>

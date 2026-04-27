@@ -7,6 +7,9 @@ format: md
 summary: Container Manager / Docker Compose lifecycle per branch.
 citations: 21
 reading_time_min: 9
+cost_usd: 0.92
+duration_sec: 960
+issue: 16
 hue: 30
 ---
 

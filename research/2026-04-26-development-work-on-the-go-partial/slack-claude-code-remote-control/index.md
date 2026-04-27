@@ -7,6 +7,9 @@ format: md
 summary: GitHub App vs Agent SDK survey.
 citations: 32
 reading_time_min: 12
+cost_usd: 3.24
+duration_sec: 3600
+issue: 14
 hue: 270
 ---
 

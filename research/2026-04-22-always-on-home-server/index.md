@@ -8,6 +8,9 @@ cover: cover.svg
 synthesis: true
 citations: 64
 reading_time_min: 28
+cost_usd: 3.84
+duration_sec: 4320
+issue: 9
 hue: 200
 children:
   - slug: cpu-and-avx2-baseline

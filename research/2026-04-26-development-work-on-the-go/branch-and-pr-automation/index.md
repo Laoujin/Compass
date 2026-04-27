@@ -7,6 +7,9 @@ format: md
 summary: How a "go" message produces a branch and PR without a local checkout.
 citations: 18
 reading_time_min: 7
+cost_usd: 0.92
+duration_sec: 960
+issue: 15
 hue: 210
 ---
 

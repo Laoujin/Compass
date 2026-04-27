@@ -9,6 +9,9 @@ tags: [tooling, research, ai]
 summary: Scout wins on traceability and cost, ChatGPT on synthesis, Gemini on breadth, Perplexity on speed.
 citations: 23
 reading_time_min: 9
+cost_usd: 0.92
+duration_sec: 1140
+issue: 7
 hue: 320
 ---
 

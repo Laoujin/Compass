@@ -7,6 +7,9 @@ format: md
 summary: Synology / QNAP / UGREEN versus a Beelink / Minisforum mini-PC running Debian or Proxmox.
 citations: 27
 reading_time_min: 11
+cost_usd: 3.24
+duration_sec: 3600
+issue: 11
 hue: 200
 ---
 

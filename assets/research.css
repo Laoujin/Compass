@@ -438,9 +438,14 @@ body.research-page {
 /* =========================================================================
    Provenance band (dark) at end of Findings
    ========================================================================= */
+/* "Green thing" footer — sage-on-charcoal palette restored from the
+   original 6-magazine-plus.html wireframe. Hardcoded greens so the
+   look survives palette swaps; the dark base still picks up the
+   palette's foreground color so it harmonises in both light and
+   dark themes. */
 .research-provenance {
   background: var(--pal-fg);
-  color: color-mix(in srgb, var(--pal-surface) 90%, transparent);
+  color: #dce5d1;
   margin-top: 80px;
   padding: 60px 8vw;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
@@ -450,31 +455,31 @@ body.research-page {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 28px;
   margin: 0 0 24px;
-  color: color-mix(in srgb, var(--pal-accent-soft) 90%, white);
+  color: #dce5d1;
 }
 .research-provenance .pgrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 24px 28px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 28px 36px;
   margin-bottom: 36px;
 }
 .pcell .lbl {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: .12em;
-  color: color-mix(in srgb, var(--pal-fg-faint) 50%, var(--pal-surface));
+  color: #9bb38f;
   margin-bottom: 6px;
 }
 .pcell .val {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 26px;
-  color: var(--pal-surface);
+  color: #faf6ea;
 }
 .research-provenance .prompt-lbl {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: .12em;
-  color: color-mix(in srgb, var(--pal-fg-faint) 50%, var(--pal-surface));
+  color: #9bb38f;
   margin: 28px 0 8px;
 }
 .research-provenance .prompt-block {
@@ -484,7 +489,7 @@ body.research-page {
   border-radius: 4px;
   font-size: 14px;
   line-height: 1.6;
-  color: color-mix(in srgb, var(--pal-accent-soft) 95%, white);
+  color: #dce5d1;
   font-style: italic;
   white-space: pre-line;
 }
@@ -496,12 +501,12 @@ body.research-page {
   flex-wrap: wrap;
   gap: 16px;
   padding-top: 28px;
-  border-top: 1px solid color-mix(in srgb, var(--pal-fg-muted) 40%, transparent);
+  border-top: 1px solid #2a3d2e;
   font-size: 13px;
-  color: color-mix(in srgb, var(--pal-fg-faint) 50%, var(--pal-surface));
+  color: #9bb38f;
 }
 .research-provenance .ribbon a {
-  color: var(--pal-surface);
+  color: #dce5d1;
   text-decoration: underline;
 }
 .research-provenance .ribbon-links {
@@ -583,11 +588,13 @@ body.research-page {
    Expedition layout — parent overview + children grid
    ========================================================================= */
 
-/* Synthesis prose container — sits between cover and children grid. */
+/* Synthesis prose container — sits between cover and children grid.
+   Wider than the typical findings column so synthesis tables (decision
+   summaries) and recommendation grids breathe. */
 .expedition-synthesis {
-  max-width: 760px;
-  margin: 48px auto 32px;
-  padding: 0 8vw;
+  max-width: 1080px;
+  margin: 56px auto 40px;
+  padding: 0 6vw;
 }
 .expedition-synthesis-empty {
   color: var(--pal-fg-muted);
@@ -595,8 +602,25 @@ body.research-page {
 }
 .expedition-synthesis .research-article {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.65;
+}
+.expedition-synthesis .research-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.4em 0;
+  font-size: 15px;
+}
+.expedition-synthesis .research-article th,
+.expedition-synthesis .research-article td {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--pal-border);
+}
+.expedition-synthesis .research-article th {
+  font-weight: 600;
+  color: var(--pal-fg);
+  background: var(--pal-surface-tint);
 }
 
 /* Header chip showing N angles. */

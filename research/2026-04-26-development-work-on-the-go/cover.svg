@@ -1,51 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#0f172a"/>
       <stop offset="1" stop-color="#312e81"/>
     </linearGradient>
   </defs>
-  <rect width="600" height="400" fill="url(#bg)"/>
-  <!-- code rain decoration -->
-  <g fill="#22d3ee" opacity="0.18" font-family="ui-monospace, monospace" font-size="11">
-    <text x="20"  y="40"  >gh pr create</text>
-    <text x="20"  y="80"  >git push origin</text>
-    <text x="20"  y="120" >docker compose up</text>
-    <text x="20"  y="160" >atlas-checkout/</text>
-    <text x="20"  y="200" >scout/run.sh</text>
-    <text x="20"  y="240" >ssh nas:/srv/</text>
-    <text x="20"  y="280" >caddy reload</text>
-    <text x="20"  y="320" >gh issue close</text>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <!-- code rain (decorative, fills full bleed) -->
+  <g fill="#22d3ee" opacity="0.16" font-family="ui-monospace, monospace" font-size="14">
+    <text x="30"  y="50"  >gh pr create</text>
+    <text x="30"  y="100" >git push origin</text>
+    <text x="30"  y="150" >docker compose up</text>
+    <text x="30"  y="200" >atlas-checkout/</text>
+    <text x="30"  y="250" >scout/run.sh</text>
+    <text x="30"  y="300" >ssh nas:/srv/</text>
+    <text x="30"  y="350" >caddy reload</text>
+    <text x="30"  y="400" >gh issue close</text>
+    <text x="30"  y="450" >run-decompose</text>
+    <text x="30"  y="500" >slack:approve</text>
+    <text x="30"  y="550" >dns add A *</text>
+    <text x="30"  y="600" >restart proxy</text>
+    <text x="30"  y="650" >tail -f logs</text>
+    <text x="30"  y="700" >scout/sharpen</text>
+    <text x="30"  y="750" >gh pr checks</text>
   </g>
-  <!-- Phone -->
-  <g transform="translate(290,80)">
-    <rect width="120" height="240" rx="18" fill="#1e293b" stroke="#475569" stroke-width="3"/>
-    <rect x="10" y="30" width="100" height="180" rx="4" fill="#0f172a"/>
+  <!-- Phone (centered subject, prominent) -->
+  <g transform="translate(330,180)">
+    <rect width="180" height="360" rx="26" fill="#1e293b" stroke="#475569" stroke-width="4"/>
+    <rect x="14" y="44" width="152" height="270" rx="6" fill="#0f172a"/>
     <!-- chat bubbles -->
-    <rect x="20"  y="50"  width="70" height="20" rx="10" fill="#22d3ee"/>
-    <rect x="34"  y="80"  width="60" height="18" rx="9"  fill="#334155"/>
-    <rect x="20"  y="108" width="80" height="20" rx="10" fill="#22d3ee"/>
-    <rect x="40"  y="138" width="50" height="18" rx="9"  fill="#a78bfa"/>
-    <!-- speaker dot -->
-    <circle cx="60" cy="22" r="3" fill="#475569"/>
+    <rect x="28"  y="68"  width="105" height="28" rx="14" fill="#22d3ee"/>
+    <rect x="50"  y="108" width="90"  height="26" rx="13" fill="#334155"/>
+    <rect x="28"  y="148" width="120" height="28" rx="14" fill="#22d3ee"/>
+    <rect x="60"  y="188" width="75"  height="26" rx="13" fill="#a78bfa"/>
+    <rect x="28"  y="228" width="100" height="28" rx="14" fill="#22d3ee"/>
+    <rect x="50"  y="268" width="80"  height="26" rx="13" fill="#334155"/>
+    <!-- speaker dot + home indicator -->
+    <circle cx="90" cy="32" r="4" fill="#475569"/>
+    <rect x="60" y="332" width="60" height="4" rx="2" fill="#475569"/>
   </g>
-  <!-- Laptop -->
-  <g transform="translate(420,200)">
-    <rect width="160" height="100" rx="6" fill="#1e293b" stroke="#475569" stroke-width="2"/>
-    <rect x="6" y="6" width="148" height="88" rx="2" fill="#0f172a"/>
-    <!-- code lines -->
-    <g fill="#22d3ee" opacity="0.7">
-      <rect x="14" y="16" width="60" height="3"/>
-      <rect x="14" y="24" width="80" height="3"/>
-      <rect x="22" y="32" width="40" height="3"/>
-      <rect x="22" y="40" width="70" height="3"/>
-      <rect x="14" y="48" width="50" height="3"/>
-      <rect x="14" y="56" width="90" height="3"/>
-      <rect x="22" y="64" width="60" height="3" fill="#a78bfa"/>
-      <rect x="14" y="72" width="100" height="3"/>
-      <rect x="14" y="80" width="40" height="3"/>
+  <!-- Laptop (lower right, partial overlap) -->
+  <g transform="translate(450,520)">
+    <rect width="240" height="150" rx="8" fill="#1e293b" stroke="#475569" stroke-width="3"/>
+    <rect x="8" y="8" width="224" height="134" rx="3" fill="#0f172a"/>
+    <g fill="#22d3ee" opacity="0.75">
+      <rect x="20" y="22" width="90"  height="4"/>
+      <rect x="20" y="34" width="120" height="4"/>
+      <rect x="32" y="46" width="60"  height="4"/>
+      <rect x="32" y="58" width="105" height="4"/>
+      <rect x="20" y="70" width="75"  height="4"/>
+      <rect x="20" y="82" width="135" height="4"/>
+      <rect x="32" y="94" width="90"  height="4" fill="#a78bfa"/>
+      <rect x="20" y="106" width="150" height="4"/>
+      <rect x="20" y="118" width="60"  height="4"/>
+      <rect x="20" y="130" width="100" height="4"/>
     </g>
     <!-- base -->
-    <path d="M-10 100 L170 100 L160 110 L0 110 Z" fill="#475569"/>
+    <path d="M-15 150 L255 150 L240 165 L0 165 Z" fill="#475569"/>
   </g>
 </svg>

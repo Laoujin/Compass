@@ -1,39 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#1e1b4b"/>
       <stop offset="1" stop-color="#4c1d95"/>
     </linearGradient>
   </defs>
-  <rect width="600" height="400" fill="url(#bg)"/>
-  <!-- stacked source cards fanning out -->
-  <g transform="translate(140,90)">
-    <g transform="rotate(-8 90 110)">
-      <rect width="180" height="220" rx="10" fill="#312e81" stroke="#a78bfa" stroke-width="2"/>
-      <g fill="#c4b5fd" opacity="0.8">
-        <rect x="20" y="30" width="140" height="6" rx="3"/>
-        <rect x="20" y="50" width="120" height="4" rx="2"/>
-        <rect x="20" y="62" width="130" height="4" rx="2"/>
-        <rect x="20" y="74" width="100" height="4" rx="2"/>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <!-- stacked source cards fanning out (centered subject) -->
+  <g transform="translate(140,180)">
+    <g transform="rotate(-10 180 200)">
+      <rect width="280" height="380" rx="14" fill="#312e81" stroke="#a78bfa" stroke-width="3"/>
+      <g fill="#c4b5fd" opacity="0.85">
+        <rect x="32" y="44" width="220" height="9" rx="4"/>
+        <rect x="32" y="72" width="190" height="6" rx="3"/>
+        <rect x="32" y="90" width="200" height="6" rx="3"/>
+        <rect x="32" y="108" width="170" height="6" rx="3"/>
+        <rect x="32" y="140" width="220" height="9" rx="4"/>
+        <rect x="32" y="168" width="180" height="6" rx="3"/>
       </g>
     </g>
-    <g transform="rotate(4 90 110) translate(40 -10)">
-      <rect width="180" height="220" rx="10" fill="#4338ca" stroke="#c4b5fd" stroke-width="2"/>
-      <g fill="#ede9fe" opacity="0.85">
-        <rect x="20" y="30" width="140" height="6" rx="3"/>
-        <rect x="20" y="50" width="130" height="4" rx="2"/>
-        <rect x="20" y="62" width="120" height="4" rx="2"/>
-        <rect x="20" y="74" width="115" height="4" rx="2"/>
-        <rect x="20" y="86" width="100" height="4" rx="2"/>
+    <g transform="rotate(6 180 200) translate(60 -20)">
+      <rect width="280" height="380" rx="14" fill="#4338ca" stroke="#c4b5fd" stroke-width="3"/>
+      <g fill="#ede9fe" opacity="0.9">
+        <rect x="32" y="44" width="220" height="9" rx="4"/>
+        <rect x="32" y="72" width="200" height="6" rx="3"/>
+        <rect x="32" y="90" width="180" height="6" rx="3"/>
+        <rect x="32" y="108" width="195" height="6" rx="3"/>
+        <rect x="32" y="140" width="220" height="9" rx="4"/>
+        <rect x="32" y="168" width="170" height="6" rx="3"/>
+        <rect x="32" y="186" width="190" height="6" rx="3"/>
       </g>
     </g>
   </g>
-  <!-- magnifying glass -->
-  <g transform="translate(340,180)">
-    <circle r="70" fill="none" stroke="#fbbf24" stroke-width="10"/>
-    <circle r="60" fill="#fef3c7" opacity="0.15"/>
-    <line x1="50" y1="50" x2="100" y2="100" stroke="#fbbf24" stroke-width="14" stroke-linecap="round"/>
-    <line x1="-25" y1="-25" x2="25" y2="25" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
-    <line x1="25" y1="-25" x2="-25" y2="25" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
+  <!-- magnifying glass (overlaps the cards, slightly off-center for dynamism) -->
+  <g transform="translate(500,520)">
+    <circle r="120" fill="#fef3c7" opacity="0.12"/>
+    <circle r="120" fill="none" stroke="#fbbf24" stroke-width="14"/>
+    <circle r="105" fill="none" stroke="#fde047" stroke-width="2" opacity="0.5"/>
+    <line x1="85" y1="85" x2="180" y2="180" stroke="#fbbf24" stroke-width="22" stroke-linecap="round"/>
+    <!-- crosshair -->
+    <line x1="-50" y1="0" x2="50" y2="0" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
+    <line x1="0" y1="-50" x2="0" y2="50" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
+  </g>
+  <!-- floating bullet dots (decoration) -->
+  <g fill="#a78bfa" opacity="0.5">
+    <circle cx="80" cy="100" r="4"/>
+    <circle cx="120" cy="80" r="3"/>
+    <circle cx="700" cy="120" r="5"/>
+    <circle cx="720" cy="180" r="3"/>
   </g>
 </svg>

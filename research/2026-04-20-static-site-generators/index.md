@@ -8,6 +8,9 @@ tags: [web, tooling]
 summary: Astro dominates, Hugo holds the speed crown.
 citations: 18
 reading_time_min: 4
+cost_usd: 0.74
+duration_sec: 960
+issue: 3
 hue: 210
 ---
 

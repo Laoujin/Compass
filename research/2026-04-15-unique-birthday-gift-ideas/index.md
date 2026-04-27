@@ -9,6 +9,9 @@ tags: [personal, gifts]
 summary: Three categories rise above the noise — bespoke craft, shared experience, and useful indulgence.
 citations: 7
 reading_time_min: 3
+cost_usd: 0.18
+duration_sec: 240
+issue: 5
 hue: 350
 ---
 

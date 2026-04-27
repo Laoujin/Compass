@@ -7,6 +7,9 @@ format: md
 summary: Glue across the four pieces.
 citations: 18
 reading_time_min: 10
+cost_usd: 0.18
+duration_sec: 240
+issue: 17
 hue: 60
 ---
 

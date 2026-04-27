@@ -7,6 +7,9 @@ format: md
 summary: Idle wattage and dBA at 1m for the realistic shortlist — what's tolerable in a shared room.
 citations: 5
 reading_time_min: 4
+cost_usd: 0.18
+duration_sec: 240
+issue: 19
 hue: 200
 ---
 
