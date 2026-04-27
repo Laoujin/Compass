@@ -10,6 +10,10 @@ Expects include.entry with frontmatter:
 {%- assign e = include.entry -%}
 {%- assign depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
 <article class="card" style="--h:{{ e.hue | default: 210 }};">
+  {%- if e.children -%}
+    {%- assign angle_count = e.children | size -%}
+    <span class="angles-overlay">{{ angle_count }} {% if angle_count == 1 %}angle{% else %}angles{% endif %}</span>
+  {%- endif -%}
   <a href="{{ e.url | relative_url }}" class="card-link">
     {%- if e.cover -%}
       {%- assign cover_src = e.url | append: e.cover | relative_url -%}
