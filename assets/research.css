@@ -596,6 +596,9 @@ body.research-page {
   text-decoration: none;
   color: inherit;
   transition: border-color .12s;
+  /* Grid items default to min-width: min-content; without this a long URL in
+     .ttl pushes the column wider than 1fr and triggers horizontal overflow. */
+  min-width: 0;
 }
 .citation-card:hover { border-color: var(--pal-accent); }
 .citation-card .num {
@@ -609,6 +612,9 @@ body.research-page {
   font-size: 14px;
   margin: 2px 0 4px;
   line-height: 1.3;
+  /* Citations from Scout have no `title` field, so .ttl falls back to the
+     full URL — break it instead of overflowing the card. */
+  overflow-wrap: anywhere;
 }
 .citation-card .src {
   color: var(--pal-fg-faint);
