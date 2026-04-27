@@ -5,8 +5,10 @@
    Palette-aware via --pal-* vars; Fraunces for display, system for chrome.
    ========================================================================= */
 
+html:has(body.research-page) { overflow-x: clip; }
 body.research-page {
   margin: 0;
+  overflow-x: clip;
   background: var(--pal-bg);
   color: var(--pal-fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -428,7 +430,7 @@ body.research-page {
   font-size: 15px;
   color: var(--pal-fg);
 }
-@media (max-width: 600px) {
+@media (max-width: 760px) {
   .research-article table { display: none; }
   .research-article .table-cards { display: block; }
 }
