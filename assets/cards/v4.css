@@ -10,7 +10,7 @@
 /* Bumped from 10/12 to 14/16 so chips, depth-badge, and meta-row don't
    crowd the card border on the terminal variant. */
 .card-body { padding: 14px 16px; gap: 6px; }
-.card-top { gap: 6px; }
+.card-top { gap: 6px; padding: 14px 16px 0; }
 .card-title { color: #f4efe6; font-family: inherit; font-size: 12.5px; }
 .card-title::before { content: "$ scout "; color: var(--pal-accent); }
 .card-summary { color: #a8a59c; font-size: 11px; }
