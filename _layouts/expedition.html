@@ -1,0 +1,94 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/research.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/rouge.css' | prepend: site.assets_base | relative_url }}">
+</head>
+<body class="research-page expedition-page">
+
+  {% assign success_count = 0 %}
+  {% assign failed_count = 0 %}
+  {% for c in page.children %}
+    {% if c.status == 'success' %}{% assign success_count = success_count | plus: 1 %}{% endif %}
+    {% if c.status == 'failed' %}{% assign failed_count = failed_count | plus: 1 %}{% endif %}
+  {% endfor %}
+  {% assign total = page.children | size %}
+  {% if page.cover %}{% assign cover_url = page.url | append: page.cover | relative_url %}{% endif %}
+
+  <a class="research-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+
+  <!-- Cover -->
+  <section class="research-cover"{% if cover_url %} style="--cover-img: url('{{ cover_url }}');"{% endif %}>
+    <div class="research-cover-text">
+      <div class="research-kicker">
+        <span class="kicker-site">{{ site.title }}</span>
+        <span class="depth-badge depth-expedition">expedition</span>
+        <span class="angles-badge">{{ total }} {% if total == 1 %}angle{% else %}angles{% endif %}</span>
+        {% if page.date %}<time>{{ page.date | date: "%Y-%m-%d" }}</time>{% endif %}
+      </div>
+      {% if page.title %}<h1>{{ page.title }}</h1>{% endif %}
+      {% if page.summary %}<p class="research-summary">{{ page.summary }}</p>{% endif %}
+      <div class="research-stack">
+        <span><b>{{ success_count }}</b> succeeded{% if failed_count > 0 %} · <b>{{ failed_count }}</b> placeholder{% if failed_count != 1 %}s{% endif %}{% endif %}</span>
+        {% if page.citations %}<span><b>{{ page.citations }}</b> sources</span>{% endif %}
+        {% if page.reading_time_min %}<span><b>~{{ page.reading_time_min }}</b> min read</span>{% endif %}
+        {% if page.format %}<span class="fmt-pill fmt-{{ page.format }}">.{{ page.format }}</span>{% endif %}
+        {% if page.issue %}<span><b>#{{ page.issue }}</b></span>{% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Synthesis prose (parent overview) -->
+  <section class="research-panel is-active expedition-synthesis{% unless page.synthesis %} expedition-synthesis-empty{% endunless %}">
+    <article class="research-article">
+      {{ content }}
+    </article>
+  </section>
+
+  <!-- Children grid -->
+  <section class="expedition-children">
+    <div class="expedition-children-inner">
+      <h2>Sub-topics</h2>
+      {% include research-children.html %}
+    </div>
+  </section>
+
+  <footer class="research-provenance">
+    <div class="provenance-inner">
+      <h3>How this was made</h3>
+      <div class="pgrid">
+        <div class="pcell"><div class="lbl">Depth</div><div class="val">Expedition (decomposed)</div></div>
+        <div class="pcell"><div class="lbl">Angles</div><div class="val">{{ total }} ({{ success_count }} ok{% if failed_count > 0 %}, {{ failed_count }} failed{% endif %})</div></div>
+        {% if page.cost_usd %}<div class="pcell"><div class="lbl">Cost</div><div class="val">${{ page.cost_usd }}</div></div>{% endif %}
+        {% if page.duration_sec %}{% assign mins = page.duration_sec | divided_by: 60 %}{% assign secs = page.duration_sec | modulo: 60 %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ mins }} min {{ secs }}s</div></div>{% endif %}
+        {% if page.format %}<div class="pcell"><div class="lbl">Format</div><div class="val">.{{ page.format }}</div></div>{% endif %}
+        {% if page.date %}<div class="pcell"><div class="lbl">Date</div><div class="val">{{ page.date | date: "%-d %b %Y" }}</div></div>{% endif %}
+      </div>
+      {% if page.topic %}
+        <div class="prompt-lbl">Original topic</div>
+        <div class="prompt-block">{{ page.topic }}</div>
+      {% endif %}
+      <div class="ribbon">
+        <span>Scout researches. {{ site.title }} remembers.</span>
+        <span class="ribbon-links">
+          {% if site.atlas_repo %}<a href="https://github.com/{{ site.atlas_repo }}/blob/main{{ page.url }}index.{{ page.format | default: 'md' }}" target="_blank" rel="noopener">Raw .{{ page.format | default: 'md' }} ↗</a>{% endif %}
+          {% if page.issue and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener">Issue #{{ page.issue }} ↗</a>{% endif %}
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="{{ '/table-cards.js' | prepend: site.assets_base | relative_url }}"></script>
+</body>
+</html>

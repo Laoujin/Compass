@@ -1,0 +1,34 @@
+{%- comment -%}
+Renders page.children as a card grid for the expedition layout.
+Each child entry has frontmatter shape:
+  slug, title, depth (ceo|standard|deep), status (success|failed),
+  summary, citations, reading_time_min.
+- success → linked card pointing at /<parent-url>/<slug>/
+- failed  → greyed-out card with failure_reason as summary, no link
+{%- endcomment -%}
+<div class="children-grid">
+  {% for c in page.children %}
+    {% assign clabel = c.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
+    {% if c.status == 'success' %}
+      {% assign child_url = page.url | append: c.slug | append: '/' | relative_url %}
+      <a class="child-card child-card-success" href="{{ child_url }}">
+        <div class="child-card-meta">
+          <span class="depth-badge depth-{{ clabel }}">{{ clabel }}</span>
+          {% if c.citations %}<span class="meta-chip">{{ c.citations }} sources</span>{% endif %}
+          {% if c.reading_time_min %}<span class="meta-chip">{{ c.reading_time_min }} min</span>{% endif %}
+        </div>
+        <h3 class="child-card-title">{{ c.title }}</h3>
+        {% if c.summary %}<p class="child-card-summary">{{ c.summary }}</p>{% endif %}
+      </a>
+    {% else %}
+      <div class="child-card child-card-failed" aria-disabled="true">
+        <div class="child-card-meta">
+          <span class="depth-badge depth-{{ clabel }} depth-faded">{{ clabel }}</span>
+          <span class="failed-badge">failed</span>
+        </div>
+        <h3 class="child-card-title">{{ c.title }}</h3>
+        {% if c.summary %}<p class="child-card-summary">Reason: {{ c.summary }}</p>{% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
