@@ -4,7 +4,20 @@
 .card-link { flex-direction: row; }
 .card-cover { width: 110px; aspect-ratio: auto; flex-shrink: 0; }
 .card-body { padding: 10px 12px; }
-.card-top { position: absolute; top: 8px; right: 10px; z-index: 3; margin: 0; }
+.card-top { position: absolute; top: 8px; right: 10px; z-index: 3; margin: 0; gap: 6px; }
+
+/* Subtle palette-aware chip — the loud purple in base.css is sized for
+   variants that overlay the chip on a cover image (v1, v3). Here it sits
+   on the plain body, so tone it down to match the surface. */
+.angles-chip {
+  background: color-mix(in srgb, var(--pal-accent) 14%, transparent);
+  color: var(--pal-fg-muted);
+  border: 1px solid color-mix(in srgb, var(--pal-accent) 28%, transparent);
+  box-shadow: none;
+  font-size: 10px;
+  padding: 2px 8px;
+}
+.angles-chip::before { font-size: 11px; }
 
 @media (max-width: 700px) {
   .entry-grid { grid-template-columns: 1fr; }

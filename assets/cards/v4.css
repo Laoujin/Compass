@@ -7,13 +7,28 @@
 }
 .card:hover { border-color: var(--pal-accent); }
 .card-cover { display: none; }
-.card-body { padding: 10px 12px 12px; gap: 4px; }
+/* Bumped from 10/12 to 14/16 so chips, depth-badge, and meta-row don't
+   crowd the card border on the terminal variant. */
+.card-body { padding: 14px 16px; gap: 6px; }
+.card-top { gap: 6px; }
 .card-title { color: #f4efe6; font-family: inherit; font-size: 12.5px; }
 .card-title::before { content: "$ scout "; color: var(--pal-accent); }
 .card-summary { color: #a8a59c; font-size: 11px; }
 .card-foot { color: #6e7079; }
 .card .chip { background: #1a1c20; color: #e0c085; border-color: #2d3036; }
 .meta-chip { background: #1a1c20; color: #a8a59c; border-color: #2d3036; }
+
+/* Terminal-flavored angles chip — drop the saturated purple for a muted
+   yellow-on-near-black that matches the rest of the variant. */
+.angles-chip {
+  background: #1a1c20;
+  color: #e0c085;
+  border: 1px solid #2d3036;
+  box-shadow: none;
+  font-size: 10px;
+  padding: 2px 8px;
+}
+.angles-chip::before { font-size: 11px; }
 
 @media (max-width: 700px) {
   .entry-grid { grid-template-columns: 1fr; }

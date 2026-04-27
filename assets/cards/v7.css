@@ -17,7 +17,19 @@
 .card-link { flex-direction: row; align-items: center; gap: 10px; flex: 1; }
 .card-cover { display: none; }
 .card-body { padding: 0; flex-direction: row; align-items: center; gap: 10px; flex: 1; }
-.card-top { order: 2; flex-shrink: 0; }
+.card-top { order: 2; flex-shrink: 0; gap: 8px; }
+
+/* No cover — drop the loud purple chip for a muted palette-aware version
+   that fits the dense single-row layout. */
+.angles-chip {
+  background: color-mix(in srgb, var(--pal-accent) 14%, transparent);
+  color: var(--pal-fg-muted);
+  border: 1px solid color-mix(in srgb, var(--pal-accent) 28%, transparent);
+  box-shadow: none;
+  font-size: 10px;
+  padding: 2px 8px;
+}
+.angles-chip::before { font-size: 11px; }
 .card-title {
   order: 1; font-size: 12px; flex: 1;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;

@@ -16,13 +16,34 @@
 .card:nth-child(3n+2) { transform: rotate(0.5deg); }
 .card:hover { transform: translateY(-2px) rotate(-0.4deg); border-color: transparent; }
 .card:nth-child(3n+2):hover { transform: translateY(-2px) rotate(0.5deg); }
-.card-link { flex-direction: column; }
+.card-link { flex-direction: column; padding-top: 26px; }
 .card-cover {
   width: 48px; height: 48px; aspect-ratio: 1/1;
   float: right; margin: 0 0 8px 10px;
   border-radius: 3px;
 }
 .card-body { padding: 0; }
+
+/* Pin badges to the very top of the index card so the angles-chip doesn't
+   drift mid-card alongside the floating cover. The 26px padding above on
+   .card-link clears space below for the avatar + title. */
+.card-top {
+  position: absolute;
+  top: 12px; left: 18px; right: 18px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.angles-chip {
+  background: color-mix(in srgb, var(--pal-accent) 14%, transparent);
+  color: var(--pal-fg-muted);
+  border: 1px solid color-mix(in srgb, var(--pal-accent) 28%, transparent);
+  box-shadow: none;
+  font-size: 10px;
+  padding: 2px 8px;
+}
+.angles-chip::before { font-size: 11px; }
 .card-title { font-family: "Georgia", serif; font-weight: 700; font-size: 14px; color: var(--pal-fg); }
 .card-summary { font-size: 12px; line-height: 1.55; color: var(--pal-fg-muted); }
 .card-foot {

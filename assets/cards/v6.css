@@ -11,5 +11,17 @@
   pointer-events: none;
 }
 
+/* No cover means no overlay — drop the loud purple chip for a muted
+   palette-aware version that fits the soft surface decoration. */
+.angles-chip {
+  background: color-mix(in srgb, var(--pal-accent) 14%, transparent);
+  color: var(--pal-fg-muted);
+  border: 1px solid color-mix(in srgb, var(--pal-accent) 28%, transparent);
+  box-shadow: none;
+  font-size: 10px;
+  padding: 2px 8px;
+}
+.angles-chip::before { font-size: 11px; }
+
 @media (max-width: 900px) { .entry-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .entry-grid { grid-template-columns: 1fr; } }
