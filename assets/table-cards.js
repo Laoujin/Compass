@@ -1,4 +1,4 @@
-// Render each .research-main <table> as a sibling <dl class="table-cards"> of
+// Render each .research-article <table> as a sibling <dl class="table-cards"> of
 // per-row cards. CSS media queries swap between the two at the mobile
 // breakpoint; both stay in the DOM so rotation works without a resize
 // listener.
@@ -30,7 +30,7 @@
   }
 
   function transform() {
-    var tables = document.querySelectorAll('.research-main table');
+    var tables = document.querySelectorAll('.research-article table');
     Array.prototype.forEach.call(tables, function (table) {
       if (table.closest('.table-cards')) return;
       var cards = cardsFromTable(table);
