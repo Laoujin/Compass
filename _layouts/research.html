@@ -18,16 +18,12 @@
 <body class="research-page">
 
   {% assign depth_label = page.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
-  {% if page.cover %}
-    {% assign cover_url = page.url | append: page.cover | relative_url %}
-  {% else %}
-    {% assign cover_url = '/default-cover.svg' | prepend: site.assets_base | relative_url %}
-  {% endif %}
+  {% if page.cover %}{% assign cover_url = page.url | append: page.cover | relative_url %}{% endif %}
 
   <a class="research-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
 
   <!-- Cover -->
-  <section class="research-cover"{% if cover_url %} style="--cover-img: url('{{ cover_url }}');"{% endif %}>
+  <section class="research-cover{% unless cover_url %} research-cover-bare{% endunless %}"{% if cover_url %} style="--cover-img: url('{{ cover_url }}');"{% endif %}>
     <div class="research-cover-text">
       <div class="research-kicker">
         <span class="kicker-site">{{ site.title }}</span>

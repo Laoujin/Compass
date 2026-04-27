@@ -55,6 +55,40 @@ body.research-page {
 }
 .research-cover-text { max-width: 58%; position: relative; z-index: 1; }
 
+/* Bare cover — when the page has no cover.svg, mirror the dark-green
+   hero from the 1-magazine wireframe: solid green gradient + radial
+   light glow + 45° crosshatch overlay. Light text on dark bg. */
+.research-cover-bare {
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(220, 229, 209, .15), transparent 60%),
+    linear-gradient(160deg, #2b4326 0%, #1a2e1f 50%, #0d1810 100%);
+  color: var(--pal-surface);
+  height: 78vh;
+  min-height: 520px;
+}
+.research-cover-bare::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg,  transparent 0 18px, rgba(220, 229, 209, .04) 18px 19px),
+    repeating-linear-gradient(-45deg, transparent 0 18px, rgba(220, 229, 209, .04) 18px 19px);
+  pointer-events: none;
+}
+.research-cover-bare .research-kicker        { color: #c9d8b8; }
+.research-cover-bare .research-kicker .kicker-site { color: #dce5d1; }
+.research-cover-bare .research-kicker time   { color: #c9d8b8; }
+.research-cover-bare h1                      { color: #faf6ea; }
+.research-cover-bare .research-summary       { color: #dce5d1; }
+.research-cover-bare .research-stack         { color: #dce5d1; }
+.research-cover-bare .research-stack b       { color: #faf6ea; }
+.research-cover-bare .research-topic         { color: #c9d8b8; }
+.research-cover-bare .research-back {
+  color: rgba(255, 255, 255, .85);
+  background: rgba(0, 0, 0, .35);
+  border-color: transparent;
+}
+.research-cover-bare .research-back:hover { background: rgba(0, 0, 0, .55); color: #fff; }
+
 .research-kicker {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
