@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#4c1d95"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <!-- stacked source cards fanning out -->
+  <g transform="translate(140,90)">
+    <g transform="rotate(-8 90 110)">
+      <rect width="180" height="220" rx="10" fill="#312e81" stroke="#a78bfa" stroke-width="2"/>
+      <g fill="#c4b5fd" opacity="0.8">
+        <rect x="20" y="30" width="140" height="6" rx="3"/>
+        <rect x="20" y="50" width="120" height="4" rx="2"/>
+        <rect x="20" y="62" width="130" height="4" rx="2"/>
+        <rect x="20" y="74" width="100" height="4" rx="2"/>
+      </g>
+    </g>
+    <g transform="rotate(4 90 110) translate(40 -10)">
+      <rect width="180" height="220" rx="10" fill="#4338ca" stroke="#c4b5fd" stroke-width="2"/>
+      <g fill="#ede9fe" opacity="0.85">
+        <rect x="20" y="30" width="140" height="6" rx="3"/>
+        <rect x="20" y="50" width="130" height="4" rx="2"/>
+        <rect x="20" y="62" width="120" height="4" rx="2"/>
+        <rect x="20" y="74" width="115" height="4" rx="2"/>
+        <rect x="20" y="86" width="100" height="4" rx="2"/>
+      </g>
+    </g>
+  </g>
+  <!-- magnifying glass -->
+  <g transform="translate(340,180)">
+    <circle r="70" fill="none" stroke="#fbbf24" stroke-width="10"/>
+    <circle r="60" fill="#fef3c7" opacity="0.15"/>
+    <line x1="50" y1="50" x2="100" y2="100" stroke="#fbbf24" stroke-width="14" stroke-linecap="round"/>
+    <line x1="-25" y1="-25" x2="25" y2="25" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
+    <line x1="25" y1="-25" x2="-25" y2="25" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
+  </g>
+</svg>

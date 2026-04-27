@@ -3,6 +3,7 @@ title: Deep-research tools compared — Perplexity, ChatGPT, Gemini, Scout
 date: 2026-04-19
 depth: standard
 format: md
+cover: cover.svg
 topic: "Compare Perplexity Pro, ChatGPT Deep Research, Gemini Deep Research, and Scout on the axes that matter for personal long-form research."
 tags: [tooling, research, ai]
 summary: Scout wins on traceability and cost, ChatGPT on synthesis, Gemini on breadth, Perplexity on speed.

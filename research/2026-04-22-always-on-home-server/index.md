@@ -4,6 +4,7 @@ title: Always-on home server to replace Synology
 date: 2026-04-22
 topic: "Synology DSM is showing its age (CPU lacks AVX2, RAM is capped, kernel is old). I need a replacement always-on box that gives me more headroom for containers and ML workloads, without locking me into a custom OS."
 format: auto
+cover: cover.svg
 synthesis: true
 citations: 64
 reading_time_min: 28
@@ -39,6 +40,32 @@ children:
     reading_time_min: 4
 ---
 
-The four angles cluster cleanly: hardware (CPU, vendor-vs-DIY) sets the ceiling, storage decides the recoverability story, and power/acoustics gates whether the box can live where you actually work. The DIY path wins on flexibility and longevity but adds an OS-maintenance tax the vendor boxes hide. If you'd rather spend evenings on Scout than on apt upgrades, a UGREEN with TrueNAS Scale is the path of least surprise.
+> **Decision:** UGREEN DXP4800 Plus with TrueNAS Scale, ZFS mirror over two
+> 16 TB drives, restic to Backblaze B2 for offsite, kept in the office not
+> the living room.
+
+## Where the four angles agree
+
+The angles cluster cleanly: **hardware** (CPU + vendor-vs-DIY) sets the
+ceiling, **storage** decides the recoverability story, and **power/acoustics**
+gates whether the box can actually live where you work. The DIY path wins on
+flexibility and longevity but adds an OS-maintenance tax the vendor boxes
+hide. If you'd rather spend evenings on Scout than on apt upgrades, a vendor
+NAS running TrueNAS is the path of least surprise.
+
+## What broke the tie
+
+Three things, in order of weight: AVX2 is now table stakes for the workloads
+you actually run (llama.cpp, ffmpeg, Docker bases all assume it); the
+storage angle's case for ZFS-over-btrfs was unambiguous on the recovery
+story; and the acoustics survey put any 2-bay tower with 3.5" spinners in
+the "office only" category, full stop.
+
+## What's still open
+
+The CPU angle didn't settle whether ECC RAM is worth the ~30% premium for a
+home workload. The vendor-vs-DIY angle ranked Proxmox above bare Debian for
+multi-tenant isolation but didn't quantify the overhead — both belong in a
+follow-up.
 
 This is a sample expedition fixture used for compass visual previews.

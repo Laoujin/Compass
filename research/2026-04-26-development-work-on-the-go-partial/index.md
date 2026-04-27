@@ -4,6 +4,7 @@ title: Development work on the go (partial)
 date: 2026-04-26
 topic: Design and implement an end-to-end workflow that lets the user chat with Claude Code on Slack…
 format: auto
+cover: cover.svg
 synthesis: true
 citations: 50
 reading_time_min: 22

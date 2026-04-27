@@ -11,7 +11,17 @@ no title and would otherwise render as empty ghost cards.
 {%- assign entries = "" | split: "," -%}
 {%- assign _all = site.pages | where: "type", "research" | sort: 'date' | reverse -%}
 {%- for _e in _all -%}
-  {%- if _e.title -%}{%- assign entries = entries | push: _e -%}{%- endif -%}
+  {%- comment -%}
+    Skip empty/ghost pages (no title) and skip child pages of an
+    expedition (URLs like /research/<parent>/<child>/). Liquid's split
+    drops trailing empty strings, so a top-level URL like /research/foo/
+    splits into exactly 3 parts: ["", "research", "foo"]. Child URLs
+    like /research/foo/bar/ split into 4+.
+  {%- endcomment -%}
+  {%- assign _segs = _e.url | split: '/' | size -%}
+  {%- if _e.title and _segs == 3 -%}
+    {%- assign entries = entries | push: _e -%}
+  {%- endif -%}
 {%- endfor -%}
 {%- assign featured = entries | first -%}
 {%- assign entry_count = entries | size -%}

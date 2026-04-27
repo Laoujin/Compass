@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#831843"/>
+      <stop offset="1" stop-color="#be185d"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <!-- Confetti -->
+  <g opacity="0.7">
+    <circle cx="80"  cy="60"  r="5" fill="#fbbf24"/>
+    <circle cx="520" cy="80"  r="4" fill="#f9a8d4"/>
+    <circle cx="100" cy="320" r="6" fill="#fde047"/>
+    <circle cx="540" cy="340" r="5" fill="#f472b6"/>
+    <rect  x="180" y="40"  width="6" height="10" fill="#fbbf24" transform="rotate(20 183 45)"/>
+    <rect  x="430" y="30"  width="6" height="10" fill="#f9a8d4" transform="rotate(-15 433 35)"/>
+    <rect  x="60"  y="200" width="6" height="10" fill="#fde047" transform="rotate(35 63 205)"/>
+    <rect  x="560" y="220" width="6" height="10" fill="#f472b6" transform="rotate(-25 563 225)"/>
+  </g>
+  <!-- Gift box -->
+  <g transform="translate(220,110)">
+    <!-- box body -->
+    <rect x="0" y="60" width="200" height="160" rx="6" fill="#f9a8d4" stroke="#fce7f3" stroke-width="2"/>
+    <!-- vertical ribbon -->
+    <rect x="90" y="60" width="20" height="160" fill="#dc2626"/>
+    <!-- box lid -->
+    <rect x="-10" y="40" width="220" height="40" rx="4" fill="#fbcfe8" stroke="#fce7f3" stroke-width="2"/>
+    <rect x="90" y="40" width="20" height="40" fill="#dc2626"/>
+    <!-- bow -->
+    <g transform="translate(100,40)">
+      <ellipse cx="-22" cy="0" rx="28" ry="20" fill="#dc2626"/>
+      <ellipse cx="22"  cy="0" rx="28" ry="20" fill="#dc2626"/>
+      <circle cx="0" cy="0" r="10" fill="#b91c1c"/>
+    </g>
+  </g>
+</svg>

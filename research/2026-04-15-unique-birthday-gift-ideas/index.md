@@ -3,6 +3,7 @@ title: Unique birthday gift ideas (beyond the obvious)
 date: 2026-04-15
 depth: ceo
 format: md
+cover: cover.svg
 topic: "I already know about flowers, a massage, a cooking workshop. Find truly unique gift ideas she'd remember."
 tags: [personal, gifts]
 summary: Three categories rise above the noise — bespoke craft, shared experience, and useful indulgence.
