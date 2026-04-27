@@ -52,6 +52,27 @@ try {
         Remove-Item $previewsDir -Recurse -Force
     }
 
+    # The official jekyll/jekyll image was archived in 2024. Use plain ruby +
+    # bundle, with a named volume so gems install once and persist across
+    # iterations (and across runs).
+    $rubyImage = 'ruby:3.3'
+    $bundleVol = 'compass-bundle'
+    docker volume inspect $bundleVol 2>&1 | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        docker volume create $bundleVol | Out-Null
+    }
+
+    Write-Host "Installing gems (cached in volume '$bundleVol')..." -ForegroundColor Cyan
+    $bundleOut = docker run --rm `
+        -v "${pwd}:/srv/jekyll" `
+        -v "${bundleVol}:/usr/local/bundle" `
+        -w /srv/jekyll `
+        $rubyImage bundle install --quiet 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host $bundleOut
+        throw "bundle install failed (exit $LASTEXITCODE)"
+    }
+
     try {
         foreach ($v in $variants[$Sweep]) {
             Write-Host "Building $configKey=$v ..." -ForegroundColor Cyan
@@ -62,9 +83,15 @@ try {
 
             $dest = "_previews/$prefix$v"
             $base = "/$prefix$v"
-            docker run --rm -v "${pwd}:/srv/jekyll" jekyll/jekyll:4 `
-                jekyll build -d $dest --baseurl $base 2>&1 | Out-Null
-            if ($LASTEXITCODE -ne 0) { throw "jekyll build failed for $v (exit $LASTEXITCODE)" }
+            $buildOut = docker run --rm `
+                -v "${pwd}:/srv/jekyll" `
+                -v "${bundleVol}:/usr/local/bundle" `
+                -w /srv/jekyll `
+                $rubyImage bundle exec jekyll build -d $dest --baseurl $base 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host $buildOut
+                throw "jekyll build failed for $v (exit $LASTEXITCODE)"
+            }
             Write-Host "  done: $v"
         }
 
