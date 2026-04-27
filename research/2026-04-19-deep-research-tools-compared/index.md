@@ -5,6 +5,11 @@ depth: standard
 format: md
 cover: cover.svg
 topic: "Compare Perplexity Pro, ChatGPT Deep Research, Gemini Deep Research, and Scout on the axes that matter for personal long-form research."
+topic_raw: |
+  Perplexity vs ChatGPT Deep Research vs Google Gemini Deep Research vs Scout.
+  Which one should I actually use for serious research? I care about citations
+  (real ones, not hallucinated), cost per query, ability to revisit findings
+  later, and whether the output is something I'd quote in a writeup.
 tags: [tooling, research, ai]
 summary: Scout wins on traceability and cost, ChatGPT on synthesis, Gemini on breadth, Perplexity on speed.
 citations: 23

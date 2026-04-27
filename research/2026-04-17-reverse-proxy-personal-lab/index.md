@@ -4,6 +4,13 @@ date: 2026-04-17
 depth: deep
 format: md
 topic: "Pick a single reverse proxy for a homelab fronting ~12 services across two NAS boxes — auto-TLS, easy per-service config, observable, low maintenance."
+topic_raw: |
+  I have like a dozen self-hosted services on two NAS boxes (Synology + a
+  little N100 mini-pc) and the proxying is a mess right now. Some go through
+  Synology's built-in nginx, some through a docker traefik, some are direct
+  ports. I want ONE reverse proxy fronting everything with auto-TLS (LE),
+  ideally docker-friendly so I can drop a label on a compose file and it
+  Just Works. Caddy, Traefik, nginx — what wins for a personal homelab?
 tags: [self-hosted, infra, reverse-proxy]
 summary: Caddy wins on DX and auto-TLS; Traefik on label-driven Docker discovery; nginx only when you need its edge features.
 citations: 41

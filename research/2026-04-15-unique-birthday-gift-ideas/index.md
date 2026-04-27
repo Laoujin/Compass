@@ -5,6 +5,10 @@ depth: ceo
 format: md
 cover: cover.svg
 topic: "I already know about flowers, a massage, a cooking workshop. Find truly unique gift ideas she'd remember."
+topic_raw: |
+  Need to buy a birthday gift for my girlfriend. I know about flowers, a
+  massage, a cooking workshop ... I need truly unique ideas here. Something
+  she'd actually remember. Budget ~150-300 EUR, in Belgium.
 tags: [personal, gifts]
 summary: Three categories rise above the noise — bespoke craft, shared experience, and useful indulgence.
 citations: 7

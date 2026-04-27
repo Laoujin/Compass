@@ -4,6 +4,10 @@ date: 2026-04-20
 depth: standard
 format: md
 topic: "Test the top 3 static site generators in 2026"
+topic_raw: |
+  whats the best static site generator right now in 2026? need it for a content
+  marketing site, mostly markdown, want fast builds, decent dev experience, not
+  too many JS deps. astro vs hugo vs jekyll vs something newer?
 tags: [web, tooling]
 summary: Astro dominates, Hugo holds the speed crown.
 citations: 18

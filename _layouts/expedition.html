@@ -71,7 +71,7 @@
         <div class="pcell"><div class="lbl">Depth</div><div class="val">Expedition (decomposed)</div></div>
         <div class="pcell"><div class="lbl">Angles</div><div class="val">{{ total }} ({{ success_count }} ok{% if failed_count > 0 %}, {{ failed_count }} failed{% endif %})</div></div>
         {% if page.cost_usd %}<div class="pcell"><div class="lbl">Cost</div><div class="val">${{ page.cost_usd }}</div></div>{% endif %}
-        {% if page.duration_sec %}{% assign mins = page.duration_sec | divided_by: 60 %}{% assign secs = page.duration_sec | modulo: 60 %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ mins }} min {{ secs }}s</div></div>{% endif %}
+        {% if page.duration_sec %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ page.duration_sec | divided_by: 60.0 | round }} min</div></div>{% endif %}
         {% if page.format %}<div class="pcell"><div class="lbl">Format</div><div class="val">.{{ page.format }}</div></div>{% endif %}
         {% if page.date %}<div class="pcell"><div class="lbl">Date</div><div class="val">{{ page.date | date: "%-d %b %Y" }}</div></div>{% endif %}
       </div>
