@@ -41,6 +41,12 @@
             {%- else -%}
             <span class="mark large">{{ featured.title | slice: 0, 3 | upcase }}</span>
             {%- endif -%}
+            {%- if featured.children -%}
+            <div class="s5-featured-top">
+              {%- assign featured_angle_count = featured.children | size -%}
+              <span class="angles-chip">{{ featured_angle_count }} {% if featured_angle_count == 1 %}angle{% else %}angles{% endif %}</span>
+            </div>
+            {%- endif -%}
           </div>
           <div class="s5-featured-body">
             <h3>{{ featured.title }}</h3>
@@ -48,10 +54,6 @@
             <div class="card-foot">
               {%- if featured.depth -%}<span class="depth-badge depth-{{ featured_depth_label }}">{{ featured_depth_label }}</span>{%- endif -%}
               {%- if featured.format -%}<span class="meta-chip">.{{ featured.format }}</span>{%- endif -%}
-              {%- if featured.children -%}
-                {%- assign featured_angle_count = featured.children | size -%}
-                <span class="meta-chip">{{ featured_angle_count }} {% if featured_angle_count == 1 %}angle{% else %}angles{% endif %}</span>
-              {%- endif -%}
               {%- if featured.citations -%}<span class="meta-chip">{{ featured.citations }} sources</span>{%- endif -%}
               {%- if featured.reading_time_min -%}<span class="meta-chip">{{ featured.reading_time_min }} min</span>{%- endif -%}
             </div>
