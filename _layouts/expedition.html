@@ -18,10 +18,12 @@
 <body class="research-page expedition-page">
 
   {% assign success_count = 0 %}
+  {% assign warning_count = 0 %}
   {% assign failed_count = 0 %}
   {% for c in page.children %}
-    {% if c.status == 'success' %}{% assign success_count = success_count | plus: 1 %}{% endif %}
-    {% if c.status == 'failed' %}{% assign failed_count = failed_count | plus: 1 %}{% endif %}
+    {% if c.status == 'success' %}{% assign success_count = success_count | plus: 1 %}
+    {% elsif c.status == 'error_with_content' %}{% assign warning_count = warning_count | plus: 1 %}
+    {% elsif c.status == 'failed' %}{% assign failed_count = failed_count | plus: 1 %}{% endif %}
   {% endfor %}
   {% assign total = page.children | size %}
   {% if page.cover %}{% assign cover_url = page.url | append: page.cover | relative_url %}{% endif %}
@@ -40,7 +42,7 @@
       {% if page.title %}<h1>{{ page.title }}</h1>{% endif %}
       {% if page.summary %}<p class="research-summary">{{ page.summary }}</p>{% endif %}
       <div class="research-stack">
-        <span><b>{{ success_count }}</b> succeeded{% if failed_count > 0 %} · <b>{{ failed_count }}</b> placeholder{% if failed_count != 1 %}s{% endif %}{% endif %}</span>
+        <span><b>{{ success_count }}</b> succeeded{% if warning_count > 0 %} · <b>{{ warning_count }}</b> ⚠{% endif %}{% if failed_count > 0 %} · <b>{{ failed_count }}</b> placeholder{% if failed_count != 1 %}s{% endif %}{% endif %}</span>
         {% if page.citations %}<span><b>{{ page.citations }}</b> sources</span>{% endif %}
         {% if page.reading_time_min %}<span><b>~{{ page.reading_time_min }}</b> min read</span>{% endif %}
         {% if page.format %}<span class="fmt-pill fmt-{{ page.format }}">.{{ page.format }}</span>{% endif %}
@@ -69,7 +71,7 @@
       <h3>How this was made</h3>
       <div class="pgrid">
         <div class="pcell"><div class="lbl">Depth</div><div class="val">Expedition (decomposed)</div></div>
-        <div class="pcell"><div class="lbl">Angles</div><div class="val">{{ total }} ({{ success_count }} ok{% if failed_count > 0 %}, {{ failed_count }} failed{% endif %})</div></div>
+        <div class="pcell"><div class="lbl">Angles</div><div class="val">{{ total }} ({{ success_count }} ok{% if warning_count > 0 %}, {{ warning_count }} ⚠{% endif %}{% if failed_count > 0 %}, {{ failed_count }} failed{% endif %})</div></div>
         {% if page.cost_usd %}<div class="pcell"><div class="lbl">Cost</div><div class="val">${{ page.cost_usd }}</div></div>{% endif %}
         {% if page.duration_sec %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ page.duration_sec | divided_by: 60.0 | round }} min</div></div>{% endif %}
         {% if page.format %}<div class="pcell"><div class="lbl">Format</div><div class="val">.{{ page.format }}</div></div>{% endif %}

@@ -751,6 +751,27 @@ body.research-page {
   background: #b91c1c;
   color: #fff;
 }
+.child-card-warning {
+  border-color: #d97706;
+  border-left: 3px solid #d97706;
+}
+.warning-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: #fef3c7;
+  color: #92400e;
+}
+.child-card-warning-reason {
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  line-height: 1.4;
+}
 
 /* Home-grid card chip when an entry has children (a parent expedition).
    Lives inside .card-top alongside the depth-badge so positioning stays
