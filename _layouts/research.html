@@ -104,7 +104,8 @@
       <div class="ribbon">
         <span>Scout researches. {{ site.title }} remembers.</span>
         <span class="ribbon-links">
-          {% if site.atlas_repo %}<a href="https://github.com/{{ site.atlas_repo }}/blob/main{{ page.url }}index.{{ page.format | default: 'md' }}" target="_blank" rel="noopener">Raw .{{ page.format | default: 'md' }} ↗</a>{% endif %}
+          {% assign artifact_ext = page.path | split: '.' | last %}
+          {% if site.atlas_repo %}<a href="https://github.com/{{ site.atlas_repo }}/blob/main/{{ page.path }}" target="_blank" rel="noopener">Raw .{{ artifact_ext }} ↗</a>{% endif %}
           {% if page.issue and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener">Issue #{{ page.issue }} ↗</a>{% endif %}
         </span>
       </div>
