@@ -19,6 +19,9 @@
 
   {% assign depth_label = page.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
   {% if page.cover %}{% assign cover_url = page.url | append: page.cover | relative_url %}{% endif %}
+  {% assign ledger_path = page.dir | append: 'citations.jsonl' %}
+  {% assign has_ledger = false %}
+  {% for f in site.static_files %}{% if f.path == ledger_path %}{% assign has_ledger = true %}{% break %}{% endif %}{% endfor %}
 
   <a class="research-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
 
@@ -46,7 +49,7 @@
   <div class="research-tabs-wrap">
     <nav class="research-tabs" role="tablist">
       <button class="research-tab is-active" role="tab" data-tab="findings" type="button">Findings</button>
-      {% if page.citations %}<button class="research-tab" role="tab" data-tab="citations" type="button">Citations <span class="tab-count">{{ page.citations }}</span></button>{% endif %}
+      {% if has_ledger %}<button class="research-tab" role="tab" data-tab="citations" type="button">Citations <span class="tab-count">{{ page.citations }}</span></button>{% endif %}
     </nav>
   </div>
 
@@ -69,7 +72,7 @@
   </section>
 
   <!-- Citations -->
-  {% if page.citations %}
+  {% if has_ledger %}
   <section class="research-panel" data-panel="citations">
     <div class="citations-wrap">
       <div class="citations-head">
