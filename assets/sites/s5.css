@@ -54,10 +54,10 @@
   transition: transform .15s ease;
 }
 .s5-featured-card:hover { transform: translateY(-2px); }
-.s5-featured-card .cover { aspect-ratio: 3/2; }
+.s5-featured-card .cover { aspect-ratio: 3/2; position: relative; }
 .s5-featured-top {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
   display: flex; gap: 6px; align-items: center;
-  padding: 10px 14px 0;
 }
 .s5-featured-body { padding: 8px 14px 14px; }
 .s5-featured-body h3 {
