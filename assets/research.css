@@ -576,6 +576,7 @@ body.research-page {
 }
 .research-pager-card.prev { grid-column: 1; }
 .research-pager-card.next { grid-column: 2; flex-direction: row-reverse; text-align: right; }
+.research-pager-card.up   { display: none; }
 .research-pager-card .rp-arrow {
   font-size: 28px;
   line-height: 1;
@@ -614,8 +615,10 @@ body.research-page {
 @media (max-width: 720px) {
   .research-pager-row { grid-template-columns: 1fr; }
   .research-pager-card.prev,
-  .research-pager-card.next { grid-column: 1; }
+  .research-pager-card.next,
+  .research-pager-card.up { grid-column: 1; }
   .research-pager-card.next { flex-direction: row; text-align: left; }
+  .research-pager-card.up { display: flex; }
 }
 
 /* "Green thing" footer — full sage-on-deep-green palette from the

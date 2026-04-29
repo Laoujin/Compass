@@ -144,6 +144,15 @@
         </div>
       </a>
       {% endif %}
+      {% if parent_page %}
+      <a class="research-pager-card up" href="{{ parent_page.url | relative_url }}">
+        <span class="rp-arrow">↑</span>
+        <div class="rp-body">
+          <div class="rp-lbl">Back to expedition</div>
+          <h4>{{ parent_page.title }}</h4>
+        </div>
+      </a>
+      {% endif %}
     </div>
   </nav>
   {% endif %}
