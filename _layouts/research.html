@@ -28,6 +28,18 @@
   {% for seg in url_parts limit: parent_limit %}{% assign parent_url = parent_url | append: seg | append: '/' %}{% endfor %}
   {% assign parent_page = nil %}
   {% for p in site.pages %}{% if p.url == parent_url and p.children %}{% assign parent_page = p %}{% endif %}{% endfor %}
+
+  {% comment %} Prev / next sibling for the pager. {% endcomment %}
+  {% assign prev_child = nil %}
+  {% assign next_child = nil %}
+  {% if parent_page %}
+    {% assign children_arr = parent_page.children %}
+    {% assign children_size = children_arr | size %}
+    {% assign curr_idx = -1 %}
+    {% for c in children_arr %}{% if c.slug == current_slug %}{% assign curr_idx = forloop.index0 %}{% endif %}{% endfor %}
+    {% if curr_idx > 0 %}{% assign prev_idx = curr_idx | minus: 1 %}{% assign prev_child = children_arr[prev_idx] %}{% endif %}
+    {% if curr_idx >= 0 %}{% assign next_idx = curr_idx | plus: 1 %}{% if next_idx < children_size %}{% assign next_child = children_arr[next_idx] %}{% endif %}{% endif %}
+  {% endif %}
   {% assign ledger_path = page.dir | append: 'citations.jsonl' %}
   {% assign has_ledger = false %}
   {% for f in site.static_files %}{% if f.path == ledger_path %}{% assign has_ledger = true %}{% break %}{% endif %}{% endfor %}
@@ -106,6 +118,34 @@
       </div>
     </div>
   </section>
+  {% endif %}
+
+  {% if prev_child or next_child %}
+  <nav class="research-pager" aria-label="Sibling navigation">
+    <div class="research-pager-row">
+      {% if prev_child %}
+      <a class="research-pager-card prev" href="{{ parent_page.url | append: prev_child.slug | append: '/' | relative_url }}">
+        <span class="rp-arrow">←</span>
+        <div class="rp-body">
+          <div class="rp-lbl">Prev · Angle {% if curr_idx < 10 %}0{% endif %}{{ curr_idx }}</div>
+          <h4>{{ prev_child.title }}</h4>
+          {% if prev_child.summary %}<p>{{ prev_child.summary }}</p>{% endif %}
+        </div>
+      </a>
+      {% endif %}
+      {% if next_child %}
+      {% assign next_display = next_idx | plus: 1 %}
+      <a class="research-pager-card next" href="{{ parent_page.url | append: next_child.slug | append: '/' | relative_url }}">
+        <span class="rp-arrow">→</span>
+        <div class="rp-body">
+          <div class="rp-lbl">Next · Angle {% if next_display < 10 %}0{% endif %}{{ next_display }}</div>
+          <h4>{{ next_child.title }}</h4>
+          {% if next_child.summary %}<p>{{ next_child.summary }}</p>{% endif %}
+        </div>
+      </a>
+      {% endif %}
+    </div>
+  </nav>
   {% endif %}
 
   <footer class="research-provenance">

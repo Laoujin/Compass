@@ -545,6 +545,79 @@ body.research-page {
 /* =========================================================================
    Provenance band (dark) at end of Findings
    ========================================================================= */
+/* Sibling pager — prev/next cards above the provenance footer on
+   sub-topic pages. Hidden on top-level research pages and orphans. */
+.research-pager {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 24px 0;
+}
+.research-pager-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.research-pager-card {
+  background: var(--pal-surface);
+  border: 1px solid var(--pal-border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: border-color .15s ease, transform .15s ease;
+  min-width: 0;
+}
+.research-pager-card:hover {
+  border-color: var(--pal-accent);
+  transform: translateY(-2px);
+}
+.research-pager-card.prev { grid-column: 1; }
+.research-pager-card.next { grid-column: 2; flex-direction: row-reverse; text-align: right; }
+.research-pager-card .rp-arrow {
+  font-size: 28px;
+  line-height: 1;
+  color: var(--pal-accent);
+  font-family: 'Fraunces', Georgia, serif;
+  flex-shrink: 0;
+}
+.research-pager-card .rp-body { flex: 1; min-width: 0; }
+.research-pager-card .rp-lbl {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--pal-fg-faint);
+  margin-bottom: 4px;
+}
+.research-pager-card h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  line-height: 1.25;
+  color: var(--pal-fg);
+}
+.research-pager-card p {
+  font-size: 12.5px;
+  color: var(--pal-fg-muted);
+  margin: 0;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 720px) {
+  .research-pager-row { grid-template-columns: 1fr; }
+  .research-pager-card.prev,
+  .research-pager-card.next { grid-column: 1; }
+  .research-pager-card.next { flex-direction: row; text-align: left; }
+}
+
 /* "Green thing" footer — full sage-on-deep-green palette from the
    1-magazine wireframe. All colors hardcoded so the footer reads the
    same way on any palette (rust/paper/cartography/midnight/...) —
