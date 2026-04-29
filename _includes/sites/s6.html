@@ -29,7 +29,13 @@
         <span class="s6-header">title</span>
         <span class="s6-header">cit / read</span>
         {%- for e in entries -%}
-          {%- assign depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
+          {%- if e.children -%}
+            {%- assign n = e.children | size -%}
+            {%- assign depth_label = n | append: ' angle' -%}
+            {%- if n != 1 -%}{%- assign depth_label = depth_label | append: 's' -%}{%- endif -%}
+          {%- else -%}
+            {%- assign depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
+          {%- endif -%}
           <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
           <span class="s6-cell depth-cell">{{ depth_label }}</span>
           <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>

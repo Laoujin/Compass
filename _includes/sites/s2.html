@@ -22,7 +22,6 @@
     <header class="s2-topbar">
       <div class="s2-brand"><img class="s2-mark" src="{{ '/icon.png' | prepend: site.assets_base | relative_url }}" alt=""> {{ site.title | default: 'Atlas' }}</div>
       <div class="s2-spacer"></div>
-      <div class="s2-search">Search research…</div>
       {%- if site.scout_repo -%}
       <a class="s2-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
       {%- endif -%}

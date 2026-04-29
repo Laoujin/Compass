@@ -12,13 +12,6 @@
 }
 .s2-mark { width: 24px; height: 24px; border-radius: 6px; display: block; }
 .s2-spacer { flex: 1; }
-.s2-search {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--pal-surface-tint); border: 1px solid var(--pal-border);
-  border-radius: 5px; padding: 4px 10px;
-  font-size: 12px; color: var(--pal-fg-faint); min-width: 180px;
-}
-.s2-search::before { content: "⌕"; font-size: 13px; }
 .s2-cta {
   padding: 6px 11px; border-radius: 5px;
   background: var(--pal-accent); color: var(--pal-accent-fg);
@@ -50,7 +43,6 @@
 
 @media (max-width: 600px) {
   .s2-topbar { flex-wrap: wrap; gap: 8px; }
-  .s2-search { min-width: 0; flex: 1; }
   .s2-content { padding: 16px; }
   .s2-footer { padding: 12px 16px; flex-wrap: wrap; }
 }
