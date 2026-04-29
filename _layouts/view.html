@@ -1,0 +1,46 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} — {% endif %}{{ site.title }}</title>
+  <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
+  {% comment %}
+    View pages are intentionally NOT loaded with base.css / research.css.
+    Each view owns its full visual treatment via inline <style> in {{ content }}.
+    Only the active palette is loaded so views can opt into --pal-* vars.
+  {% endcomment %}
+  <style>
+    /* Universal back-link to the canonical page. View body styles must not
+       target .view-back; we want this readable over any visual treatment. */
+    .view-back {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 9999;
+      background: rgba(20, 20, 20, 0.92);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font: 600 12px/1 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      letter-spacing: 0.04em;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transition: transform .15s ease, background .15s ease;
+    }
+    .view-back:hover {
+      background: rgba(40, 40, 40, 0.95);
+      transform: translateX(-3px);
+    }
+  </style>
+</head>
+<body class="view-page" data-view-name="{{ page.view_name }}">
+  <a class="view-back" href="{{ page.view_of | default: '../' }}">← Default view</a>
+  {{ content }}
+</body>
+</html>

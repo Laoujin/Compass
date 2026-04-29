@@ -48,6 +48,7 @@
         {% if page.format %}<span class="fmt-pill fmt-{{ page.format }}">.{{ page.format }}</span>{% endif %}
         {% if page.issue %}<span><b>#{{ page.issue }}</b></span>{% endif %}
       </div>
+      {% include view-switcher.html %}
     </div>
   </section>
 

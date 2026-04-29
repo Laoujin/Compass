@@ -63,6 +63,7 @@
         {% if page.issue %}<span><b>#{{ page.issue }}</b></span>{% endif %}
         {% if page.tags %}<span class="research-tags-inline">{{ page.tags | join: ' · ' }}</span>{% endif %}
       </div>
+      {% include view-switcher.html %}
     </div>
   </section>
 

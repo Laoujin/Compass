@@ -1,0 +1,17 @@
+{%- comment -%}
+  Renders the "Read as: [Default] [Magazine] [Dashboard]…" pill row when
+  the canonical page has one or more alternate views in <page-dir>/views/.
+  Detection: any page with `layout: view` whose URL starts with the
+  current page's URL + "views/".
+{%- endcomment -%}
+{%- assign views_dir = page.url | append: 'views/' -%}
+{%- assign views = site.pages | where: 'layout', 'view' | where_exp: 'p', 'p.url contains views_dir' -%}
+{%- if views.size > 0 -%}
+<div class="view-switcher">
+  <span class="view-lbl">Read as</span>
+  <a class="view-pill is-active" href="{{ page.url | relative_url }}">Default</a>
+  {%- for v in views -%}
+    <a class="view-pill" href="{{ v.url | relative_url }}">{{ v.view_name | default: v.title }}</a>
+  {%- endfor -%}
+</div>
+{%- endif -%}

@@ -132,6 +132,60 @@ body.research-page {
 .research-stack b { color: var(--pal-fg); font-weight: 600; }
 .research-tags-inline { color: var(--pal-fg-faint); }
 
+/* View switcher — pill row in the cover stack. Renders only when at
+   least one alternate view exists under <page-dir>/views/. */
+.view-switcher {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.view-switcher .view-lbl {
+  font: 600 10px/1 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pal-fg-faint);
+  margin-right: 4px;
+}
+.view-switcher .view-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, sans-serif;
+  border: 1px solid var(--pal-border);
+  color: var(--pal-fg-muted);
+  background: transparent;
+  text-decoration: none;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.view-switcher .view-pill:hover {
+  color: var(--pal-fg);
+  border-color: var(--pal-accent);
+}
+.view-switcher .view-pill.is-active {
+  background: var(--pal-fg);
+  color: var(--pal-accent-fg);
+  border-color: var(--pal-fg);
+}
+/* Bare cover (no SVG hero) overrides: the cover is dark, so flip pill
+   colors so they read against the dark green background. */
+.research-cover-bare .view-switcher .view-lbl { color: #c9d8b8; }
+.research-cover-bare .view-switcher .view-pill {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #dce5d1;
+}
+.research-cover-bare .view-switcher .view-pill:hover {
+  border-color: #faf6ea;
+  color: #faf6ea;
+}
+.research-cover-bare .view-switcher .view-pill.is-active {
+  background: #faf6ea;
+  color: #1a2e1f;
+  border-color: #faf6ea;
+}
+
 @media (max-width: 760px) {
   .research-cover {
     height: auto;
