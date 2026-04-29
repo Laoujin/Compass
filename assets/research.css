@@ -831,7 +831,8 @@ body.research-page {
   background: var(--pal-surface-tint);
 }
 
-/* Header chip showing N angles. */
+/* Header chip showing N angles — also the anchor link to the sub-topics
+   grid below (mobile users especially: this is a one-tap jump). */
 .angles-badge {
   display: inline-block;
   padding: 2px 8px;
@@ -840,7 +841,17 @@ body.research-page {
   color: var(--d-expedition);
   background: var(--d-expedition-bg);
   border: 1px solid color-mix(in srgb, var(--d-expedition) 30%, transparent);
+  text-decoration: none;
+  transition: background .12s ease, transform .12s ease;
 }
+a.angles-badge:hover {
+  background: color-mix(in srgb, var(--d-expedition) 22%, transparent);
+  transform: translateY(1px);
+}
+
+/* Smooth scroll + anchor offset for the angles-badge → sub-topics jump. */
+html { scroll-behavior: smooth; }
+.expedition-children { scroll-margin-top: 16px; }
 
 /* Children grid section. */
 .expedition-children {
