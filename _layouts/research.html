@@ -19,6 +19,14 @@
 
   {% assign depth_label = page.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
   {% if page.cover %}{% assign cover_url = page.url | append: page.cover | relative_url %}{% endif %}
+
+  {% comment %} Detect parent expedition (only if this page is nested in one). {% endcomment %}
+  {% assign url_parts = page.url | split: '/' %}
+  {% assign parent_limit = url_parts.size | minus: 2 %}
+  {% assign parent_url = '' %}
+  {% for seg in url_parts limit: parent_limit %}{% assign parent_url = parent_url | append: seg | append: '/' %}{% endfor %}
+  {% assign parent_page = nil %}
+  {% for p in site.pages %}{% if p.url == parent_url and p.children %}{% assign parent_page = p %}{% endif %}{% endfor %}
   {% assign ledger_path = page.dir | append: 'citations.jsonl' %}
   {% assign has_ledger = false %}
   {% for f in site.static_files %}{% if f.path == ledger_path %}{% assign has_ledger = true %}{% break %}{% endif %}{% endfor %}
@@ -57,6 +65,16 @@
   <section class="research-panel is-active" data-panel="findings">
     <div class="research-findings-layout">
       <nav class="research-toc" aria-label="On this page">
+        {% if parent_page %}
+        {% assign sib_count = parent_page.children | size %}
+        <a class="back-to-parent" href="{{ parent_page.url | relative_url }}">
+          <span class="bp-arrow">↑</span>
+          <span class="bp-body">
+            <small>Expedition home</small>
+            <strong>{{ sib_count }} angle{% if sib_count != 1 %}s{% endif %} · {{ parent_page.title }}</strong>
+          </span>
+        </a>
+        {% endif %}
         <div class="toc-label">On this page</div>
         <ol class="toc-list"></ol>
         {% if page.reading_time_min %}
