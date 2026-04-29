@@ -703,16 +703,16 @@ body.research-page {
    ========================================================================= */
 
 /* Synthesis prose container — sits between cover and children grid.
-   Wider than the typical findings column so synthesis tables (decision
-   summaries) and recommendation grids breathe. */
-.expedition-synthesis {
-  max-width: 1080px;
-  margin: 56px auto 40px;
-  padding: 0 6vw;
-}
+   When synthesis is present, the inner .research-findings-layout owns
+   width/padding so the TOC + article distribution matches detail pages.
+   The empty-state variant keeps a tight, centered container. */
+.expedition-synthesis { margin: 0; padding: 0; max-width: none; }
 .expedition-synthesis-empty {
   color: var(--pal-fg-muted);
   font-style: italic;
+  max-width: 1080px;
+  margin: 56px auto 40px;
+  padding: 0 6vw;
 }
 .expedition-synthesis .research-article {
   font-family: 'Fraunces', Georgia, serif;
