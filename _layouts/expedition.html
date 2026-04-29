@@ -53,15 +53,17 @@
 
   <!-- Synthesis prose (parent overview) -->
   <section class="research-panel is-active expedition-synthesis{% unless page.synthesis %} expedition-synthesis-empty{% endunless %}">
+    {% assign synth_words = content | strip_html | number_of_words %}
+    {% assign synth_min = synth_words | plus: 199 | divided_by: 200 %}
     {% if page.synthesis %}
     <div class="research-findings-layout">
       <nav class="research-toc" aria-label="On this page">
         <div class="toc-label">On this page</div>
         <ol class="toc-list"></ol>
-        {% if page.reading_time_min %}
+        {% if synth_min > 0 %}
           <div class="toc-label">Reading</div>
           <div class="research-progress" aria-hidden="true"><div class="research-progress-fill"></div></div>
-          <div class="research-progress-text"><span class="cur">0</span> of {{ page.reading_time_min }} min</div>
+          <div class="research-progress-text"><span class="cur">0</span> of {{ synth_min }} min</div>
         {% endif %}
       </nav>
       <article class="research-article">
