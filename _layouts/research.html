@@ -22,7 +22,8 @@
 
   {% comment %} Detect parent expedition (only if this page is nested in one). {% endcomment %}
   {% assign url_parts = page.url | split: '/' %}
-  {% assign parent_limit = url_parts.size | minus: 2 %}
+  {% assign current_slug = url_parts | last %}
+  {% assign parent_limit = url_parts.size | minus: 1 %}
   {% assign parent_url = '' %}
   {% for seg in url_parts limit: parent_limit %}{% assign parent_url = parent_url | append: seg | append: '/' %}{% endfor %}
   {% assign parent_page = nil %}
@@ -66,14 +67,17 @@
     <div class="research-findings-layout">
       <nav class="research-toc" aria-label="On this page">
         {% if parent_page %}
-        {% assign sib_count = parent_page.children | size %}
-        <a class="back-to-parent" href="{{ parent_page.url | relative_url }}">
-          <span class="bp-arrow">↑</span>
-          <span class="bp-body">
-            <small>Expedition home</small>
-            <strong>{{ sib_count }} angle{% if sib_count != 1 %}s{% endif %} · {{ parent_page.title }}</strong>
-          </span>
-        </a>
+        <ol class="sibling-list">
+          <li class="sibling-card sibling-parent">
+            <a href="{{ parent_page.url | relative_url }}">
+              <span class="num">↑</span>
+              <span class="sc-body">
+                <span class="sc-tag">Expedition</span>
+                <span class="sc-ttl">{{ parent_page.title }}</span>
+              </span>
+            </a>
+          </li>
+        </ol>
         {% endif %}
         <div class="toc-label">On this page</div>
         <ol class="toc-list"></ol>
