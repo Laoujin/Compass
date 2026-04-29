@@ -12,6 +12,9 @@
     linear-gradient(to top, rgba(0,0,0,.92) 0%, rgba(0,0,0,.75) 22%, rgba(0,0,0,.35) 48%, transparent 72%);
 }
 .card-top { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 3; margin: 0; }
+
+/* View-badges sit bottom-right of the cover (which fills the entire card). */
+.card .view-badges { top: auto; bottom: 12px; right: 12px; }
 .card-body {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
   background: transparent;

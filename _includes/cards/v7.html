@@ -1,1 +1,30 @@
-{%- include cards/_base.html entry=include.entry -%}
+{%- comment -%}
+  v7 (compact row) diverges from the shared _base.html: the badge needs to
+  sit inline between the title and the chips. HTML doesn't allow nested
+  <a>, so the title gets its own anchor and the chips/meta get another,
+  with the badge living between them as a sibling.
+{%- endcomment -%}
+{%- assign e = include.entry -%}
+{%- assign depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
+{%- assign is_expedition = false -%}
+{%- if e.children or depth_label == 'expedition' -%}{%- assign is_expedition = true -%}{%- endif -%}
+<article class="card{% if is_expedition %} card-expedition{% endif %} v7-card" style="--h:{{ e.hue | default: 210 }};">
+  <a class="card-link card-link-title" href="{{ e.url | relative_url }}">
+    <h4 class="card-title">{{ e.title }}</h4>
+  </a>
+  {%- include view-badge.html entry_url=e.url -%}
+  <a class="card-link card-link-rest" href="{{ e.url | relative_url }}">
+    <div class="card-top">
+      {%- if is_expedition -%}<span class="depth-badge depth-expedition">expedition</span>{%- elsif e.depth -%}<span class="depth-badge depth-{{ depth_label }}">{{ depth_label }}</span>{%- endif -%}
+      {%- if e.children -%}
+        {%- assign angle_count = e.children | size -%}
+        <span class="angles-chip">{{ angle_count }} {% if angle_count == 1 %}angle{% else %}angles{% endif %}</span>
+      {%- endif -%}
+    </div>
+    <div class="card-foot">
+      <span class="meta-chip">{{ e.date | date: "%Y-%m-%d" }}</span>
+      {%- if e.citations -%}<span class="meta-chip">{{ e.citations }} sources</span>{%- endif -%}
+      {%- if e.reading_time_min -%}<span class="meta-chip">{{ e.reading_time_min }} min</span>{%- endif -%}
+    </div>
+  </a>
+</article>

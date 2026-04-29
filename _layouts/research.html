@@ -59,7 +59,6 @@
       <div class="research-stack">
         {% if page.citations %}<span><b>{{ page.citations }}</b> sources</span>{% endif %}
         {% if page.reading_time_min %}<span><b>~{{ page.reading_time_min }}</b> min read</span>{% endif %}
-        {% if page.format %}<span class="fmt-pill fmt-{{ page.format }}">.{{ page.format }}</span>{% endif %}
         {% if page.issue %}<span><b>#{{ page.issue }}</b></span>{% endif %}
         {% if page.tags %}<span class="research-tags-inline">{{ page.tags | join: ' · ' }}</span>{% endif %}
       </div>

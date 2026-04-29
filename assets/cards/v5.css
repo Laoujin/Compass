@@ -51,8 +51,11 @@
   padding-top: 6px; margin-top: 6px;
 }
 
-/* View-badges sit bottom-right of the index card. */
-.card .view-badges { top: auto; bottom: 12px; right: 18px; }
+/* Bottom-right of the card, vertically aligned with the card-foot meta
+   chips (date / sources / min). The card has padding-bottom: 16px, so the
+   chips' bottom edge sits 16px above the card's bottom — matching that
+   gives same-baseline alignment. */
+.card .view-badges { top: auto; bottom: 16px; right: 18px; }
 
 @media (max-width: 900px) { .entry-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .entry-grid { grid-template-columns: 1fr; } }

@@ -14,10 +14,34 @@
 }
 .card:first-child { border-top: 0; }
 .card:hover { transform: none; background: var(--pal-surface-tint); border-color: var(--pal-border); border-top-color: var(--pal-border); }
-.card-link { flex-direction: row; align-items: center; gap: 10px; flex: 1; }
-.card-cover { display: none; }
-.card-body { padding: 0; flex-direction: row; align-items: center; gap: 10px; flex: 1; }
-.card-top { order: 2; flex-shrink: 0; gap: 8px; }
+
+/* The two anchors flank the inline badge slot. card-link-title shrinks
+   to its content (with ellipsis) so the badge sits right after the title;
+   card-link-rest takes whatever remains for chips + meta. */
+.card-link-title {
+  display: flex; align-items: center;
+  flex: 0 1 auto; min-width: 0;
+  text-decoration: none; color: inherit;
+}
+.card-link-rest {
+  display: flex; flex-direction: row; align-items: center; gap: 10px;
+  flex: 1 1 auto; min-width: 0; justify-content: flex-end;
+  text-decoration: none; color: inherit;
+}
+
+.card-title {
+  font-size: 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin: 0;
+}
+
+.card-cover, .card-summary, .card-tags { display: none; }
+.card-top { gap: 6px; flex-shrink: 0; }
+.card-foot { flex-shrink: 0; padding-top: 0; margin: 0; }
+
+/* Inline badge between title and rest. The shared rule in base.css uses
+   absolute positioning; here we drop it into the flex flow. */
+.card .view-badges { position: static; top: auto; right: auto; flex-shrink: 0; align-self: center; }
 
 /* No cover — drop the loud purple chip for a muted palette-aware version
    that fits the dense single-row layout. */
@@ -30,16 +54,3 @@
   padding: 2px 8px;
 }
 .angles-chip::before { font-size: 11px; }
-.card-title {
-  order: 1; font-size: 12px; flex: 1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  margin-right: 8px;
-}
-.card-summary, .card-tags { display: none; }
-.card-foot { order: 3; flex-shrink: 0; padding-top: 0; margin: 0; }
-
-/* In the dense row layout, the badge can't ride absolutely — it needs to
-   live inline at the right end of the row, after the existing card-foot
-   meta chips. Since .view-badges is a direct child of .card (sibling of
-   .card-link), un-absoluting it drops it into the flex flow on the right. */
-.card .view-badges { position: static; top: auto; right: auto; flex-shrink: 0; align-self: center; }

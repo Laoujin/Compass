@@ -1,2 +1,12 @@
 /* V1 — image-top; badges floated over the cover */
 .card .card-top { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 3; margin: 0; }
+
+/* View-badges live in the bottom-right of the cover image. The cover has
+   aspect-ratio 3/2 and width 100% of the card, so its height equals
+   2/3 of the card's inline size. Use container queries to express that. */
+.card { container-type: inline-size; }
+.card .view-badges {
+  top: calc(100cqi * 2 / 3 - 32px);
+  right: 10px;
+  bottom: auto;
+}
