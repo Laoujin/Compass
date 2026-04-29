@@ -6,6 +6,10 @@
 .card-body { padding: 10px 12px; }
 .card-top { position: absolute; top: 8px; right: 10px; z-index: 3; margin: 0; gap: 6px; }
 
+/* View-badges sit bottom-right on the horizontal layout (the body is wide
+   and short, so a top-right anchor would crowd the card-top chips). */
+.card .view-badges { top: auto; bottom: 10px; right: 10px; }
+
 /* Subtle palette-aware chip — the loud purple in base.css is sized for
    variants that overlay the chip on a cover image (v1, v3). Here it sits
    on the plain body, so tone it down to match the surface. */
