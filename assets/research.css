@@ -77,7 +77,7 @@ body.research-page {
 .research-cover-bare .research-kicker        { color: #c9d8b8; }
 .research-cover-bare .research-kicker .kicker-site { color: #dce5d1; }
 .research-cover-bare .research-kicker time   { color: #c9d8b8; }
-.research-cover-bare h1                      { color: #fff; }
+.research-cover.research-cover-bare h1       { color: #fff; }
 .research-cover-bare .research-summary       { color: #dce5d1; }
 .research-cover-bare .research-stack         { color: #dce5d1; }
 .research-cover-bare .research-stack b       { color: #faf6ea; }
