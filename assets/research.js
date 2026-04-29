@@ -19,6 +19,14 @@
   // ---------- TOC ----------
   if (article && tocList) {
     const headings = $$('h2, h3', article);
+    if (headings.length === 0) {
+      // No headings → hide the "On this page" label + the empty list.
+      const tocLabel = tocList.previousElementSibling;
+      if (tocLabel && tocLabel.classList.contains('toc-label')) {
+        tocLabel.style.display = 'none';
+      }
+      tocList.style.display = 'none';
+    }
     const links = [];
     headings.forEach(h => {
       if (!h.id) {
