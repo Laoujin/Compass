@@ -1,0 +1,32 @@
+{
+  "atlas": { "url": "/", "title": "Atlas" },
+  "canonical": { "url": "../", "title": "Always-on home server to replace Synology" },
+  "parent": null,
+  "siblings": [
+    {
+      "url": "../cpu-and-avx2-baseline/",
+      "title": "CPU and AVX2 baseline",
+      "summary": "Why AVX2 is now table stakes — llama.cpp, ffmpeg, modern Docker bases all assume it.",
+      "depth": "survey"
+    },
+    {
+      "url": "../vendor-vs-diy/",
+      "title": "Vendor NAS vs DIY mini-PC",
+      "summary": "Synology / QNAP / UGREEN versus a Beelink / Minisforum mini-PC running Debian or Proxmox.",
+      "depth": "expedition"
+    },
+    {
+      "url": "../storage-and-replication/",
+      "title": "Storage layout and offsite replication",
+      "summary": "ZFS mirror vs btrfs raid1 vs mdraid + ext4, plus rclone/restic to a remote.",
+      "depth": "survey"
+    },
+    {
+      "url": "../power-and-acoustics/",
+      "title": "Power draw and acoustics in a living space",
+      "summary": "Idle wattage and dBA at 1m for the realistic shortlist — what's tolerable in a shared room.",
+      "depth": "recon"
+    }
+  ],
+  "sources": []
+}

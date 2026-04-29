@@ -1,0 +1,658 @@
+---
+layout: view
+view_name: "Dashboard"
+view_of: ../
+title: "Always-on home server to replace Synology — Dashboard"
+---
+
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     Homelab dashboard. Amber phosphor on warm charcoal; IBM-grey
+     side panels with cream copy. Monospace headlines, serif italic
+     accents to break the terminal sterility. No images — typography
+     and glyphs carry the whole thing.
+  ────────────────────────────────────────────────────────────── */
+  .hl{
+    --bg:#1a1612;
+    --panel:#23201c;
+    --panel-2:#2c2823;
+    --panel-3:#3a3530;
+    --line:#4a423a;
+    --line-2:#5b5147;
+    --ink:#f0e6d2;
+    --dim:#a89b85;
+    --dim-2:#7a6f5f;
+    --amber:#e8a042;
+    --amber-2:#f6b75a;
+    --rust:#c2532a;
+    --moss:#7ba05b;
+    --slate:#6b8aa8;
+    --warn:#d99c4a;
+
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'JetBrains Mono','Fira Code',ui-monospace,Menlo,monospace;
+    font-size:14px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    margin:0;
+  }
+  .hl *{box-sizing:border-box;}
+  .hl a{color:var(--amber);text-decoration:none;}
+  .hl a:hover{color:var(--amber-2);text-decoration:underline;}
+  .hl .serif{font-family:'Fraunces','Iowan Old Style',Georgia,serif;font-style:italic;}
+  .hl .sans{font-family:'Inter',system-ui,sans-serif;}
+
+  /* ── Frame: terminal chrome ─────────────────────────────────── */
+  .hl .frame{
+    border-top:1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(232,160,66,0.04) 0%, transparent 240px),
+      var(--bg);
+    min-height:100vh;
+    padding-bottom:80px;
+  }
+  .hl .topstrip{
+    display:flex;align-items:center;gap:18px;
+    padding:12px 28px;
+    background:#0f0d0a;
+    border-bottom:1px solid var(--line);
+    color:var(--dim);
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+  }
+  .hl .topstrip .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--moss);
+    box-shadow:0 0 8px var(--moss);
+  }
+  .hl .topstrip .ttl{color:var(--amber);font-weight:600;}
+  .hl .topstrip .right{margin-left:auto;display:flex;gap:18px;}
+  .hl .topstrip .right span b{color:var(--ink);font-weight:500;}
+
+  /* ── Hero / verdict band ────────────────────────────────────── */
+  .hl .hero{
+    padding:56px 48px 40px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hl .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent 0,
+        transparent 3px,
+        rgba(232,160,66,0.025) 3px,
+        rgba(232,160,66,0.025) 4px
+      );
+    pointer-events:none;
+  }
+  .hl .kicker{
+    color:var(--amber);
+    font-size:11px;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .hl .kicker .blink{
+    display:inline-block;
+    width:9px;height:14px;
+    background:var(--amber);
+    vertical-align:-2px;
+    margin-left:4px;
+    animation:blink 1.1s steps(2) infinite;
+  }
+  @keyframes blink{ 50%{opacity:0;} }
+
+  .hl h1.title{
+    font-family:'JetBrains Mono','Fira Code',monospace;
+    font-size:clamp(36px,5.4vw,64px);
+    line-height:1.04;
+    margin:0 0 22px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+    max-width:980px;
+  }
+  .hl h1.title .amber{color:var(--amber);}
+  .hl h1.title .strike{
+    text-decoration:line-through;
+    text-decoration-color:var(--rust);
+    text-decoration-thickness:4px;
+    color:var(--dim);
+  }
+  .hl .deck{
+    color:var(--dim);
+    font-size:16px;
+    line-height:1.55;
+    max-width:780px;
+    margin:0;
+  }
+
+  /* ── Verdict callout ────────────────────────────────────────── */
+  .hl .verdict{
+    margin:36px 0 0;
+    padding:24px 28px 26px;
+    background:linear-gradient(135deg, #2a2118 0%, #1f1a13 100%);
+    border:1px solid var(--amber);
+    border-left-width:6px;
+    border-radius:4px;
+    position:relative;
+    max-width:1080px;
+  }
+  .hl .verdict .lbl{
+    color:var(--amber);
+    font-size:11px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .hl .verdict .lbl::before{
+    content:"▶";
+    color:var(--amber);
+  }
+  .hl .verdict .body{
+    font-family:'Fraunces',Georgia,serif;
+    font-style:italic;
+    font-size:21px;
+    line-height:1.45;
+    color:var(--ink);
+    margin:0;
+  }
+  .hl .verdict .body b{color:var(--amber-2);font-style:normal;font-weight:600;}
+
+  /* ── KPI grid ───────────────────────────────────────────────── */
+  .hl .kpis{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    padding:36px 48px 8px;
+  }
+  .hl .kpi{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:20px 22px 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hl .kpi .top{
+    display:flex;justify-content:space-between;align-items:center;
+    color:var(--dim-2);
+    font-size:10px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hl .kpi .top .glyph{font-size:14px;color:var(--amber);}
+  .hl .kpi .num{
+    font-family:'Fraunces',Georgia,serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:54px;
+    line-height:1;
+    letter-spacing:-0.03em;
+    color:var(--ink);
+  }
+  .hl .kpi .num.amber{color:var(--amber);}
+  .hl .kpi .num.moss{color:var(--moss);}
+  .hl .kpi .num.rust{color:var(--rust);}
+  .hl .kpi .num.slate{color:var(--slate);}
+  .hl .kpi .unit{
+    font-size:18px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--dim);
+    margin-left:4px;
+  }
+  .hl .kpi .lbl{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--dim);
+    line-height:1.4;
+  }
+  .hl .kpi .lbl b{color:var(--ink);font-weight:500;}
+
+  /* ── Section title ──────────────────────────────────────────── */
+  .hl .sec{
+    padding:44px 48px 14px;
+  }
+  .hl .sec h2{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--dim);
+    margin:0 0 6px;
+    font-weight:500;
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .hl .sec h2::before{
+    content:"//";
+    color:var(--amber);
+    font-weight:700;
+  }
+  .hl .sec h2 .count{
+    color:var(--dim-2);
+    margin-left:auto;
+    font-size:11px;
+    letter-spacing:0.2em;
+  }
+  .hl .sec .seclede{
+    font-family:'Fraunces',Georgia,serif;
+    font-style:italic;
+    font-size:22px;
+    color:var(--ink);
+    line-height:1.4;
+    margin:6px 0 22px;
+    max-width:880px;
+  }
+
+  /* ── Decision matrix (where the angles agree) ───────────────── */
+  .hl .matrix{
+    padding:0 48px;
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    gap:14px;
+  }
+  .hl .mcell{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:22px 24px 24px;
+    position:relative;
+  }
+  .hl .mcell .axis{
+    color:var(--amber);
+    font-size:11px;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .hl .mcell h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:18px;
+    margin:0 0 8px;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .hl .mcell p{
+    color:var(--dim);
+    font-size:13px;
+    line-height:1.55;
+    margin:0 0 14px;
+  }
+  .hl .mcell .verd{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--moss);
+    border-top:1px dashed var(--line);
+    padding-top:12px;
+  }
+  .hl .mcell .verd.warn{color:var(--warn);}
+  .hl .mcell .verd b{color:var(--ink);}
+
+  /* ── Tie-breakers (numbered ladder) ─────────────────────────── */
+  .hl .ladder{
+    padding:0 48px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+  }
+  .hl .rung{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:24px 26px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hl .rung .n{
+    font-family:'Fraunces',Georgia,serif;
+    font-weight:600;
+    font-size:80px;
+    line-height:0.9;
+    color:var(--amber);
+    letter-spacing:-0.04em;
+    position:absolute;
+    right:14px;top:6px;
+    opacity:0.18;
+  }
+  .hl .rung .weight{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin-bottom:8px;
+  }
+  .hl .rung h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:16px;
+    margin:0 0 10px;
+    color:var(--ink);
+    line-height:1.3;
+  }
+  .hl .rung p{
+    color:var(--dim);
+    font-size:13px;
+    line-height:1.55;
+    margin:0;
+  }
+  .hl .rung p code{
+    color:var(--amber-2);
+    background:rgba(232,160,66,0.08);
+    padding:1px 5px;
+    border-radius:2px;
+    font-size:12px;
+  }
+
+  /* ── Children rack ──────────────────────────────────────────── */
+  .hl .rack-wrap{padding:0 48px;}
+  .hl .rack{
+    background:linear-gradient(180deg,#1f1c17 0%, #181612 100%);
+    border:1px solid var(--line-2);
+    border-radius:6px;
+    padding:8px;
+    position:relative;
+  }
+  .hl .rack-bay{
+    display:grid;
+    grid-template-columns:80px 1fr 110px 110px;
+    gap:18px;
+    align-items:center;
+    padding:18px 22px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+    margin-bottom:6px;
+    color:inherit;
+    text-decoration:none;
+    transition:border-color .15s, transform .15s, background .15s;
+  }
+  .hl .rack-bay:last-child{margin-bottom:0;}
+  .hl .rack-bay:hover{
+    border-color:var(--amber);
+    background:var(--panel-2);
+    transform:translateX(2px);
+    text-decoration:none;
+  }
+  .hl .rack-bay .slot{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--dim-2);
+    letter-spacing:0.16em;
+    display:flex;align-items:center;gap:8px;
+  }
+  .hl .rack-bay .slot .led{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--moss);
+    box-shadow:0 0 6px var(--moss);
+  }
+  .hl .rack-bay .body h4{
+    font-family:'JetBrains Mono',monospace;
+    font-size:18px;
+    color:var(--ink);
+    margin:0 0 4px;
+    font-weight:600;
+    letter-spacing:-0.005em;
+  }
+  .hl .rack-bay .body p{
+    color:var(--dim);
+    font-size:13px;
+    line-height:1.5;
+    margin:0;
+  }
+  .hl .rack-bay .depth{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    text-align:right;
+    color:var(--amber);
+  }
+  .hl .rack-bay .depth.recon{color:var(--slate);}
+  .hl .rack-bay .depth.expedition{color:var(--amber-2);}
+  .hl .rack-bay .meta{
+    text-align:right;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--dim);
+  }
+  .hl .rack-bay .meta b{color:var(--ink);font-weight:500;}
+  .hl .rack-bay .meta .sub{color:var(--dim-2);font-size:10px;display:block;margin-top:2px;letter-spacing:0.1em;text-transform:uppercase;}
+
+  /* ── Open question footer ───────────────────────────────────── */
+  .hl .open{
+    margin:48px 48px 0;
+    padding:32px 36px;
+    background:linear-gradient(135deg,#2c1d10 0%, #1c1208 100%);
+    border:1px solid var(--rust);
+    border-radius:4px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:28px;
+    align-items:center;
+  }
+  .hl .open .qmark{
+    font-family:'Fraunces',Georgia,serif;
+    font-style:italic;
+    font-size:84px;
+    line-height:0.8;
+    color:var(--rust);
+  }
+  .hl .open .lbl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin:0 0 8px;
+  }
+  .hl .open .body{
+    font-family:'Fraunces',Georgia,serif;
+    font-style:italic;
+    font-size:19px;
+    line-height:1.5;
+    margin:0;
+    color:var(--ink);
+    max-width:880px;
+  }
+
+  /* ── Footer colophon ────────────────────────────────────────── */
+  .hl .colophon{
+    margin-top:48px;
+    padding:22px 48px;
+    border-top:1px solid var(--line);
+    color:var(--dim-2);
+    font-size:11px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    display:flex;flex-wrap:wrap;gap:24px;
+  }
+  .hl .colophon b{color:var(--dim);font-weight:500;}
+
+  /* ── Responsive: collapse grids ─────────────────────────────── */
+  @media (max-width:900px){
+    .hl .kpis{grid-template-columns:repeat(2,1fr);padding:24px 24px 6px;}
+    .hl .matrix,.hl .ladder{grid-template-columns:1fr;padding:0 24px;}
+    .hl .rack-wrap{padding:0 24px;}
+    .hl .rack-bay{grid-template-columns:1fr;gap:8px;}
+    .hl .rack-bay .meta,.hl .rack-bay .depth{text-align:left;}
+    .hl .hero,.hl .sec,.hl .open{padding-left:24px;padding-right:24px;}
+    .hl .open{margin:32px 24px 0;}
+    .hl .colophon{padding:22px 24px;}
+  }
+</style>
+
+<div class="hl">
+<div class="frame">
+
+  <div class="topstrip">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="ttl">homelab.local</span>
+    <span>/expeditions / 2026-04-22-always-on-home-server</span>
+    <div class="right">
+      <span>angles <b>4</b></span>
+      <span>read <b>28 min</b></span>
+      <span>status <b>resolved</b></span>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="kicker">expedition · synology dsm sunset · april 2026<span class="blink"></span></div>
+    <h1 class="title">
+      <span class="strike">Synology DSM</span><br>
+      Always-on box, <span class="amber">replaced.</span>
+    </h1>
+    <p class="deck">Four angles — CPU, vendor versus DIY, storage layout, and power/acoustics — converge on a single box that runs containers and ML workloads without a custom-OS lock-in.</p>
+
+    <div class="verdict">
+      <div class="lbl">verdict</div>
+      <p class="body"><b>UGREEN DXP4800 Plus</b> running <b>TrueNAS Scale</b>, ZFS mirror over two 16 TB drives, <b>restic</b> to Backblaze B2 for offsite — kept in the office, not the living room.</p>
+    </div>
+  </section>
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="top"><span>CEILING</span><span class="glyph">▲</span></div>
+      <div class="num amber">AVX2</div>
+      <div class="lbl"><b>Table stakes</b> — llama.cpp, ffmpeg and modern Docker bases all assume it.</div>
+    </div>
+    <div class="kpi">
+      <div class="top"><span>STORAGE</span><span class="glyph">◇</span></div>
+      <div class="num moss">2 × 16<span class="unit">TB</span></div>
+      <div class="lbl"><b>ZFS mirror</b> — recovery story unambiguous against btrfs raid1 and mdraid+ext4.</div>
+    </div>
+    <div class="kpi">
+      <div class="top"><span>OFFSITE</span><span class="glyph">↗</span></div>
+      <div class="num slate">B2</div>
+      <div class="lbl"><b>restic to Backblaze</b> — encrypted snapshots, deduped, cheap egress.</div>
+    </div>
+    <div class="kpi">
+      <div class="top"><span>LOCATION</span><span class="glyph">⌂</span></div>
+      <div class="num rust">office</div>
+      <div class="lbl"><b>Not the living room.</b> 3.5″ spinners in a 2-bay tower don't pass the dBA test.</div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <h2>Where the four angles agree <span class="count">3 layers</span></h2>
+    <p class="seclede">Hardware sets the ceiling, storage decides recoverability, and acoustics gate where the box can actually live.</p>
+  </section>
+  <div class="matrix">
+    <div class="mcell">
+      <div class="axis">layer 1 · hardware</div>
+      <h4>CPU + vendor-vs-DIY</h4>
+      <p>Sets the ceiling. The DIY path wins on flexibility and longevity but adds an OS-maintenance tax the vendor boxes hide. If you'd rather spend evenings on Scout than apt upgrades, vendor NAS + TrueNAS is the path of least surprise.</p>
+      <div class="verd">verdict · <b>vendor box, third-party OS</b></div>
+    </div>
+    <div class="mcell">
+      <div class="axis">layer 2 · data</div>
+      <h4>Storage layout</h4>
+      <p>Decides the recoverability story. ZFS mirror beat btrfs raid1 and mdraid+ext4 unambiguously on recovery. Two 16 TB drives, mirror not raidz, restic to B2 carries offsite.</p>
+      <div class="verd">verdict · <b>ZFS mirror + restic</b></div>
+    </div>
+    <div class="mcell">
+      <div class="axis">layer 3 · room</div>
+      <h4>Power &amp; acoustics</h4>
+      <p>Gates whether the box can live where you work. Any 2-bay tower with 3.5″ spinners falls into the "office only" category — full stop. Power draw is a side-show next to acoustics in a shared room.</p>
+      <div class="verd warn">verdict · <b>office, not living room</b></div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <h2>What broke the tie <span class="count">3 wedges, ranked</span></h2>
+    <p class="seclede">Three things, in order of weight — the load-bearing reasons one option won and the others didn't.</p>
+  </section>
+  <div class="ladder">
+    <div class="rung">
+      <div class="n">1</div>
+      <div class="weight">heaviest</div>
+      <h4>AVX2 is now table stakes</h4>
+      <p>The workloads you actually run — <code>llama.cpp</code>, <code>ffmpeg</code>, modern Docker bases — all assume AVX2. The aging Synology CPU lacks it. Anything you buy has to clear that bar before any other criterion matters.</p>
+    </div>
+    <div class="rung">
+      <div class="n">2</div>
+      <div class="weight">decisive</div>
+      <h4>ZFS won on recovery</h4>
+      <p>The storage angle's case for ZFS over btrfs was unambiguous on the recovery story. <code>zpool import</code> survives more failure modes than btrfs raid1's history of trickier rebuilds.</p>
+    </div>
+    <div class="rung">
+      <div class="n">3</div>
+      <div class="weight">disqualifier</div>
+      <h4>Acoustics drew a hard line</h4>
+      <p>The acoustics survey put any 2-bay tower with 3.5″ spinners in the "office only" category — full stop. Idle wattage is a budget question; <code>dBA at 1m</code> is a where-it-lives question.</p>
+    </div>
+  </div>
+
+  <section class="sec">
+    <h2>Drill into the 4 angles <span class="count">/research/</span></h2>
+    <p class="seclede">Four sub-pages, four green LEDs. Each one resolved cleanly enough to ship the verdict above.</p>
+  </section>
+  <div class="rack-wrap">
+    <div class="rack">
+      <a class="rack-bay" href="../cpu-and-avx2-baseline/">
+        <div class="slot"><span class="led"></span>U1 · cpu</div>
+        <div class="body">
+          <h4>CPU and AVX2 baseline</h4>
+          <p>Why AVX2 is now table stakes — llama.cpp, ffmpeg, modern Docker bases all assume it.</p>
+        </div>
+        <div class="meta">14 cites<span class="sub">5 min</span></div>
+        <div class="depth">survey</div>
+      </a>
+      <a class="rack-bay" href="../vendor-vs-diy/">
+        <div class="slot"><span class="led"></span>U2 · vendor</div>
+        <div class="body">
+          <h4>Vendor NAS vs DIY mini-PC</h4>
+          <p>Synology / QNAP / UGREEN versus a Beelink / Minisforum mini-PC running Debian or Proxmox.</p>
+        </div>
+        <div class="meta">27 cites<span class="sub">11 min</span></div>
+        <div class="depth expedition">expedition</div>
+      </a>
+      <a class="rack-bay" href="../storage-and-replication/">
+        <div class="slot"><span class="led"></span>U3 · storage</div>
+        <div class="body">
+          <h4>Storage layout and offsite replication</h4>
+          <p>ZFS mirror vs btrfs raid1 vs mdraid + ext4, plus rclone/restic to a remote.</p>
+        </div>
+        <div class="meta">18 cites<span class="sub">8 min</span></div>
+        <div class="depth">survey</div>
+      </a>
+      <a class="rack-bay" href="../power-and-acoustics/">
+        <div class="slot"><span class="led"></span>U4 · room</div>
+        <div class="body">
+          <h4>Power draw and acoustics in a living space</h4>
+          <p>Idle wattage and dBA at 1m for the realistic shortlist — what's tolerable in a shared room.</p>
+        </div>
+        <div class="meta">5 cites<span class="sub">4 min</span></div>
+        <div class="depth recon">recon</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="open">
+    <div class="qmark">?</div>
+    <div>
+      <p class="lbl">still open · belongs in a follow-up</p>
+      <p class="body">Is ECC RAM worth its ~30% premium for a home workload — and how much overhead does Proxmox's multi-tenant isolation actually cost compared to bare Debian? Both stayed unsettled across the four angles.</p>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span>commit · <b>resolved</b></span>
+    <span>angles · <b>4 / 4</b></span>
+    <span>citations · <b>64</b></span>
+    <span>read · <b>28 min</b></span>
+    <span>issue · <b>#9</b></span>
+    <span>compass · <b>seed fixture</b></span>
+  </div>
+
+</div>
+</div>

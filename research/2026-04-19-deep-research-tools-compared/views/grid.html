@@ -1,0 +1,297 @@
+---
+layout: view
+view_name: "Grid"
+view_of: ../
+title: "Deep-research tools compared — Perplexity, ChatGPT, Gemini, Scout — Grid"
+---
+
+<style>
+  .v-grid *{box-sizing:border-box}
+  .v-grid{
+    --bg:#0d1117;
+    --panel:#161b22;
+    --panel-2:#1c222b;
+    --line:#30363d;
+    --line-2:#21262d;
+    --ink:#e6edf3;
+    --dim:#8b949e;
+    --dim-2:#6e7681;
+    --accent:#2f81f7;
+    --green:#3fb950;
+    --amber:#d29922;
+    --red:#f85149;
+    --violet:#a371f7;
+    --pink:#f778ba;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter','Segoe UI',system-ui,sans-serif;
+    font-size:14px;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    margin:0;
+  }
+  .v-grid .mono{font-family:'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace;}
+  .v-grid a{color:var(--accent);text-decoration:none;}
+  .v-grid a:hover{text-decoration:underline;}
+
+  .v-grid header.cover{padding:56px 40px 22px;border-bottom:1px solid var(--line);}
+  .v-grid .kicker{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px;color:var(--dim);letter-spacing:0.18em;text-transform:uppercase;}
+  .v-grid h1.cover-title{font-size:38px;letter-spacing:-0.02em;margin:10px 0 6px;line-height:1.1;font-weight:700;}
+  .v-grid .deck{color:var(--dim);max-width:820px;line-height:1.55;font-size:15px;margin:0;}
+  .v-grid .meta{margin-top:16px;display:flex;gap:18px;flex-wrap:wrap;font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--dim-2);}
+
+  /* Verdict callout — surfaces the answer immediately */
+  .v-grid .verdict{
+    margin:24px 40px 0;
+    padding:22px 26px;
+    background:linear-gradient(135deg,rgba(47,129,247,0.08) 0%,rgba(63,185,80,0.06) 100%);
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+  }
+  .v-grid .verdict .v-label{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--accent);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:8px;}
+  .v-grid .verdict .v-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .v-grid .verdict .v-cell{display:flex;flex-direction:column;gap:4px;}
+  .v-grid .verdict .v-name{font-size:18px;font-weight:700;letter-spacing:-0.01em;}
+  .v-grid .verdict .v-tag{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.12em;}
+  .v-grid .verdict .v-claim{font-size:14px;color:var(--ink);line-height:1.45;}
+  .v-grid .verdict .v-cell.scout .v-name{color:var(--green);}
+  .v-grid .verdict .v-cell.chatgpt .v-name{color:var(--violet);}
+  .v-grid .verdict .v-cell.gemini .v-name{color:var(--accent);}
+  .v-grid .verdict .v-cell.perplexity .v-name{color:var(--pink);}
+
+  /* Card grid */
+  .v-grid section.cards{padding:30px 40px 40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:18px;}
+  .v-grid .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;transition:border-color .15s;}
+  .v-grid .card:hover{border-color:var(--accent);}
+  .v-grid .card.fit-high{border-top:4px solid var(--green);}
+  .v-grid .card.fit-med{border-top:4px solid var(--amber);}
+  .v-grid .card.fit-low{border-top:4px solid var(--red);}
+
+  .v-grid .card-head{display:flex;gap:12px;align-items:flex-start;}
+  .v-grid .card-head img,
+  .v-grid .card-head .logo-stub{width:36px;height:36px;border-radius:7px;border:1px solid var(--line);background:#fff;flex-shrink:0;}
+  .v-grid .card-head .logo-stub{
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#1f6feb 0%,#3fb950 100%);
+    color:#fff;font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;
+    font-weight:700;font-size:15px;letter-spacing:-0.02em;border:none;
+  }
+  .v-grid .card-head .titles{flex:1;min-width:0;}
+  .v-grid .card-head h3{font-size:18px;font-weight:600;margin:0 0 3px;line-height:1.2;letter-spacing:-0.01em;}
+  .v-grid .card-head .org{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--dim);}
+  .v-grid .card-head .winner{display:inline-flex;align-items:center;gap:4px;background:rgba(63,185,80,0.14);border:1px solid rgba(63,185,80,0.35);color:var(--green);padding:4px 10px;border-radius:12px;font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;}
+  .v-grid .card-head .winner.alt{background:rgba(163,113,247,0.14);border-color:rgba(163,113,247,0.35);color:var(--violet);}
+  .v-grid .card-head .winner.alt2{background:rgba(47,129,247,0.14);border-color:rgba(47,129,247,0.35);color:var(--accent);}
+  .v-grid .card-head .winner.alt3{background:rgba(247,120,186,0.14);border-color:rgba(247,120,186,0.35);color:var(--pink);}
+
+  .v-grid .card .gist{font-size:13px;color:var(--ink);line-height:1.55;}
+
+  .v-grid .card .badges{display:flex;gap:8px;flex-wrap:wrap;}
+  .v-grid .badge{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:3px 8px;border-radius:4px;background:var(--panel-2);border:1px solid var(--line);color:var(--dim);}
+  .v-grid .badge.kind-saas{color:var(--violet);border-color:rgba(163,113,247,0.3);}
+  .v-grid .badge.kind-oss{color:var(--green);border-color:rgba(63,185,80,0.3);}
+  .v-grid .badge.kind-api{color:var(--accent);border-color:rgba(47,129,247,0.3);}
+
+  .v-grid .specs{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;}
+  .v-grid .spec{background:var(--panel-2);padding:9px 11px;border-radius:6px;border:1px solid var(--line-2);}
+  .v-grid .spec b{display:block;font-size:10px;color:var(--dim-2);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:3px;font-weight:600;}
+  .v-grid .spec .v{color:var(--ink);font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px;}
+
+  .v-grid .strength,.v-grid .weakness{display:flex;gap:10px;font-size:13px;line-height:1.45;padding:10px 12px;border-radius:6px;}
+  .v-grid .strength{background:rgba(63,185,80,0.07);border-left:3px solid var(--green);}
+  .v-grid .weakness{background:rgba(248,81,73,0.06);border-left:3px solid var(--red);}
+  .v-grid .strength .lbl,.v-grid .weakness .lbl{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;flex-shrink:0;width:54px;}
+  .v-grid .strength .lbl{color:var(--green);}
+  .v-grid .weakness .lbl{color:var(--red);}
+
+  .v-grid .card .foot{display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--dim);margin-top:auto;padding-top:8px;border-top:1px dashed var(--line);}
+
+  /* Decision panel */
+  .v-grid .decision{padding:36px 40px;border-top:1px solid var(--line);background:linear-gradient(180deg,var(--bg) 0%,#0a0d12 100%);}
+  .v-grid .decision h2{font-size:24px;margin:0 0 18px;letter-spacing:-0.01em;}
+  .v-grid .decision h2 small{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:12px;color:var(--dim);font-weight:400;letter-spacing:0.12em;text-transform:uppercase;margin-left:14px;}
+  .v-grid .decision-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .v-grid .decision-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;}
+  .v-grid .decision-card .when{font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--accent);margin-bottom:6px;letter-spacing:0.1em;text-transform:uppercase;}
+  .v-grid .decision-card.pick-scout .when{color:var(--green);}
+  .v-grid .decision-card.pick-chatgpt .when{color:var(--violet);}
+  .v-grid .decision-card h4{margin:6px 0 0;font-size:18px;letter-spacing:-0.01em;}
+  .v-grid .decision-card p{margin:8px 0 0;font-size:13px;color:var(--dim);line-height:1.55;}
+
+  .v-grid .footer{padding:22px 40px;border-top:1px solid var(--line);font-family:'JetBrains Mono','SF Mono',ui-monospace,monospace;font-size:11px;color:var(--dim);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;letter-spacing:0.04em;}
+
+  @media (max-width: 720px){
+    .v-grid header.cover{padding:48px 22px 18px;}
+    .v-grid h1.cover-title{font-size:28px;}
+    .v-grid .verdict{margin:18px 22px 0;padding:18px 18px;}
+    .v-grid .verdict .v-row{grid-template-columns:1fr 1fr;gap:14px;}
+    .v-grid section.cards{padding:22px;grid-template-columns:1fr;}
+    .v-grid .decision{padding:28px 22px;}
+    .v-grid .decision-grid{grid-template-columns:1fr;}
+    .v-grid .footer{padding:18px 22px;}
+  }
+</style>
+
+<div class="v-grid">
+
+<header class="cover">
+  <div class="kicker">Survey · Compass · April 2026</div>
+  <h1 class="cover-title">Deep-research tools, scored on the axes that matter.</h1>
+  <p class="deck">Four tools, one question — which one do you reach for when you actually need to cite the output later? Compared on citation rigor, cost-per-query, traceability, and synthesis quality.</p>
+  <div class="meta"><span>Filed 2026-04-19</span><span>Format: md</span><span>Depth: survey</span><span>9 min read</span></div>
+</header>
+
+<aside class="verdict">
+  <div class="v-label">The verdict — at a glance</div>
+  <div class="v-row">
+    <div class="v-cell scout">
+      <div class="v-name">Scout</div>
+      <div class="v-tag">Traceability · cost</div>
+      <div class="v-claim">Wins when the artifact has to survive the read.</div>
+    </div>
+    <div class="v-cell chatgpt">
+      <div class="v-name">ChatGPT DR</div>
+      <div class="v-tag">Synthesis</div>
+      <div class="v-claim">Cleanest prose; loosest citations.</div>
+    </div>
+    <div class="v-cell gemini">
+      <div class="v-name">Gemini DR</div>
+      <div class="v-tag">Breadth</div>
+      <div class="v-claim">Widest source net; weakest structure.</div>
+    </div>
+    <div class="v-cell perplexity">
+      <div class="v-name">Perplexity</div>
+      <div class="v-tag">Speed</div>
+      <div class="v-claim">Fastest answer; shallowest depth.</div>
+    </div>
+  </div>
+</aside>
+
+<section class="cards">
+
+  <article class="card fit-high">
+    <div class="card-head">
+      <div class="logo-stub" aria-hidden="true">SC</div>
+      <div class="titles">
+        <h3>Scout</h3>
+        <div class="org">self-hosted · runner-driven</div>
+      </div>
+      <span class="winner">Wins · Traceability</span>
+    </div>
+    <div class="badges">
+      <span class="badge kind-oss">Self-hosted</span>
+      <span class="badge">Per-claim cites</span>
+    </div>
+    <div class="gist">Per-claim citations baked into the output, an auditable Atlas of every run, and marginal cost that's whatever your token budget is. The catch: you have to operate the runner.</div>
+    <div class="specs">
+      <div class="spec"><b>Citations</b><div class="v">Per-claim · auditable</div></div>
+      <div class="spec"><b>Cost / query</b><div class="v">~ token cost only</div></div>
+      <div class="spec"><b>Turnaround</b><div class="v">Variable · depth-tunable</div></div>
+      <div class="spec"><b>Output home</b><div class="v">Atlas · revisitable</div></div>
+    </div>
+    <div class="strength"><span class="lbl">Strong</span><span>Per-claim citations; auditable Atlas; low marginal cost.</span></div>
+    <div class="weakness"><span class="lbl">Weak</span><span>Requires your own runner — not zero-setup.</span></div>
+    <div class="foot"><span>cite-anything mode</span><span>Pick when output must be quotable</span></div>
+  </article>
+
+  <article class="card fit-high">
+    <div class="card-head">
+      <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" alt=""/>
+      <div class="titles">
+        <h3>ChatGPT Deep Research</h3>
+        <div class="org">openai.com · subscription</div>
+      </div>
+      <span class="winner alt">Wins · Synthesis</span>
+    </div>
+    <div class="badges">
+      <span class="badge kind-saas">SaaS</span>
+      <span class="badge">Best ranking</span>
+    </div>
+    <div class="gist">The cleanest prose of the four. Best at ordering an argument, framing a tension, landing a conclusion. Use it for the synthesis you'll consume and forget.</div>
+    <div class="specs">
+      <div class="spec"><b>Citations</b><div class="v">Loose · footnote-style</div></div>
+      <div class="spec"><b>Cost / query</b><div class="v">Opaque · per-plan</div></div>
+      <div class="spec"><b>Turnaround</b><div class="v">~5–10 min</div></div>
+      <div class="spec"><b>Output home</b><div class="v">Chat thread</div></div>
+    </div>
+    <div class="strength"><span class="lbl">Strong</span><span>Cleanest synthesis prose; best ranking and pacing.</span></div>
+    <div class="weakness"><span class="lbl">Weak</span><span>Citations are loose; cost per run is opaque.</span></div>
+    <div class="foot"><span>read-once mode</span><span>Pick for one-off synthesis</span></div>
+  </article>
+
+  <article class="card fit-med">
+    <div class="card-head">
+      <img src="https://www.google.com/s2/favicons?domain=deepmind.google&sz=128" alt=""/>
+      <div class="titles">
+        <h3>Gemini Deep Research</h3>
+        <div class="org">deepmind.google · subscription</div>
+      </div>
+      <span class="winner alt2">Wins · Breadth</span>
+    </div>
+    <div class="badges">
+      <span class="badge kind-saas">SaaS</span>
+      <span class="badge">Multimodal</span>
+    </div>
+    <div class="gist">Throws the widest net — pulls in sources the others miss, including images and PDFs. The output reads long. You'll skim, not study.</div>
+    <div class="specs">
+      <div class="spec"><b>Citations</b><div class="v">Inline · numerous</div></div>
+      <div class="spec"><b>Cost / query</b><div class="v">Subscription · soft cap</div></div>
+      <div class="spec"><b>Turnaround</b><div class="v">~10–15 min</div></div>
+      <div class="spec"><b>Output home</b><div class="v">Doc / chat</div></div>
+    </div>
+    <div class="strength"><span class="lbl">Strong</span><span>Widest source coverage; multimodal inputs and outputs.</span></div>
+    <div class="weakness"><span class="lbl">Weak</span><span>Verbose; weak structural hierarchy.</span></div>
+    <div class="foot"><span>net-wide mode</span><span>Pick for survey breadth</span></div>
+  </article>
+
+  <article class="card fit-med">
+    <div class="card-head">
+      <img src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" alt=""/>
+      <div class="titles">
+        <h3>Perplexity Pro</h3>
+        <div class="org">perplexity.ai · subscription</div>
+      </div>
+      <span class="winner alt3">Wins · Speed</span>
+    </div>
+    <div class="badges">
+      <span class="badge kind-saas">SaaS</span>
+      <span class="badge">Sub-3-min</span>
+    </div>
+    <div class="gist">Fastest turnaround of the four. Great for hot questions and quick lookups. Once the question stretches past a paragraph, the output thins out fast.</div>
+    <div class="specs">
+      <div class="spec"><b>Citations</b><div class="v">Inline · short-form</div></div>
+      <div class="spec"><b>Cost / query</b><div class="v">Subscription · per-query</div></div>
+      <div class="spec"><b>Turnaround</b><div class="v">~2–3 min</div></div>
+      <div class="spec"><b>Output home</b><div class="v">Thread · shareable</div></div>
+    </div>
+    <div class="strength"><span class="lbl">Strong</span><span>Fastest turnaround; clean for short questions.</span></div>
+    <div class="weakness"><span class="lbl">Weak</span><span>Shallow on long-form research and synthesis.</span></div>
+    <div class="foot"><span>fast-answer mode</span><span>Pick for sub-3-minute hits</span></div>
+  </article>
+
+</section>
+
+<section class="decision">
+  <h2>When to reach for which. <small>The two-mode rule.</small></h2>
+  <div class="decision-grid">
+    <div class="decision-card pick-scout">
+      <div class="when">If the artifact has to survive the read</div>
+      <h4>Use Scout.</h4>
+      <p>Anything you'll cite, quote, or revisit later. Per-claim URL provenance, an Atlas you can re-read in three months, and cost that scales with your tokens — not someone else's pricing tier. The runner is the price of admission; the artifact pays you back every time you cite it.</p>
+    </div>
+    <div class="decision-card pick-chatgpt">
+      <div class="when">If you'll consume the output and forget it</div>
+      <h4>Use ChatGPT Deep Research.</h4>
+      <p>One-off synthesis questions where you want a tight, well-paced answer and don't need to bring the receipts. The prose lands. Skim, decide, move on. Don't reach for it when you'll need to defend a claim a week later — the citations won't bear weight.</p>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <span>COMPASS · DEEP-RESEARCH SURVEY · 2026-04-19</span>
+  <span>4 TOOLS · STANDARD DEPTH · 9 MIN</span>
+  <span>VERDICT: SCOUT FOR ARTIFACTS · CHATGPT FOR SYNTHESIS</span>
+</div>
+
+</div>

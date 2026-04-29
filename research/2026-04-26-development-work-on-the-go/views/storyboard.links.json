@@ -1,0 +1,11 @@
+{
+  "atlas":  { "url": "/", "title": "Atlas" },
+  "canonical": { "url": "../", "title": "Development work on the go" },
+  "parent": null,
+  "siblings": [
+    { "url": "../slack-claude-code-remote-control/", "title": "Slack ↔ Claude Code remote control", "summary": "GitHub App vs Agent SDK vs self-hosted bot — survey of mobile-friendly approval flows.", "depth": "expedition" },
+    { "url": "../branch-and-pr-automation/", "title": "Branch and PR automation", "summary": "How a \"go\" message produces a branch and PR without a local checkout.", "depth": "survey" },
+    { "url": "../synology-preview-deployments/", "title": "Synology preview deployments", "summary": "Container Manager / Docker Compose lifecycle per branch.", "depth": "survey" }
+  ],
+  "sources": []
+}

@@ -1,0 +1,494 @@
+---
+layout: view
+view_name: "Storyboard"
+view_of: ../
+title: "Development work on the go — Storyboard"
+---
+
+<style>
+  *{box-sizing:border-box}
+  :root{
+    --bg:#0e1117;
+    --panel:#161b22;
+    --line:#30363d;
+    --ink:#e6edf3;
+    --mute:#8b949e;
+    --slack:#4a154b;
+    --slack-ink:#fff;
+    --user:#1264a3;
+    --bot:#2eb886;
+    --warn:#d29922;
+    --danger:#f85149;
+    --ok:#3fb950;
+    --accent:#7c5cff;
+    --term-bg:#0a0d12;
+    --term-ink:#c9d1d9;
+    --term-green:#7ee787;
+    --term-yellow:#f2cc60;
+    --paper:#0d1117;
+  }
+  .storyboard{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  .storyboard .mono{font-family:ui-monospace,"SF Mono",Menlo,"DejaVu Sans Mono",Consolas,monospace;}
+  .storyboard .display{font-family:"Helvetica Neue",Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;}
+  .storyboard a{color:#58a6ff;text-decoration:none;}
+
+  /* Header */
+  .sb-head{padding:48px 48px 28px;border-bottom:1px solid var(--line);}
+  .sb-head .kicker{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .sb-head h1{font-family:"Helvetica Neue",Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-0.03em;font-size:64px;line-height:1.02;margin:0 0 14px;color:#fff;}
+  .sb-head h1 .underline{background:linear-gradient(transparent 62%,rgba(124,92,255,0.35) 62%);}
+  .sb-head .deck{color:var(--mute);font-size:17px;line-height:1.5;max-width:760px;}
+  .sb-head .meta{display:flex;flex-wrap:wrap;gap:20px;margin-top:22px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:0.16em;}
+  .sb-head .meta b{color:var(--ink);font-weight:600;}
+
+  /* Flow strip */
+  .sb-strip{padding:22px 48px;background:#0a0d12;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;overflow-x:auto;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;color:var(--mute);}
+  .sb-strip .step{padding:6px 12px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;}
+  .sb-strip .step b{color:var(--ink);font-weight:600;}
+  .sb-strip .arrow{color:var(--accent);}
+
+  /* Reel */
+  .sb-reel{padding:36px 48px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:22px;}
+  .sb-panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 22px 48px -28px rgba(0,0,0,0.65);}
+  .sb-panel .slate{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#0a0d12;border-bottom:1px solid var(--line);font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--mute);}
+  .sb-panel .slate .num{font-family:"Helvetica Neue",sans-serif;font-weight:800;font-size:30px;letter-spacing:-0.02em;color:var(--accent);line-height:1;}
+  .sb-panel .stage{height:300px;position:relative;border-bottom:1px solid var(--line);overflow:hidden;}
+  .sb-panel .body{padding:20px;display:flex;flex-direction:column;gap:10px;}
+  .sb-panel .step-name{font-size:11px;font-family:ui-monospace,"SF Mono",Menlo,monospace;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);}
+  .sb-panel h3{margin:0;font-size:22px;line-height:1.2;letter-spacing:-0.01em;color:#fff;}
+  .sb-panel p.what{margin:0;font-size:14px;line-height:1.55;color:var(--mute);}
+  .sb-panel .pick{margin-top:6px;padding:10px 12px;background:rgba(124,92,255,0.08);border-left:3px solid var(--accent);font-size:13px;line-height:1.5;color:var(--ink);}
+  .sb-panel .pick b{color:#fff;}
+  .sb-panel .latency{display:flex;gap:14px;margin-top:6px;}
+  .sb-panel .latency .pill{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;color:var(--mute);background:#0a0d12;border:1px solid var(--line);padding:4px 10px;border-radius:999px;}
+  .sb-panel .latency .pill b{color:var(--ink);}
+
+  /* Stage 1 — Slack on phone */
+  .stage-slack{background:linear-gradient(180deg,#1d1426 0%,#2c1838 60%,#0e1117 100%);padding:18px;display:flex;align-items:flex-start;justify-content:center;}
+  .phone{width:230px;height:262px;background:#0d0d10;border-radius:26px;border:6px solid #1a1a20;box-shadow:0 18px 36px -16px rgba(0,0,0,0.7);padding:14px 12px 10px;display:flex;flex-direction:column;gap:6px;position:relative;}
+  .phone::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:60px;height:5px;background:#000;border-radius:3px;}
+  .phone .slack-bar{display:flex;align-items:center;gap:8px;padding-top:10px;padding-bottom:8px;border-bottom:1px solid #20232a;font-family:ui-monospace,monospace;font-size:10px;color:#aaa;}
+  .phone .slack-bar .dm{width:18px;height:18px;border-radius:4px;background:linear-gradient(135deg,#36c5f0,#2eb886,#ecb22e,#e01e5a);}
+  .phone .slack-bar b{color:#fff;font-weight:600;}
+  .bubble{max-width:88%;padding:8px 10px;border-radius:10px;font-size:11px;line-height:1.4;}
+  .bubble.user{background:#1264a3;color:#fff;align-self:flex-end;border-bottom-right-radius:3px;}
+  .bubble.bot{background:#22272e;color:#e6edf3;align-self:flex-start;border-bottom-left-radius:3px;}
+  .bubble .ts{display:block;font-size:8px;opacity:0.7;margin-top:2px;font-family:ui-monospace,monospace;}
+
+  /* Stage 2 — Agent terminal */
+  .stage-term{background:var(--term-bg);}
+  .stage-term .titlebar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#161b22;border-bottom:1px solid var(--line);font-family:ui-monospace,monospace;font-size:10px;color:var(--mute);letter-spacing:0.04em;}
+  .stage-term .dot{width:10px;height:10px;border-radius:50%;}
+  .stage-term .dot.r{background:#ff5f57;} .stage-term .dot.y{background:#febc2e;} .stage-term .dot.g{background:#28c840;}
+  .stage-term .titlebar .title{margin-left:auto;margin-right:auto;}
+  .stage-term .term{padding:14px 16px;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;line-height:1.65;color:var(--term-ink);}
+  .stage-term .prompt{color:var(--term-green);}
+  .stage-term .ok{color:var(--term-green);}
+  .stage-term .warn{color:var(--term-yellow);}
+  .stage-term .dim{color:#6e7681;}
+  .stage-term .think{color:var(--accent);}
+
+  /* Stage 3 — Approval card */
+  .stage-approval{background:linear-gradient(180deg,#0d1117 0%,#1a1426 100%);padding:24px;display:flex;align-items:center;justify-content:center;}
+  .approval{width:100%;max-width:300px;background:#fff;color:#1d1c1d;border-radius:12px;padding:14px;box-shadow:0 24px 60px -20px rgba(0,0,0,0.7);font-size:12px;line-height:1.4;}
+  .approval .head{display:flex;align-items:center;gap:8px;font-weight:700;color:#1d1c1d;font-size:13px;margin-bottom:6px;}
+  .approval .head .icon{width:20px;height:20px;background:#1d1c1d;color:#fff;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-size:10px;}
+  .approval .desc{color:#454245;font-size:12px;margin-bottom:8px;}
+  .approval .diff{background:#f6f8fa;border:1px solid #d0d7de;border-radius:6px;padding:8px;font-family:ui-monospace,monospace;font-size:10px;line-height:1.5;color:#24292f;margin-bottom:10px;}
+  .approval .diff .add{color:#1a7f37;background:rgba(46,160,67,0.12);}
+  .approval .diff .del{color:#82071e;background:rgba(255,129,130,0.16);}
+  .approval .actions{display:flex;gap:6px;}
+  .approval .btn{flex:1;padding:8px;border-radius:6px;font-weight:700;font-size:12px;text-align:center;}
+  .approval .btn.go{background:#007a5a;color:#fff;}
+  .approval .btn.no{background:#e8e8e8;color:#1d1c1d;}
+  .approval .btn.edit{background:#fff;color:#1d1c1d;border:1px solid #d0d7de;}
+
+  /* Stage 4 — GitHub PR */
+  .stage-gh{background:#0d1117;padding:16px;}
+  .gh-head{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mute);margin-bottom:10px;}
+  .gh-head .repo{color:#58a6ff;font-family:ui-monospace,monospace;}
+  .gh-head .pill{margin-left:auto;background:#1f6feb;color:#fff;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;}
+  .gh-pr{background:#0d1117;border:1px solid var(--line);border-radius:8px;padding:14px;}
+  .gh-pr h4{margin:0 0 6px;font-size:14px;color:#fff;font-weight:600;}
+  .gh-pr h4 .num{color:var(--mute);font-weight:400;}
+  .gh-pr .branch{font-family:ui-monospace,monospace;font-size:11px;color:var(--mute);margin-bottom:10px;}
+  .gh-pr .branch .b{background:rgba(56,139,253,0.15);color:#79c0ff;padding:2px 6px;border-radius:4px;}
+  .gh-pr .checks{display:flex;flex-direction:column;gap:6px;}
+  .gh-pr .check{display:flex;align-items:center;gap:8px;font-size:11px;font-family:ui-monospace,monospace;color:var(--mute);padding:5px 8px;background:#161b22;border:1px solid var(--line);border-radius:5px;}
+  .gh-pr .check .glyph{font-weight:700;}
+  .gh-pr .check.ok .glyph{color:var(--ok);}
+  .gh-pr .check.run .glyph{color:var(--warn);}
+  .gh-pr .check.run .glyph::after{content:"";display:inline-block;width:8px;height:8px;border:1.5px solid var(--warn);border-top-color:transparent;border-radius:50%;margin-left:4px;vertical-align:middle;}
+
+  /* Stage 5 — Container compose */
+  .stage-stack{background:linear-gradient(180deg,#0d1117 0%,#0a1a14 100%);padding:18px;}
+  .stack-bar{display:flex;align-items:center;gap:8px;font-family:ui-monospace,monospace;font-size:11px;color:var(--mute);margin-bottom:12px;}
+  .stack-bar .nas{padding:3px 8px;background:#161b22;border:1px solid var(--line);border-radius:4px;color:#79c0ff;}
+  .stack-bar .url{margin-left:auto;color:var(--ok);}
+  .stack-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .container{background:#0a0d12;border:1px solid var(--line);border-radius:6px;padding:10px;font-family:ui-monospace,monospace;font-size:10px;}
+  .container .name{color:#fff;font-weight:600;font-size:11px;margin-bottom:4px;}
+  .container .img{color:var(--mute);}
+  .container .status{margin-top:6px;display:flex;align-items:center;gap:6px;font-size:10px;}
+  .container .status .led{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok);}
+  .container .status .led.amber{background:var(--warn);box-shadow:0 0 6px var(--warn);}
+  .caddy{margin-top:10px;padding:8px 10px;background:#161b22;border:1px solid var(--line);border-radius:5px;font-family:ui-monospace,monospace;font-size:10px;color:var(--mute);}
+  .caddy .arrow{color:var(--accent);}
+  .caddy .dom{color:#79c0ff;}
+
+  /* Stage 6 — Mobile preview */
+  .stage-preview{background:linear-gradient(180deg,#1a1426 0%,#0d1117 100%);padding:18px;display:flex;align-items:flex-start;justify-content:center;}
+  .phone.preview{height:262px;padding:0;overflow:hidden;background:#fff;border-color:#0a0d12;}
+  .phone.preview::before{background:#0a0d12;}
+  .preview-bar{padding:14px 12px 6px;background:#f6f8fa;border-bottom:1px solid #d0d7de;font-family:ui-monospace,monospace;font-size:9px;color:#57606a;display:flex;align-items:center;gap:6px;}
+  .preview-bar .lock{color:#1a7f37;}
+  .preview-content{padding:14px 12px;color:#1d2125;}
+  .preview-content .hd{font-size:13px;font-weight:700;color:#0d1117;margin-bottom:4px;}
+  .preview-content .sub{font-size:9px;color:#57606a;margin-bottom:10px;}
+  .preview-content .feat{background:#f6f8fa;border:1px dashed #d0d7de;border-radius:6px;padding:8px;font-size:10px;line-height:1.4;color:#24292f;margin-bottom:6px;}
+  .preview-content .feat b{color:#1a7f37;}
+  .preview-content .cta{background:#1f6feb;color:#fff;border-radius:5px;padding:6px 8px;font-size:10px;text-align:center;font-weight:600;}
+
+  /* Decision row */
+  .sb-decision{padding:36px 48px;background:#0a0d12;border-top:1px solid var(--line);}
+  .sb-decision .lab{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+  .sb-decision h2{font-family:"Helvetica Neue",sans-serif;font-weight:800;letter-spacing:-0.02em;font-size:30px;color:#fff;margin:0 0 22px;line-height:1.15;}
+  .sb-decision .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .sb-decision .cell{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;}
+  .sb-decision .cell .layer{font-family:ui-monospace,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--mute);margin-bottom:6px;}
+  .sb-decision .cell .pick{font-size:15px;color:#fff;font-weight:600;line-height:1.3;margin-bottom:6px;}
+  .sb-decision .cell .why{font-size:12px;color:var(--mute);line-height:1.5;}
+
+  /* Children rail */
+  .sb-children{padding:36px 48px;border-top:1px solid var(--line);}
+  .sb-children .lab{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .sb-children h2{font-family:"Helvetica Neue",sans-serif;font-weight:800;letter-spacing:-0.02em;font-size:30px;color:#fff;margin:0 0 22px;line-height:1.15;}
+  .sb-children .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+  .sb-children .child{display:block;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--ink);transition:border-color 0.15s,transform 0.15s;}
+  .sb-children .child:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .sb-children .child .step{font-family:ui-monospace,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  .sb-children .child h3{margin:0 0 8px;font-size:17px;color:#fff;font-weight:600;letter-spacing:-0.01em;}
+  .sb-children .child p{margin:0 0 12px;font-size:13px;color:var(--mute);line-height:1.5;}
+  .sb-children .child .depth{font-family:ui-monospace,monospace;font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:0.16em;}
+  .sb-children .child .depth b{color:var(--accent);font-weight:600;}
+
+  /* Open questions */
+  .sb-open{padding:36px 48px;border-top:1px solid var(--line);background:linear-gradient(180deg,#0d1117,#150c12);}
+  .sb-open .lab{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--warn);margin-bottom:14px;}
+  .sb-open h2{font-family:"Helvetica Neue",sans-serif;font-weight:800;font-size:24px;color:#fff;margin:0 0 14px;letter-spacing:-0.01em;}
+  .sb-open ul{margin:0;padding:0 0 0 18px;color:var(--mute);font-size:14px;line-height:1.6;}
+  .sb-open ul li{margin-bottom:8px;}
+  .sb-open ul li b{color:var(--ink);}
+
+  /* Footer */
+  .sb-foot{padding:24px 48px;border-top:1px solid var(--line);background:#0a0d12;font-family:ui-monospace,monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--mute);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+
+  @media (max-width:720px){
+    .sb-head{padding:32px 22px 22px;}
+    .sb-head h1{font-size:42px;}
+    .sb-strip{padding:18px 22px;}
+    .sb-reel{padding:24px 22px;grid-template-columns:1fr;}
+    .sb-decision,.sb-children,.sb-open,.sb-foot{padding:28px 22px;}
+  }
+</style>
+
+<div class="storyboard">
+
+<header class="sb-head">
+  <div class="kicker">Storyboard · 6 scenes · end-to-end flow</div>
+  <h1>Slack message in,<br/><span class="underline">PR preview out.</span></h1>
+  <div class="deck">From a phone, in a DM, in pyjamas. Six panels for the round-trip: spec to Claude Code over Slack, watch it work, approve a diff with one tap, branch and PR fly out the GitHub App, the NAS spins up a Compose stack on a per-feature subdomain, and the review happens on the same screen the request started on.</div>
+  <div class="meta">
+    <span><b>Surface</b> Slack DM</span>
+    <span><b>Bridge</b> Cloudflare Worker</span>
+    <span><b>Agent</b> Claude Code SDK</span>
+    <span><b>Routing</b> Caddy wildcard</span>
+    <span><b>3 child briefs</b> · 71 cites</span>
+  </div>
+</header>
+
+<div class="sb-strip">
+  <span class="step"><b>01</b> Slack DM</span><span class="arrow">→</span>
+  <span class="step"><b>02</b> Worker bridge</span><span class="arrow">→</span>
+  <span class="step"><b>03</b> Agent SDK</span><span class="arrow">→</span>
+  <span class="step"><b>04</b> Approve on phone</span><span class="arrow">→</span>
+  <span class="step"><b>05</b> Branch + PR</span><span class="arrow">→</span>
+  <span class="step"><b>06</b> Compose on NAS</span><span class="arrow">→</span>
+  <span class="step"><b>07</b> Caddy subdomain</span><span class="arrow">→</span>
+  <span class="step"><b>08</b> Review in Slack</span>
+</div>
+
+<section class="sb-reel">
+
+  <article class="sb-panel">
+    <div class="slate"><span>SCENE</span><span class="num">01</span><span>SPEC</span></div>
+    <div class="stage stage-slack">
+      <div class="phone">
+        <div class="slack-bar"><div class="dm"></div><b>claude-bot</b><span style="margin-left:auto;">DM</span></div>
+        <div class="bubble user">Add a "delete account" button to the settings page. Confirm modal, soft-delete in DB.<span class="ts">21:47</span></div>
+        <div class="bubble bot">Got it. Reading <span class="mono">app/settings/*</span> and <span class="mono">db/users.ts</span>. Will draft a plan first.<span class="ts">21:47</span></div>
+        <div class="bubble bot">Plan ready. 4 file changes, 1 migration. Show diff?<span class="ts">21:48</span></div>
+      </div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 01 · Spec</span>
+      <h3>Slack DM as the prompt.</h3>
+      <p class="what">A direct message to <span class="mono">@claude-bot</span>. No channel, no audience tax — just a typed feature request and a thread to live in. Slack push delivers to the phone like any other message.</p>
+      <div class="pick"><b>Why DM:</b> threaded approvals, mobile push, no public chatter. The thread becomes the audit log.</div>
+      <div class="latency"><span class="pill"><b>~2s</b> first reply</span><span class="pill">no checkout</span></div>
+    </div>
+  </article>
+
+  <article class="sb-panel">
+    <div class="slate"><span>SCENE</span><span class="num">02</span><span>BRIDGE</span></div>
+    <div class="stage stage-term">
+      <div class="titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="title">cf-worker · slack-bridge</span></div>
+      <div class="term">
+<span class="dim"># slack event arrives at workers.dev</span><br/>
+<span class="prompt">▸</span> POST /slack/events<br/>
+<span class="dim">  signature: v0=ce…f4 <span class="ok">verified</span></span><br/>
+<span class="dim">  team: T03A… user: U045B…</span><br/>
+<br/>
+<span class="prompt">▸</span> route(team, channel) <span class="warn">→</span> bot://nas:7421<br/>
+<span class="dim">  via Cloudflare Tunnel · no public port</span><br/>
+<br/>
+<span class="prompt">▸</span> forward({event, claim})<br/>
+<span class="ok">  ✓ ack 200 in 187ms</span><br/>
+<span class="dim">  (Slack 3s budget — safe)</span><br/>
+<br/>
+<span class="think">▸ handing off to claude-code…</span>
+      </div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 02 · Bridge</span>
+      <h3>Cloudflare Worker, then NAS.</h3>
+      <p class="what">Slack hits a Worker that verifies the signature, takes the 3-second ack budget off the bot, and forwards through a Cloudflare Tunnel to the self-hosted runner. No exposed NAS port, no inbound firewall rule.</p>
+      <div class="pick"><b>Why a Worker:</b> TLS terminates at the edge, retries are cheap, and the bot stays unaddressable from the public internet.</div>
+      <div class="latency"><span class="pill"><b>187ms</b> ack</span><span class="pill">tunnel-only</span></div>
+    </div>
+  </article>
+
+  <article class="sb-panel">
+    <div class="slate"><span>SCENE</span><span class="num">03</span><span>WORK</span></div>
+    <div class="stage stage-term">
+      <div class="titlebar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="title">claude-code · agent-sdk</span></div>
+      <div class="term">
+<span class="prompt">$</span> claude-code spawn --session=slack-T03A-2147<br/>
+<span class="ok">  ✓ workspace cloned (atlas@main)</span><br/>
+<br/>
+<span class="think">  Read(app/settings/page.tsx)</span><br/>
+<span class="think">  Read(db/users.ts)</span><br/>
+<span class="think">  Grep("deleteAccount")  <span class="dim">→ 0 matches</span></span><br/>
+<span class="think">  Plan: add button + modal,</span><br/>
+<span class="think">        soft-delete column,</span><br/>
+<span class="think">        migration 0042.</span><br/>
+<br/>
+<span class="warn">  ⚠ awaiting approval — destructive change</span><br/>
+<span class="dim">  posting diff to Slack thread…</span>
+      </div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 03 · Work</span>
+      <h3>Agent SDK plans, then pauses.</h3>
+      <p class="what">Claude Code reads the repo, drafts a plan, and stops at the first destructive step. The Agent SDK's tool-use approval hook is the gate — every <span class="mono">Edit</span>, <span class="mono">Bash</span>, or migration call sends a Slack prompt before it runs.</p>
+      <div class="pick"><b>Why Agent SDK:</b> the approval hook IS the mobile UX. No custom protocol — just one Slack message per tool call.</div>
+      <div class="latency"><span class="pill"><b>32 cites</b></span><span class="pill">deep brief</span></div>
+    </div>
+  </article>
+
+  <article class="sb-panel">
+    <div class="slate"><span>SCENE</span><span class="num">04</span><span>APPROVE</span></div>
+    <div class="stage stage-approval">
+      <div class="approval">
+        <div class="head"><span class="icon">CC</span><span>claude-bot wants to edit 4 files</span></div>
+        <div class="desc">Adds <span class="mono">DeleteAccountButton</span>, soft-delete column, modal confirmation. Migration <span class="mono">0042</span>.</div>
+        <div class="diff">
+<span class="add">+ &lt;DeleteAccountButton onConfirm={…} /&gt;</span><br/>
+<span class="add">+ deleted_at: timestamp.nullable()</span><br/>
+<span class="del">- // TODO: account deletion</span>
+        </div>
+        <div class="actions">
+          <div class="btn go">Go</div>
+          <div class="btn edit">Edit</div>
+          <div class="btn no">Stop</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 04 · Approve</span>
+      <h3>One tap on the phone.</h3>
+      <p class="what">A Slack Block Kit card with the diff, the migration, and three buttons. <b>Go</b> resumes the agent. <b>Edit</b> reopens the thread for a refinement message. <b>Stop</b> kills the session and rolls the workspace back.</p>
+      <div class="pick"><b>The mobile-friendly bit:</b> approval is a thumb tap on a card that already pushed to the lock screen. No SSH, no laptop.</div>
+      <div class="latency"><span class="pill">3-button card</span><span class="pill">audit-logged</span></div>
+    </div>
+  </article>
+
+  <article class="sb-panel">
+    <div class="slate"><span>SCENE</span><span class="num">05</span><span>BRANCH + PR</span></div>
+    <div class="stage stage-gh">
+      <div class="gh-head">
+        <span class="repo">atlas/atlas</span><span>·</span><span>Pull request</span>
+        <span class="pill">Open</span>
+      </div>
+      <div class="gh-pr">
+        <h4>Add account deletion <span class="num">#312</span></h4>
+        <div class="branch"><span class="b">claude/delete-account-2147</span> → <span class="b">main</span></div>
+        <div class="checks">
+          <div class="check ok"><span class="glyph">✓</span><span>build &amp; types</span><span style="margin-left:auto;">42s</span></div>
+          <div class="check ok"><span class="glyph">✓</span><span>unit tests · 318 passed</span><span style="margin-left:auto;">1m 14s</span></div>
+          <div class="check run"><span class="glyph">●</span><span>preview deploy · #312.preview.sangu.be</span><span style="margin-left:auto;">running</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 05 · Branch + PR</span>
+      <h3>GitHub App, no checkout.</h3>
+      <p class="what">The same App that authenticated the agent now creates the branch through the contents API, opens the PR, and posts the link back to the Slack thread. Status checks land on the PR; the preview deploy fires as the third check.</p>
+      <div class="pick"><b>Why one App identity:</b> branch creation, PR open, and check writes share the same installation token. No new secrets, one unified actor in audit.</div>
+      <div class="latency"><span class="pill"><b>~12s</b> branch → PR</span><span class="pill">no local clone</span></div>
+    </div>
+  </article>
+
+  <article class="sb-panel">
+    <div class="slate"><span>SCENE</span><span class="num">06</span><span>DEPLOY</span></div>
+    <div class="stage stage-stack">
+      <div class="stack-bar">
+        <span class="nas">synology · nas-01</span>
+        <span>Container Manager</span>
+        <span class="url">↗ #312.preview.sangu.be</span>
+      </div>
+      <div class="stack-grid">
+        <div class="container">
+          <div class="name">atlas-pr312-web</div>
+          <div class="img">atlas/web:pr-312</div>
+          <div class="status"><span class="led"></span>healthy · 14s</div>
+        </div>
+        <div class="container">
+          <div class="name">atlas-pr312-api</div>
+          <div class="img">atlas/api:pr-312</div>
+          <div class="status"><span class="led"></span>healthy · 11s</div>
+        </div>
+        <div class="container">
+          <div class="name">atlas-pr312-db</div>
+          <div class="img">postgres:16-alpine</div>
+          <div class="status"><span class="led amber"></span>migrating · 0042</div>
+        </div>
+        <div class="container">
+          <div class="name">atlas-pr312-cache</div>
+          <div class="img">redis:7-alpine</div>
+          <div class="status"><span class="led"></span>healthy · 9s</div>
+        </div>
+      </div>
+      <div class="caddy">caddy <span class="arrow">→</span> <span class="dom">*.preview.sangu.be</span> · auto-TLS · zero per-branch config</div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 06 · Deploy</span>
+      <h3>Compose stack per branch.</h3>
+      <p class="what">A templated <span class="mono">docker-compose.preview.yml</span> stamps a fresh stack named after the PR number. Caddy's wildcard cert covers any new subdomain — <span class="mono">#312.preview.sangu.be</span> works the moment the web container is healthy.</p>
+      <div class="pick"><b>Why Compose, not k3s:</b> the NAS already runs Container Manager. The whole lifecycle is <span class="mono">compose up</span> on PR-open and <span class="mono">compose down</span> on PR-close (or TTL).</div>
+      <div class="latency"><span class="pill"><b>~45s</b> cold start</span><span class="pill">21 cites</span></div>
+    </div>
+  </article>
+
+  <article class="sb-panel" style="grid-column:1/-1;max-width:480px;justify-self:center;">
+    <div class="slate"><span>SCENE</span><span class="num">07</span><span>REVIEW</span></div>
+    <div class="stage stage-preview">
+      <div class="phone preview">
+        <div class="preview-bar"><span class="lock">🔒</span><span>#312.preview.sangu.be</span></div>
+        <div class="preview-content">
+          <div class="hd">Settings · Account</div>
+          <div class="sub">profile · privacy · billing · <b style="color:#cf222e;">danger zone</b></div>
+          <div class="feat"><b>Delete account</b><br/>Soft-delete with 30-day recovery window. A confirmation modal will ask you to type your username.</div>
+          <div class="cta">Delete my account</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <span class="step-name">Step 07 · Review</span>
+      <h3>Same phone, real preview.</h3>
+      <p class="what">The Slack thread that started the request now contains a clickable URL that opens a real, isolated preview of the change — same database shape, same routing, same cert. Tap the button, see the modal, decide.</p>
+      <div class="pick"><b>Closing the loop:</b> spec, build, branch, PR, deploy, review — all in one Slack thread, all from one device. Merge from the same phone, or push to a laptop later.</div>
+      <div class="latency"><span class="pill">end-to-end on phone</span><span class="pill">no laptop required</span></div>
+    </div>
+  </article>
+
+</section>
+
+<section class="sb-decision">
+  <div class="lab">The shape of the recommendation</div>
+  <h2>Six layers, one identity.</h2>
+  <div class="grid">
+    <div class="cell">
+      <div class="layer">Chat surface</div>
+      <div class="pick">Slack DM (no channel)</div>
+      <div class="why">Mobile push, threaded approvals, no audience tax.</div>
+    </div>
+    <div class="cell">
+      <div class="layer">Inbound bridge</div>
+      <div class="pick">Cloudflare Worker → self-hosted bot</div>
+      <div class="why">TLS-terminated, no public NAS port, retries are cheap.</div>
+    </div>
+    <div class="cell">
+      <div class="layer">Code execution</div>
+      <div class="pick">Claude Code via Agent SDK</div>
+      <div class="why">Tool-use approval hook IS the mobile UX.</div>
+    </div>
+    <div class="cell">
+      <div class="layer">Branch + PR</div>
+      <div class="pick">GitHub App (existing Atlas auth)</div>
+      <div class="why">One bot identity, no new secrets, unified audit.</div>
+    </div>
+    <div class="cell">
+      <div class="layer">Preview deploy</div>
+      <div class="pick">Docker Compose per branch</div>
+      <div class="why">Reuses NAS Container Manager — no k3s to operate.</div>
+    </div>
+    <div class="cell">
+      <div class="layer">Routing</div>
+      <div class="pick">Caddy wildcard <span class="mono">*.preview.sangu.be</span></div>
+      <div class="why">Auto-TLS, zero per-branch config.</div>
+    </div>
+  </div>
+</section>
+
+<section class="sb-children">
+  <div class="lab">Drill down · 3 child briefs</div>
+  <h2>The flow split into three angles.</h2>
+  <div class="grid">
+    <a class="child" href="../slack-claude-code-remote-control/">
+      <div class="step">Step 01–04</div>
+      <h3>Slack ↔ Claude Code remote control</h3>
+      <p>GitHub App vs Agent SDK vs self-hosted bot — survey of mobile-friendly approval flows.</p>
+      <div class="depth">depth · <b>expedition</b> · 32 cites · 12 min</div>
+    </a>
+    <a class="child" href="../branch-and-pr-automation/">
+      <div class="step">Step 05</div>
+      <h3>Branch and PR automation</h3>
+      <p>How a "go" message produces a branch and PR without a local checkout.</p>
+      <div class="depth">depth · <b>survey</b> · 18 cites · 7 min</div>
+    </a>
+    <a class="child" href="../synology-preview-deployments/">
+      <div class="step">Step 06</div>
+      <h3>Synology preview deployments</h3>
+      <p>Container Manager / Docker Compose lifecycle per branch.</p>
+      <div class="depth">depth · <b>survey</b> · 21 cites · 9 min</div>
+    </a>
+  </div>
+</section>
+
+<section class="sb-open">
+  <div class="lab">Still open · for a follow-up expedition</div>
+  <h2>Two questions the children couldn't fully resolve.</h2>
+  <ul>
+    <li><b>Stack garbage collection.</b> PR-close webhooks vs TTL. The auth survey leans TTL — webhooks miss when bots can't observe PR events reliably across forks and stale tokens.</li>
+    <li><b>Deploy-failure feedback into Slack.</b> Posting a one-line "build failed" link is fine; surfacing logs without re-implementing a job runner is the harder part.</li>
+  </ul>
+</section>
+
+<footer class="sb-foot">
+  <span>SCOUT · COMPASS · STORYBOARD</span>
+  <span>6 SCENES · 71 CITES · 3 CHILD BRIEFS</span>
+  <span>NEXT: GC + LOG SURFACING — FOLLOW-UP EXPEDITION</span>
+</footer>
+
+</div>
