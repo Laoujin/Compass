@@ -18,6 +18,9 @@
 .card .chip { background: #1a1c20; color: #e0c085; border-color: #2d3036; }
 .meta-chip { background: #1a1c20; color: #a8a59c; border-color: #2d3036; }
 
+/* View-badges sit bottom-right (no cover, so we use the body's bottom edge). */
+.card .view-badges { top: auto; bottom: 10px; right: 10px; }
+
 /* Terminal-flavored angles chip — drop the saturated purple for a muted
    yellow-on-near-black that matches the rest of the variant. */
 .angles-chip {

@@ -53,7 +53,6 @@
             <p>{{ featured.summary }}</p>
             <div class="card-foot">
               {%- if featured.depth -%}<span class="depth-badge depth-{{ featured_depth_label }}">{{ featured_depth_label }}</span>{%- endif -%}
-              {%- if featured.format -%}<span class="meta-chip">.{{ featured.format }}</span>{%- endif -%}
               {%- if featured.citations -%}<span class="meta-chip">{{ featured.citations }} sources</span>{%- endif -%}
               {%- if featured.reading_time_min -%}<span class="meta-chip">{{ featured.reading_time_min }} min</span>{%- endif -%}
             </div>

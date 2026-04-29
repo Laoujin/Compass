@@ -37,3 +37,9 @@
 }
 .card-summary, .card-tags { display: none; }
 .card-foot { order: 3; flex-shrink: 0; padding-top: 0; margin: 0; }
+
+/* In the dense row layout, the badge can't ride absolutely — it needs to
+   live inline at the right end of the row, after the existing card-foot
+   meta chips. Since .view-badges is a direct child of .card (sibling of
+   .card-link), un-absoluting it drops it into the flex flow on the right. */
+.card .view-badges { position: static; top: auto; right: auto; flex-shrink: 0; align-self: center; }

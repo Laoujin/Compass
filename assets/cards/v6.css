@@ -23,5 +23,8 @@
 }
 .angles-chip::before { font-size: 11px; }
 
+/* View-badges sit bottom-right (no cover, so we use the card's bottom edge). */
+.card .view-badges { top: auto; bottom: 10px; right: 12px; }
+
 @media (max-width: 900px) { .entry-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .entry-grid { grid-template-columns: 1fr; } }

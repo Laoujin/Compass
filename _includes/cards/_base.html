@@ -31,8 +31,6 @@ in place of the format pill.
       {%- if e.children -%}
         {%- assign angle_count = e.children | size -%}
         <span class="angles-chip">{{ angle_count }} {% if angle_count == 1 %}angle{% else %}angles{% endif %}</span>
-      {%- elsif e.format -%}
-        <span class="fmt-pill fmt-{{ e.format }}">.{{ e.format }}</span>
       {%- endif -%}
     </div>
     <div class="card-body">
