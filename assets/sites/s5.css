@@ -50,10 +50,16 @@
   display: block; background: var(--pal-surface);
   border-radius: 10px; overflow: hidden;
   box-shadow: 0 8px 24px -8px rgba(0,0,0,.2), 0 0 0 1px var(--pal-border);
-  color: inherit; text-decoration: none;
+  /* Anchor for the view-badges + container for the cqi calc that pins
+     the badges to the bottom of the cover. */
+  position: relative;
+  container-type: inline-size;
+}
+.s5-featured-link {
+  display: block; color: inherit; text-decoration: none;
   transition: transform .15s ease;
 }
-.s5-featured-card:hover { transform: translateY(-2px); }
+.s5-featured-link:hover { transform: translateY(-2px); }
 .s5-featured-card .cover { aspect-ratio: 3/2; position: relative; }
 .s5-featured-top {
   position: absolute; top: 10px; right: 10px; z-index: 3;

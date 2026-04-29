@@ -204,12 +204,14 @@ img { max-width: 100%; display: block; }
   z-index: 4;
 }
 
-/* On the s5 featured (large) card: place below the .s5-featured-top chip
-   slot (which is at top:10px inside the cover, cover starts ~22px down from
-   the .s5-featured top edge). */
-.s5-featured > .view-badges {
+/* On the s5 featured (large) card: pin to the bottom-right of the cover.
+   The cover has aspect-ratio 3/2 and full-width inside .s5-featured-card,
+   so its height equals 2/3 of the card's inline size — the badge sits
+   just above that line. */
+.s5-featured-card > .view-badges {
   position: absolute;
-  top: 56px; right: 14px;
+  top: calc(100cqi * 2 / 3 - 36px);
+  right: 14px;
   z-index: 4;
 }
-.s5-featured .view-badge { padding: 4px 11px; font-size: 11px; }
+.s5-featured-card .view-badge { padding: 4px 11px; font-size: 11px; }
