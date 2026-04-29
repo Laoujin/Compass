@@ -56,7 +56,7 @@
     {% assign synth_words = content | strip_html | number_of_words %}
     {% assign synth_min = synth_words | plus: 199 | divided_by: 200 %}
     {% if page.synthesis %}
-    <div class="research-findings-layout">
+    <div class="research-findings-layout has-children-rail">
       <nav class="research-toc" aria-label="On this page">
         <div class="toc-label">On this page</div>
         <ol class="toc-list"></ol>
@@ -69,6 +69,23 @@
       <article class="research-article">
         {{ content }}
       </article>
+      <aside class="children-rail" aria-label="Sub-topics">
+        <div class="toc-label">{{ total }} angle{% if total != 1 %}s{% endif %} in this expedition</div>
+        <ol class="sibling-list">
+          {% for c in page.children %}
+          {% assign c_depth = c.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
+          <li class="sibling-card">
+            <a href="{{ page.url | append: c.slug | append: '/' | relative_url }}">
+              <span class="num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+              <span class="sc-body">
+                <span class="sc-ttl">{{ c.title }}</span>
+                <span class="sc-meta">{% if c.citations %}★ {{ c.citations }}{% endif %}{% if c.reading_time_min %} · {{ c.reading_time_min }} min{% endif %}{% if c_depth %} · {{ c_depth }}{% endif %}</span>
+              </span>
+            </a>
+          </li>
+          {% endfor %}
+        </ol>
+      </aside>
     </div>
     {% else %}
     <article class="research-article">

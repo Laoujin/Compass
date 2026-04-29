@@ -203,6 +203,21 @@ body.research-page {
   grid-template-columns: 220px minmax(0, 1fr);
   gap: 56px;
 }
+.research-findings-layout.has-children-rail {
+  max-width: 1380px;
+  grid-template-columns: 200px minmax(0, 1fr) 260px;
+  gap: 48px;
+}
+
+.children-rail {
+  align-self: start;
+  position: sticky;
+  top: 70px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
 
 .research-toc {
   align-self: start;
@@ -211,13 +226,13 @@ body.research-page {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.research-toc .sibling-list {
+:is(.research-toc, .children-rail) .sibling-list {
   list-style: none;
   padding: 0;
   margin: 0 0 22px;
 }
-.research-toc .sibling-card { margin-bottom: 6px; }
-.research-toc .sibling-card a {
+:is(.research-toc, .children-rail) .sibling-card { margin-bottom: 6px; }
+:is(.research-toc, .children-rail) .sibling-card a {
   display: flex;
   gap: 10px;
   padding: 8px 10px;
@@ -229,11 +244,11 @@ body.research-page {
   align-items: flex-start;
   transition: border-color .12s ease, transform .12s ease, background .12s ease;
 }
-.research-toc .sibling-card a:hover {
+:is(.research-toc, .children-rail) .sibling-card a:hover {
   border-color: var(--pal-accent);
   transform: translateX(2px);
 }
-.research-toc .sibling-card .num {
+:is(.research-toc, .children-rail) .sibling-card .num {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 18px;
   font-weight: 700;
@@ -242,36 +257,36 @@ body.research-page {
   width: 22px;
   flex-shrink: 0;
 }
-.research-toc .sibling-card .sc-body {
+:is(.research-toc, .children-rail) .sibling-card .sc-body {
   flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;
 }
-.research-toc .sibling-card .sc-ttl {
+:is(.research-toc, .children-rail) .sibling-card .sc-ttl {
   font-family: 'Fraunces', Georgia, serif;
   font-size: 13px;
   font-weight: 600;
   line-height: 1.2;
   color: var(--pal-fg);
 }
-.research-toc .sibling-card .sc-meta {
+:is(.research-toc, .children-rail) .sibling-card .sc-meta {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 10px;
   color: var(--pal-fg-faint);
 }
-.research-toc .sibling-card.active a {
+:is(.research-toc, .children-rail) .sibling-card.active a {
   border-color: var(--pal-accent);
   background: color-mix(in srgb, var(--pal-accent) 12%, var(--pal-surface));
 }
-.research-toc .sibling-card.active .num,
-.research-toc .sibling-card.active .sc-ttl { color: var(--pal-accent); }
+:is(.research-toc, .children-rail) .sibling-card.active .num,
+:is(.research-toc, .children-rail) .sibling-card.active .sc-ttl { color: var(--pal-accent); }
 
-.research-toc .sibling-parent { margin-bottom: 12px; }
-.research-toc .sibling-parent .num {
+:is(.research-toc, .children-rail) .sibling-parent { margin-bottom: 12px; }
+:is(.research-toc, .children-rail) .sibling-parent .num {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   font-size: 20px;
   color: var(--pal-fg-muted);
 }
-.research-toc .sibling-parent .sc-tag {
+:is(.research-toc, .children-rail) .sibling-parent .sc-tag {
   font-size: 9.5px;
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -279,12 +294,13 @@ body.research-page {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   margin-bottom: 1px;
 }
-.research-toc .toc-label {
-  font-size: 10px;
+:is(.research-toc, .children-rail) .toc-label {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: .14em;
+  letter-spacing: .18em;
   color: var(--pal-fg-faint);
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
 .research-toc .toc-list {
   list-style: none;
@@ -344,7 +360,8 @@ body.research-page {
 }
 
 @media (max-width: 920px) {
-  .research-findings-layout {
+  .research-findings-layout,
+  .research-findings-layout.has-children-rail {
     grid-template-columns: 1fr;
     gap: 24px;
     padding-top: 28px;
@@ -354,6 +371,7 @@ body.research-page {
     padding-bottom: 12px;
     border-bottom: 1px solid var(--pal-border);
   }
+  .children-rail { display: none; }
 }
 
 @media (max-width: 760px) {
