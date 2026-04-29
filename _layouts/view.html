@@ -14,6 +14,11 @@
     Only the active palette is loaded so views can opt into --pal-* vars.
   {% endcomment %}
   <style>
+    /* The view body is full-bleed with zero gutters — views should NOT use
+       negative margins to "break out" of anything. There is nothing to break
+       out of; the negative-margin pattern clips content above the viewport. */
+    html, body { margin: 0; padding: 0; }
+
     /* Universal back-link to the canonical page. View body styles must not
        target .view-back; we want this readable over any visual treatment. */
     .view-back {
