@@ -75,14 +75,16 @@
         <ol class="sibling-list">
           {% for c in page.children %}
           {% assign c_depth = c.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
+          {% assign c_url = page.url | append: c.slug | append: '/' %}
           <li class="sibling-card">
-            <a href="{{ page.url | append: c.slug | append: '/' | relative_url }}">
+            <a href="{{ c_url | relative_url }}">
               <span class="num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
               <span class="sc-body">
                 <span class="sc-ttl">{{ c.title }}</span>
                 <span class="sc-meta">{% if c.citations %}★ {{ c.citations }}{% endif %}{% if c.reading_time_min %} · {{ c.reading_time_min }} min{% endif %}{% if c_depth %} · {{ c_depth }}{% endif %}</span>
               </span>
             </a>
+            {%- include view-badge.html entry_url=c_url -%}
           </li>
           {% endfor %}
         </ol>

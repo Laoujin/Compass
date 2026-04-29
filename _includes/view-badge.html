@@ -1,0 +1,15 @@
+{%- comment -%}
+  Renders one clickable pill per alternate view of a research entry.
+  Caller passes:
+    entry_url: the canonical entry's URL (must end with /)
+  No output if the entry has no views.
+{%- endcomment -%}
+{%- assign _vd = include.entry_url | append: 'views/' -%}
+{%- assign _views = site.pages | where: 'layout', 'view' | where_exp: 'p', 'p.url contains _vd' -%}
+{%- if _views.size > 0 -%}
+<span class="view-badges">
+{%- for _v in _views -%}
+<a class="view-badge" href="{{ _v.url | relative_url }}" title="Open as {{ _v.view_name | default: _v.title }}">{{ _v.view_name | default: _v.title }}</a>
+{%- endfor -%}
+</span>
+{%- endif -%}

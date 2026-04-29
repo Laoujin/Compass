@@ -269,6 +269,7 @@ body.research-page {
   top: 70px;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   max-height: calc(100vh - 90px);
+  overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: thin;
 }
@@ -282,10 +283,28 @@ body.research-page {
 
 :is(.research-toc, .children-rail) .sibling-list {
   list-style: none;
-  padding: 0;
+  /* Right gutter accommodates the 2px hover translateX so the right border
+     stays visible inside the rail's overflow-x: hidden clip. */
+  padding: 0 4px 0 0;
   margin: 0 0 22px;
 }
-:is(.research-toc, .children-rail) .sibling-card { margin-bottom: 6px; }
+:is(.research-toc, .children-rail) .sibling-card { margin-bottom: 6px; position: relative; }
+:is(.research-toc, .children-rail) .sibling-card > .view-badges {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
+}
+:is(.research-toc, .children-rail) .sibling-card .view-badge {
+  padding: 1px 6px;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+/* Reserve right gutter inside the card so the title doesn't run under the
+   absolutely-positioned view-badge. */
+:is(.research-toc, .children-rail) .sibling-card:has(> .view-badges) > a {
+  padding-right: 78px;
+}
 :is(.research-toc, .children-rail) .sibling-card a {
   display: flex;
   gap: 10px;
@@ -926,6 +945,19 @@ html { scroll-behavior: smooth; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
+}
+
+.child-card-wrap { position: relative; display: flex; }
+.child-card-wrap > .child-card { flex: 1; min-width: 0; }
+.child-card-wrap > .view-badges {
+  position: absolute;
+  top: 12px; right: 12px;
+  z-index: 2;
+}
+/* Reserve right gutter on the meta row so depth-badge / sources / min chips
+   don't slide under the absolutely-positioned view-badge. */
+.child-card-wrap:has(> .view-badges) > .child-card .child-card-meta {
+  padding-right: 90px;
 }
 
 .child-card {

@@ -20,22 +20,26 @@ Each child entry has frontmatter shape:
         {% if c.summary %}<p class="child-card-summary">Reason: {{ c.summary }}</p>{% endif %}
       </div>
     {% else %}
-      {% assign child_url = page.url | append: c.slug | append: '/' | relative_url %}
+      {% assign child_url_abs = page.url | append: c.slug | append: '/' %}
+      {% assign child_url = child_url_abs | relative_url %}
       {% assign has_warning = false %}
       {% if c.status == 'error_with_content' or c.validation_error %}{% assign has_warning = true %}{% endif %}
-      <a class="child-card child-card-success{% if has_warning %} child-card-warning{% endif %}" href="{{ child_url }}">
-        <div class="child-card-meta">
-          <span class="depth-badge depth-{{ clabel }}">{{ clabel }}</span>
-          {% if has_warning %}<span class="warning-badge" title="{{ c.validation_error }}">⚠</span>{% endif %}
-          {% if c.citations %}<span class="meta-chip">{{ c.citations }} sources</span>{% endif %}
-          {% if c.reading_time_min %}<span class="meta-chip">{{ c.reading_time_min }} min</span>{% endif %}
-        </div>
-        <h3 class="child-card-title">{{ c.title }}</h3>
-        {% if c.summary %}<p class="child-card-summary">{{ c.summary }}</p>{% endif %}
-        {% if has_warning and c.validation_error %}
-          <p class="child-card-warning-reason">⚠ {{ c.validation_error }}</p>
-        {% endif %}
-      </a>
+      <div class="child-card-wrap">
+        <a class="child-card child-card-success{% if has_warning %} child-card-warning{% endif %}" href="{{ child_url }}">
+          <div class="child-card-meta">
+            <span class="depth-badge depth-{{ clabel }}">{{ clabel }}</span>
+            {% if has_warning %}<span class="warning-badge" title="{{ c.validation_error }}">⚠</span>{% endif %}
+            {% if c.citations %}<span class="meta-chip">{{ c.citations }} sources</span>{% endif %}
+            {% if c.reading_time_min %}<span class="meta-chip">{{ c.reading_time_min }} min</span>{% endif %}
+          </div>
+          <h3 class="child-card-title">{{ c.title }}</h3>
+          {% if c.summary %}<p class="child-card-summary">{{ c.summary }}</p>{% endif %}
+          {% if has_warning and c.validation_error %}
+            <p class="child-card-warning-reason">⚠ {{ c.validation_error }}</p>
+          {% endif %}
+        </a>
+        {%- include view-badge.html entry_url=child_url_abs -%}
+      </div>
     {% endif %}
   {% endfor %}
 </div>

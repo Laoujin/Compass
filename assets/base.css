@@ -170,3 +170,46 @@ img { max-width: 100%; display: block; }
   color: var(--pal-fg-muted); background: var(--pal-surface-tint);
   border: 1px solid var(--pal-border);
 }
+
+/* ---------- View badges (alternate-view shortcuts overlaid on cards) ----- */
+.view-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.view-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font: 600 10px/1.4 ui-monospace, Menlo, monospace;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--pal-accent);
+  color: var(--pal-bg);
+  text-decoration: none;
+  border: 1px solid var(--pal-accent);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--pal-fg) 18%, transparent);
+  transition: transform .12s ease, filter .12s ease;
+}
+.view-badge:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+/* On the index card: pin to the cover, below the card-top chip row
+   (card-top is z:3 in v1 and lives at top:10px with ~26px chips). */
+.card .view-badges {
+  position: absolute;
+  top: 46px; right: 10px;
+  z-index: 4;
+}
+
+/* On the s5 featured (large) card: place below the .s5-featured-top chip
+   slot (which is at top:10px inside the cover, cover starts ~22px down from
+   the .s5-featured top edge). */
+.s5-featured > .view-badges {
+  position: absolute;
+  top: 56px; right: 14px;
+  z-index: 4;
+}
+.s5-featured .view-badge { padding: 4px 11px; font-size: 11px; }
