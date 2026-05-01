@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
+  {%- include analytics.html -%}
 </head>
 <body>
   {%- include entries.html -%}
