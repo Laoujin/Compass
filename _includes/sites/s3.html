@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
@@ -61,7 +62,7 @@
       </aside>
       <section class="s3-content">
         <div class="entry-grid">
-          {%- for e in entries -%}{%- assign _card_path = site.card | prepend: 'cards/' | append: '.html' -%}{%- include {{ _card_path }} entry=e -%}{%- endfor -%}
+          {%- include grid-with-series.html items=entries -%}
         </div>
       </section>
     </div>

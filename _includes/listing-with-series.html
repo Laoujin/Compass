@@ -1,0 +1,75 @@
+{%- comment -%}
+s6 terminal listing — like grid-with-series.html but emits 4-column rows
+matching the s6-listing markup (date, depth, title, cit/read).
+
+A series row looks like a directory in `ls`:
+  2026-05-25  series  michelin-weekends/  10 entries
+
+Inputs:
+  include.items  — array of pages (typically `entries`)
+
+Relies on entries.html vars: entry_series_map, series_count_map.
+{%- endcomment -%}
+{%- assign _emitted_series = "," -%}
+{%- for e in include.items -%}
+  {%- assign _segs = e.url | split: '/' -%}
+  {%- assign _slug = _segs[2] -%}
+
+  {%- assign _series_slug = "" -%}
+  {%- assign _lookup = "," | append: _slug | append: "=" -%}
+  {%- if entry_series_map contains _lookup -%}
+    {%- assign _after = entry_series_map | split: _lookup | last -%}
+    {%- assign _series_slug = _after | split: "," | first -%}
+  {%- endif -%}
+
+  {%- assign _already_emitted = false -%}
+  {%- if _series_slug != "" -%}
+    {%- assign _emit_check = "," | append: _series_slug | append: "," -%}
+    {%- if _emitted_series contains _emit_check -%}{%- assign _already_emitted = true -%}{%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} Compute entry's own depth label (mirrors s6.html logic) {%- endcomment -%}
+  {%- if e.children -%}
+    {%- assign _n = e.children | size -%}
+    {%- assign _depth_label = _n | append: ' angle' -%}
+    {%- if _n != 1 -%}{%- assign _depth_label = _depth_label | append: 's' -%}{%- endif -%}
+  {%- else -%}
+    {%- assign _depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
+  {%- endif -%}
+
+  {%- if forloop.first -%}
+    {%- comment -%} Always emit the latest as its own row {%- endcomment -%}
+    <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
+    <span class="s6-cell depth-cell">{{ _depth_label }}</span>
+    <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
+    <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
+    {%- if _series_slug != "" and _already_emitted == false -%}
+      {%- assign _s_obj = site.data.series | where: "slug", _series_slug | first -%}
+      {%- assign _cnt_lookup = "," | append: _series_slug | append: "=" -%}
+      {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
+      {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
+      <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
+      <span class="s6-cell depth-cell">series</span>
+      <span class="s6-cell series-cell"><a href="{{ '/series/' | append: _series_slug | append: '/' | relative_url }}"><span class="series-arrow">↳</span>{{ _s_obj.slug }}/</a></span>
+      <span class="s6-cell">{{ _cnt }} {% if _cnt == 1 %}entry{% else %}entries{% endif %}</span>
+      {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
+    {%- endif -%}
+  {%- elsif _series_slug != "" and _already_emitted == false -%}
+    {%- assign _s_obj = site.data.series | where: "slug", _series_slug | first -%}
+    {%- assign _cnt_lookup = "," | append: _series_slug | append: "=" -%}
+    {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
+    {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
+    <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
+    <span class="s6-cell depth-cell">series</span>
+    <span class="s6-cell series-cell"><a href="{{ '/series/' | append: _series_slug | append: '/' | relative_url }}"><span class="series-arrow">↳</span>{{ _s_obj.slug }}/</a></span>
+    <span class="s6-cell">{{ _cnt }} {% if _cnt == 1 %}entry{% else %}entries{% endif %}</span>
+    {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
+  {%- elsif _series_slug != "" and _already_emitted -%}
+    {%- comment -%} Skip member of already-emitted series {%- endcomment -%}
+  {%- else -%}
+    <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
+    <span class="s6-cell depth-cell">{{ _depth_label }}</span>
+    <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
+    <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
+  {%- endif -%}
+{%- endfor -%}

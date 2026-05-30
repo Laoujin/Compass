@@ -1,0 +1,45 @@
+{%- comment -%}
+Series card — rendered on the home grid in place of the individual members.
+
+Inputs:
+  include.series  (hash) — entry from _data/series.yml
+  include.newest  (Page) — newest resolved member, used for the "Latest:" line
+                           and as a cover fallback when series.cover is absent
+  include.count   (int)  — number of resolved members
+
+Visual: stack effect via ::before/::after; spans 2 grid columns on desktop
+(see assets/series.css). The series title is the primary link (to /series/<slug>/);
+the "Latest:" line is a sibling <a> so we don't nest anchors.
+{%- endcomment -%}
+{%- assign s = include.series -%}
+{%- assign n = include.newest -%}
+{%- assign cnt = include.count -%}
+{%- if s.cover -%}
+  {%- assign cover_src = s.cover | relative_url -%}
+{%- elsif n.cover -%}
+  {%- assign cover_src = n.url | append: n.cover | relative_url -%}
+{%- else -%}
+  {%- assign cover_src = "" -%}
+{%- endif -%}
+<article class="card card--series" style="--h:280;">
+  <a href="{{ '/series/' | append: s.slug | append: '/' | relative_url }}" class="card-link">
+    {%- if cover_src != "" -%}
+      <div class="card-cover cover ratio"><img class="cover-img" src="{{ cover_src }}" alt="" loading="lazy"></div>
+    {%- else -%}
+      <div class="card-cover cover ratio"><span class="mark">{{ s.title | slice: 0, 3 | upcase }}</span></div>
+    {%- endif -%}
+    <div class="card-top">
+      <span class="depth-badge depth-series">series</span>
+      <span class="angles-chip">{{ cnt }} {% if cnt == 1 %}entry{% else %}entries{% endif %}</span>
+    </div>
+    <div class="card-body">
+      <h4 class="card-title">{{ s.title }}</h4>
+      {%- if s.blurb -%}<p class="card-summary">{{ s.blurb }}</p>{%- endif -%}
+    </div>
+  </a>
+  <a class="series-card-latest" href="{{ n.url | relative_url }}">
+    <span class="series-card-latest-label">Latest</span>
+    <span class="series-card-latest-title">{{ n.title }}</span>
+    <span class="series-card-latest-date">{{ n.date | date: "%Y-%m-%d" }}</span>
+  </a>
+</article>

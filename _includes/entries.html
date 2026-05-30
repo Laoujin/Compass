@@ -25,3 +25,68 @@ no title and would otherwise render as empty ghost cards.
 {%- endfor -%}
 {%- assign featured = entries | first -%}
 {%- assign entry_count = entries | size -%}
+
+{%- comment -%}
+=== Series membership map ====================================================
+Adds for the caller:
+  entry_series_map     — ",entry_slug=series_slug,..." (entry → FIRST series)
+  series_count_map     — ",series_slug=N,..." (count of resolved members per series)
+  series_anymember_map — ",entry_slug,..." (entry IS in at least one series)
+
+An entry's slug is the basename of its URL (e.g. "/research/2026-05-23-foo/"
+splits to ["", "research", "2026-05-23-foo"]). Series order is _data/series.yml
+order; group order is preserved; member order within a group / flat list is
+preserved. Only RESOLVED members (matching a real page in `entries`) are
+counted in series_count_map.
+{%- endcomment -%}
+{%- assign entry_series_map = "" -%}
+{%- assign series_count_map = "" -%}
+{%- assign series_anymember_map = "" -%}
+
+{%- assign all_entry_slugs_csv = "," -%}
+{%- for _e in entries -%}
+  {%- assign _seg = _e.url | split: '/' -%}
+  {%- assign _slug = _seg[2] -%}
+  {%- assign all_entry_slugs_csv = all_entry_slugs_csv | append: _slug | append: "," -%}
+{%- endfor -%}
+
+{%- for _s in site.data.series -%}
+  {%- assign _members = "" | split: "," -%}
+  {%- if _s.groups -%}
+    {%- for _g in _s.groups -%}
+      {%- for _mslug in _g.entries -%}
+        {%- assign _members = _members | push: _mslug -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- elsif _s.entries -%}
+    {%- for _mslug in _s.entries -%}
+      {%- assign _members = _members | push: _mslug -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- assign _resolved_count = 0 -%}
+  {%- for _mslug in _members -%}
+    {%- assign _needle = "," | append: _mslug | append: "," -%}
+    {%- if all_entry_slugs_csv contains _needle -%}
+      {%- assign _resolved_count = _resolved_count | plus: 1 -%}
+
+      {%- unless series_anymember_map contains _needle -%}
+        {%- assign series_anymember_map = series_anymember_map | append: _mslug | append: "," -%}
+      {%- endunless -%}
+
+      {%- assign _map_needle = "," | append: _mslug | append: "=" -%}
+      {%- assign _map_check = "," | append: entry_series_map -%}
+      {%- unless _map_check contains _map_needle -%}
+        {%- assign entry_series_map = entry_series_map | append: _mslug | append: "=" | append: _s.slug | append: "," -%}
+      {%- endunless -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if _resolved_count > 0 -%}
+    {%- assign series_count_map = series_count_map | append: _s.slug | append: "=" | append: _resolved_count | append: "," -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign entry_series_map = "," | append: entry_series_map -%}
+{%- assign series_count_map = "," | append: series_count_map -%}
+{%- assign series_anymember_map = "," | append: series_anymember_map -%}

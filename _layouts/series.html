@@ -1,0 +1,116 @@
+---
+---
+<!doctype html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
+</head>
+<body>
+  {%- assign s = site.data.series | where: "slug", page.series_slug | first -%}
+
+  {%- if s == nil -%}
+    <main class="series-page">
+      <a class="series-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+      <p class="series-empty">Unknown series: <code>{{ page.series_slug }}</code></p>
+    </main>
+  {%- else -%}
+
+  {%- include entries.html -%}
+
+  {%- assign all_slugs = "," -%}
+  {%- for _e in entries -%}
+    {%- assign _seg = _e.url | split: '/' -%}
+    {%- assign all_slugs = all_slugs | append: _seg[2] | append: "," -%}
+  {%- endfor -%}
+
+  {%- assign all_members = "" | split: "," -%}
+  {%- if s.groups -%}
+    {%- for g in s.groups -%}{%- for mslug in g.entries -%}
+      {%- assign _needle = "," | append: mslug | append: "," -%}
+      {%- if all_slugs contains _needle -%}
+        {%- assign _page = entries | where_exp: "p", "p.url contains mslug" | first -%}
+        {%- if _page -%}{%- assign all_members = all_members | push: _page -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}{%- endfor -%}
+  {%- elsif s.entries -%}
+    {%- for mslug in s.entries -%}
+      {%- assign _needle = "," | append: mslug | append: "," -%}
+      {%- if all_slugs contains _needle -%}
+        {%- assign _page = entries | where_exp: "p", "p.url contains mslug" | first -%}
+        {%- if _page -%}{%- assign all_members = all_members | push: _page -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- assign newest = all_members | sort: 'date' | reverse | first -%}
+  {%- if s.cover -%}{%- assign cover_src = s.cover | relative_url -%}
+  {%- elsif newest.cover -%}{%- assign cover_src = newest.url | append: newest.cover | relative_url -%}
+  {%- else -%}{%- assign cover_src = "" -%}
+  {%- endif -%}
+
+  <main class="series-page">
+    <a class="series-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+
+    <section class="series-cover">
+      {%- if cover_src != "" -%}
+        <img class="series-cover-img" src="{{ cover_src }}" alt="">
+      {%- endif -%}
+      <div class="series-cover-text">
+        <div class="research-kicker">
+          <span class="depth-badge depth-series">series</span>
+          <span>{{ all_members | size }} {% if all_members.size == 1 %}entry{% else %}entries{% endif %}</span>
+          {%- if newest.date -%}<time>updated {{ newest.date | date: "%Y-%m-%d" }}</time>{%- endif -%}
+        </div>
+        <h1>{{ s.title }}</h1>
+        {%- if s.blurb -%}<p>{{ s.blurb }}</p>{%- endif -%}
+      </div>
+    </section>
+
+    {%- assign _card_path = site.card | prepend: 'cards/' | append: '.html' -%}
+    {%- if s.groups -%}
+      {%- for g in s.groups -%}
+        {%- assign group_members = "" | split: "," -%}
+        {%- for mslug in g.entries -%}
+          {%- assign _needle = "," | append: mslug | append: "," -%}
+          {%- if all_slugs contains _needle -%}
+            {%- assign _page = entries | where_exp: "p", "p.url contains mslug" | first -%}
+            {%- if _page -%}{%- assign group_members = group_members | push: _page -%}{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if group_members.size > 0 -%}
+          {%- assign group_members = group_members | sort: 'date' | reverse -%}
+          <section class="series-group">
+            <h2 class="series-group-label">{{ g.label }}</h2>
+            <div class="entry-grid">
+              {%- for e in group_members -%}{%- include {{ _card_path }} entry=e -%}{%- endfor -%}
+            </div>
+          </section>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if all_members.size == 0 -%}
+        <p class="series-empty">No research yet — coming soon.</p>
+      {%- endif -%}
+    {%- else -%}
+      {%- if all_members.size > 0 -%}
+        {%- assign flat_members = all_members | sort: 'date' | reverse -%}
+        <div class="entry-grid">
+          {%- for e in flat_members -%}{%- include {{ _card_path }} entry=e -%}{%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="series-empty">No research yet — coming soon.</p>
+      {%- endif -%}
+    {%- endif -%}
+  </main>
+  {%- endif -%}
+</body>
+</html>

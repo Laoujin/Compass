@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
@@ -29,19 +30,7 @@
         <span class="s6-header">depth</span>
         <span class="s6-header">title</span>
         <span class="s6-header">cit / read</span>
-        {%- for e in entries -%}
-          {%- if e.children -%}
-            {%- assign n = e.children | size -%}
-            {%- assign depth_label = n | append: ' angle' -%}
-            {%- if n != 1 -%}{%- assign depth_label = depth_label | append: 's' -%}{%- endif -%}
-          {%- else -%}
-            {%- assign depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
-          {%- endif -%}
-          <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
-          <span class="s6-cell depth-cell">{{ depth_label }}</span>
-          <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
-          <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
-        {%- endfor -%}
+        {%- include listing-with-series.html items=entries -%}
       </div>
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span><span class="s6-caret">_</span></p>
     </div>

@@ -1,0 +1,95 @@
+/* ===========================================================================
+   Series card (home grid) and series page
+   --------------------------------------------------------------------------
+   Visual: stack effect (two card edges peeking out behind), and a 2-column
+   grid span at desktop sizes. The existing breakpoints in base.css are:
+   3-col default, 2-col @900px, 1-col @600px. The span clamps to 1 on mobile.
+   =========================================================================== */
+
+.card--series {
+  position: relative;
+}
+
+/* Stack pseudo-elements — fake card edges behind the main card. */
+.card--series::before,
+.card--series::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--pal-surface);
+  border: 1px solid var(--pal-border);
+  border-radius: 8px;
+  z-index: -1;
+  pointer-events: none;
+}
+.card--series::before { transform: translate(6px, 6px); opacity: 0.85; }
+.card--series::after  { transform: translate(12px, 12px); opacity: 0.55; }
+
+/* Desktop: span 2 columns at >=2-col breakpoints; on 1-col mobile, the
+   span is clamped by the grid. */
+@media (min-width: 601px) {
+  .card--series { grid-column: span 2; }
+}
+
+/* "Latest" sub-link sits below the main card-link, sibling not nested. */
+.series-card-latest {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 8px 14px 12px;
+  border-top: 1px solid var(--pal-border);
+  font-size: 12.5px;
+  color: var(--pal-fg-faint);
+  text-decoration: none;
+}
+.series-card-latest:hover { background: rgba(0,0,0,0.03); }
+.series-card-latest-label {
+  font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--pal-fg);
+}
+.series-card-latest-title { flex: 1; color: var(--pal-fg); }
+.series-card-latest-date  { font-family: ui-monospace, Menlo, monospace; }
+
+/* Series badge — reuse depth-badge sizing; pick a purple hue. */
+.depth-badge.depth-series {
+  background: hsl(280 60% 92%);
+  color: hsl(280 60% 30%);
+  border: 1px solid hsl(280 60% 80%);
+}
+
+/* s6 (terminal listing) series row */
+.s6-cell.series-cell a { color: inherit; }
+.s6-cell.series-cell .series-arrow { opacity: 0.6; margin-right: 4px; }
+
+/* ===========================================================================
+   Series page (/series/<slug>/)
+   =========================================================================== */
+
+.series-page { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+
+.series-cover {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--pal-border);
+  background: var(--pal-surface);
+  margin-bottom: 28px;
+  padding: 28px;
+}
+.series-cover-img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0.18; z-index: 0;
+}
+.series-cover-text { position: relative; z-index: 1; }
+.series-cover .research-kicker { gap: 12px; display: flex; align-items: center; font-size: 12.5px; }
+.series-cover h1 { margin: 8px 0 6px; font-family: Fraunces, serif; font-weight: 600; }
+.series-cover p  { margin: 0; color: var(--pal-fg-faint); max-width: 70ch; }
+
+.series-group { margin: 28px 0; }
+.series-group-label {
+  font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--pal-fg-faint); margin: 0 0 12px;
+}
+
+.series-empty { color: var(--pal-fg-faint); padding: 24px 0; }
+
+.series-back { display: inline-block; margin: 24px 0; color: var(--pal-fg-faint); text-decoration: none; }
+.series-back:hover { color: var(--pal-fg); }

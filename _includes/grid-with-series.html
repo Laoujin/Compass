@@ -1,0 +1,70 @@
+{%- comment -%}
+Render the entry grid with series interleaving + dedup.
+
+Inputs:
+  include.items        — array of pages to iterate (e.g. `entries`, `rest`)
+  include.skip_first   — if "true", suppress the FIRST item's entry card
+                         (used by s5 where the latest is already in the hero;
+                         we still emit its series card if applicable).
+
+Relies on vars set by entries.html:
+  entry_series_map     — ",slug=series-slug,..." (entry → first series)
+  series_count_map     — ",series-slug=N,..."
+  series_anymember_map — ",slug,..." (entry is in at least one series)
+
+Algorithm:
+  Loop items in order. For each item:
+    - Compute series_slug via entry_series_map lookup (or "").
+    - Is item the first iteration (latest)?
+        - If yes and skip_first != "true": emit its card.
+        - Then if series_slug != "" and series not yet emitted: emit series card.
+    - Else if in a series:
+        - If series not yet emitted: emit series card (newest unseen member).
+        - Else: skip.
+    - Else: emit the card.
+{%- endcomment -%}
+{%- assign _emitted_series = "," -%}
+{%- assign _card_path = site.card | prepend: 'cards/' | append: '.html' -%}
+{%- assign _skip_first = include.skip_first | default: "false" -%}
+{%- for e in include.items -%}
+  {%- assign _segs = e.url | split: '/' -%}
+  {%- assign _slug = _segs[2] -%}
+
+  {%- assign _series_slug = "" -%}
+  {%- assign _lookup = "," | append: _slug | append: "=" -%}
+  {%- if entry_series_map contains _lookup -%}
+    {%- assign _after = entry_series_map | split: _lookup | last -%}
+    {%- assign _series_slug = _after | split: "," | first -%}
+  {%- endif -%}
+
+  {%- assign _already_emitted = false -%}
+  {%- if _series_slug != "" -%}
+    {%- assign _emit_check = "," | append: _series_slug | append: "," -%}
+    {%- if _emitted_series contains _emit_check -%}{%- assign _already_emitted = true -%}{%- endif -%}
+  {%- endif -%}
+
+  {%- if forloop.first -%}
+    {%- unless _skip_first == "true" -%}
+      {%- include {{ _card_path }} entry=e -%}
+    {%- endunless -%}
+    {%- if _series_slug != "" and _already_emitted == false -%}
+      {%- assign _s_obj = site.data.series | where: "slug", _series_slug | first -%}
+      {%- assign _cnt_lookup = "," | append: _series_slug | append: "=" -%}
+      {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
+      {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
+      {%- include series-card.html series=_s_obj newest=e count=_cnt -%}
+      {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
+    {%- endif -%}
+  {%- elsif _series_slug != "" and _already_emitted == false -%}
+    {%- assign _s_obj = site.data.series | where: "slug", _series_slug | first -%}
+    {%- assign _cnt_lookup = "," | append: _series_slug | append: "=" -%}
+    {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
+    {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
+    {%- include series-card.html series=_s_obj newest=e count=_cnt -%}
+    {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
+  {%- elsif _series_slug != "" and _already_emitted -%}
+    {%- comment -%} Member of a series already emitted — skip {%- endcomment -%}
+  {%- else -%}
+    {%- include {{ _card_path }} entry=e -%}
+  {%- endif -%}
+{%- endfor -%}
