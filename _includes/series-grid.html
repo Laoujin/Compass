@@ -1,0 +1,36 @@
+{%- comment -%}
+Series member grid: grouped sections (with <h2> labels) or a flat grid, plus
+empty state. In scope: s, entries, all_slugs, all_members, site.card.
+{%- endcomment -%}
+{%- assign _card_path = site.card | prepend: 'cards/' | append: '.html' -%}
+{%- if s.groups -%}
+  {%- for g in s.groups -%}
+    {%- assign group_members = "" | split: "," -%}
+    {%- for mslug in g.entries -%}
+      {%- assign _needle = "," | append: mslug | append: "," -%}
+      {%- if all_slugs contains _needle -%}
+        {%- assign _page = entries | where_exp: "p", "p.url contains mslug" | first -%}
+        {%- if _page -%}{%- assign group_members = group_members | push: _page -%}{%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if group_members.size > 0 -%}
+      {%- assign group_members = group_members | sort: 'date' | reverse -%}
+      <section class="series-group">
+        <h2 class="series-group-label">{{ g.label }}</h2>
+        <div class="entry-grid">
+          {%- for e in group_members -%}{%- include {{ _card_path }} entry=e -%}{%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if all_members.size == 0 -%}<p class="series-empty">No research yet — coming soon.</p>{%- endif -%}
+{%- else -%}
+  {%- if all_members.size > 0 -%}
+    {%- assign flat_members = all_members | sort: 'date' | reverse -%}
+    <div class="entry-grid">
+      {%- for e in flat_members -%}{%- include {{ _card_path }} entry=e -%}{%- endfor -%}
+    </div>
+  {%- else -%}
+    <p class="series-empty">No research yet — coming soon.</p>
+  {%- endif -%}
+{%- endif -%}

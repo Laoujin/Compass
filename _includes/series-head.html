@@ -1,0 +1,14 @@
+{%- comment -%}
+Series identity strip for skeletons whose header has no heading slot (s2, s3).
+In scope: s, all_members, newest. Optional include.cover = cover image src.
+{%- endcomment -%}
+<section class="series-cover">
+  {%- if include.cover and include.cover != "" -%}
+    <img class="series-cover-img" src="{{ include.cover }}" alt="">
+  {%- endif -%}
+  <div class="series-cover-text">
+    {%- include series-kicker.html -%}
+    <h1>{{ s.title }}</h1>
+    {%- if s.blurb -%}<p>{{ s.blurb }}</p>{%- endif -%}
+  </div>
+</section>

@@ -1,0 +1,9 @@
+{%- comment -%}
+Series identity kicker: badge + member count + "updated" date.
+In scope (set by series.html before the skeleton include): all_members, newest.
+{%- endcomment -%}
+<div class="research-kicker">
+  <span class="depth-badge depth-series">series</span>
+  <span>{{ all_members | size }} {% if all_members.size == 1 %}entry{% else %}entries{% endif %}</span>
+  {%- if newest.date -%}<time>updated {{ newest.date | date: "%Y-%m-%d" }}</time>{%- endif -%}
+</div>
