@@ -130,6 +130,8 @@ body.research-page {
   display: flex; gap: 8px 18px; flex-wrap: wrap; align-items: center;
 }
 .research-stack b { color: var(--pal-fg); font-weight: 600; }
+.research-stack a { color: inherit; text-decoration: none; }
+.research-stack a:hover b { text-decoration: underline; }
 .research-tags-inline { color: var(--pal-fg-faint); }
 
 /* View switcher — pill row in the cover stack. Renders only when at

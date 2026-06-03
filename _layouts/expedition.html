@@ -45,7 +45,7 @@
         <span><b>{{ success_count }}</b> succeeded{% if warning_count > 0 %} · <b>{{ warning_count }}</b> ⚠{% endif %}{% if failed_count > 0 %} · <b>{{ failed_count }}</b> placeholder{% if failed_count != 1 %}s{% endif %}{% endif %}</span>
         {% if page.citations %}<span><b>{{ page.citations }}</b> sources</span>{% endif %}
         {% if page.reading_time_min %}<span><b>~{{ page.reading_time_min }}</b> min read</span>{% endif %}
-        {% if page.issue %}<span><b>#{{ page.issue }}</b></span>{% endif %}
+        {% if page.issue %}<span>{% if site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener"><b>#{{ page.issue }}</b></a>{% else %}<b>#{{ page.issue }}</b>{% endif %}</span>{% endif %}
       </div>
       {% include view-switcher.html %}
     </div>
