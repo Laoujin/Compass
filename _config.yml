@@ -33,6 +33,7 @@ defaults:
 exclude:
   - README.md
   - .gitignore
+  - docs/superpowers
 
 markdown: kramdown
 highlighter: rouge
