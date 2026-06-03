@@ -162,6 +162,7 @@
       <h3>How this was made</h3>
       <div class="pgrid">
         {% if depth_label %}<div class="pcell"><div class="lbl">Depth</div><div class="val">{{ depth_label | capitalize }}</div></div>{% endif %}
+        {% if page.model %}<div class="pcell"><div class="lbl">Model</div><div class="val">{{ page.model }}</div></div>{% endif %}
         {% if page.cost_usd == "sub" %}<div class="pcell"><div class="lbl">Cost</div><div class="val">on subscription</div></div>
         {% elsif page.cost_usd %}<div class="pcell"><div class="lbl">Cost</div><div class="val">${{ page.cost_usd }}</div></div>{% endif %}
         {% if page.duration_sec %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ page.duration_sec | divided_by: 60.0 | round }} min</div></div>{% endif %}
