@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title | default: site.title | default: 'Atlas' }}</title>
+  <title>{% if series_mode %}{{ series_title }} · {{ site.title | default: 'Atlas' }}{% else %}{{ page.title | default: site.title | default: 'Atlas' }}{% endif %}</title>
   {%- if site.description -%}<meta name="description" content="{{ site.description }}">{%- endif -%}
   <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
@@ -26,11 +26,14 @@
     <header class="s3-topbar">
       <div class="s3-brand"><img class="s3-mark" src="{{ '/icon.png' | prepend: site.assets_base | relative_url }}" alt=""> {{ site.title | default: 'Atlas' }}</div>
       <div class="s3-spacer"></div>
-      {%- if site.scout_repo -%}
+      {%- if series_mode -%}
+      <a class="s3-cta" href="{{ '/' | relative_url }}">← {{ site.title | default: 'Atlas' }}</a>
+      {%- elsif site.scout_repo -%}
       <a class="s3-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
       {%- endif -%}
     </header>
-    <div class="s3-main">
+    <div class="s3-main{% if series_mode %} s3-main--series{% endif %}">
+      {%- unless series_mode -%}
       <aside class="s3-sidenav">
         <h4>Filter</h4>
         <ul>
@@ -60,10 +63,16 @@
         </ul>
         {%- endif -%}
       </aside>
+      {%- endunless -%}
       <section class="s3-content">
+        {%- if series_mode -%}
+          {%- include series-head.html -%}
+          {%- include series-grid.html -%}
+        {%- else -%}
         <div class="entry-grid">
           {%- include grid-with-series.html items=entries -%}
         </div>
+        {%- endif -%}
       </section>
     </div>
     <footer class="s3-footer">{{ site.title | default: 'Atlas' }} · <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" target="_blank" rel="noopener">{{ site.github.owner_name }}/{{ site.github.repository_name }} ↗</a>{% if site.scout_repo %} · Built with <a href="https://github.com/{{ site.scout_repo }}" target="_blank" rel="noopener">Scout ↗</a>, styled by <a href="https://github.com/Laoujin/Compass" target="_blank" rel="noopener">Compass ↗</a>{% endif %}</footer>
