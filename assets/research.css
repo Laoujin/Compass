@@ -17,15 +17,16 @@ body.research-page {
 
 .research-back {
   position: fixed; top: 16px; left: 18px; z-index: 50;
+  display: inline-flex; align-items: center; gap: 6px;
   font-size: 12px;
-  color: var(--pal-fg);
-  text-decoration: none;
   background: color-mix(in srgb, var(--pal-surface) 80%, transparent);
   padding: 6px 10px; border-radius: 4px;
   backdrop-filter: blur(4px);
   border: 1px solid var(--pal-border);
 }
-.research-back:hover { background: var(--pal-surface); color: var(--pal-accent); }
+.research-back a { color: var(--pal-fg); text-decoration: none; }
+.research-back a:hover { color: var(--pal-accent); }
+.research-back-sep { color: var(--pal-fg-faint); }
 
 /* =========================================================================
    Cover

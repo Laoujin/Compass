@@ -44,7 +44,16 @@
   {% assign has_ledger = false %}
   {% for f in site.static_files %}{% if f.path == ledger_path %}{% assign has_ledger = true %}{% break %}{% endif %}{% endfor %}
 
-  <a class="research-back" href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+  {%- comment -%} url_parts[2] is the top-level research dir-slug (an angle's parent), which is what series.yml keys on. {%- endcomment -%}
+  {%- assign _series_key = url_parts[2] -%}
+  {%- include series-of.html slug=_series_key -%}
+  <nav class="research-back">
+    <a href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+    {%- if series_of_slug != "" -%}
+    <span class="research-back-sep" aria-hidden="true">·</span>
+    <a class="research-back-series" href="{{ '/series/' | append: series_of_slug | append: '/' | relative_url }}">↩ {{ series_of_title }}</a>
+    {%- endif -%}
+  </nav>
 
   <!-- Cover -->
   <section class="research-cover{% unless cover_url %} research-cover-bare{% endunless %}"{% if cover_url %} style="--cover-img: url('{{ cover_url }}');"{% endif %}>

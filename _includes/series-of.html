@@ -1,0 +1,25 @@
+{%- comment -%}
+Resolve which series an entry belongs to.
+Input: include.slug — the top-level research dir-slug (page.url segment 2; the same
+for single entries, expedition parents, and angle children, since series.yml keys on
+the parent/entry dir-slug, never an angle slug).
+Sets: series_of_slug, series_of_title — both "" when the entry is in no series.
+{%- endcomment -%}
+{%- assign series_of_slug = "" -%}
+{%- assign series_of_title = "" -%}
+{%- for _s in site.data.series -%}
+  {%- if series_of_slug == "" -%}
+    {%- if _s.groups -%}
+      {%- for _g in _s.groups -%}
+        {%- if _g.entries contains include.slug -%}
+          {%- assign series_of_slug = _s.slug -%}
+          {%- assign series_of_title = _s.title -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif _s.entries contains include.slug -%}
+      {%- assign series_of_slug = _s.slug -%}
+      {%- assign series_of_title = _s.title -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
