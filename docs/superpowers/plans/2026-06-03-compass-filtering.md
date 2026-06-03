@@ -243,7 +243,7 @@ git commit -m "feat(filtering): stamp filter data attributes on cards"
 **Files:**
 - Modify: `_includes/grid-with-series.html`
 
-Currently the include emits a series card and **skips** its members (`{%- comment -%} Member … skip {%- endcomment -%}`). We change it to also emit each member card with an `is-series-member` marker class, so `filters.js` can reveal them in flat mode. The marker class is added by wrapping the member card include — but cards render their own `<article>`, so instead we add the class via a wrapper `<div class="filter-item is-series-member" style="display:contents">` so grid layout is unaffected (the card stays the grid item through `display:contents`).
+Currently the include emits a series card and **skips** its members (`{%- comment -%} Member … skip {%- endcomment -%}`). We change it to also emit each member card with an `is-series-member` marker class, so `filters.js` can reveal them in flat mode. The marker class is added by wrapping the member card include — but cards render their own `<article>`, so instead we add the class via a wrapper `<div class="filter-item is-series-member">` so grid layout is unaffected (the card stays the grid item through `display:contents`).
 
 - [ ] **Step 1: Replace the "already emitted member" skip branch**
 
@@ -262,7 +262,7 @@ Replace with:
 ```liquid
   {%- elsif _series_slug != "" and _already_emitted -%}
     {%- comment -%} Member of an already-emitted series: emit hidden, for flat filtering {%- endcomment -%}
-    <div class="filter-item is-series-member" style="display:contents">{%- include {{ _card_path }} entry=e -%}</div>
+    <div class="filter-item is-series-member">{%- include {{ _card_path }} entry=e -%}</div>
   {%- else -%}
     {%- include {{ _card_path }} entry=e -%}
   {%- endif -%}
@@ -291,7 +291,7 @@ Replace with (adds the hidden member card after the series card):
     {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
     {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
     {%- include series-card.html series=_s_obj newest=e count=_cnt -%}
-    <div class="filter-item is-series-member" style="display:contents">{%- include {{ _card_path }} entry=e -%}</div>
+    <div class="filter-item is-series-member">{%- include {{ _card_path }} entry=e -%}</div>
     {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
 ```
 
@@ -313,7 +313,7 @@ Replace the inner card include so that, when the first item belongs to a series,
   {%- if forloop.first -%}
     {%- unless _skip_first == "true" -%}
       {%- if _series_slug != "" -%}
-        <div class="filter-item is-series-member" style="display:contents">{%- include {{ _card_path }} entry=e -%}</div>
+        <div class="filter-item is-series-member">{%- include {{ _card_path }} entry=e -%}</div>
       {%- else -%}
         {%- include {{ _card_path }} entry=e -%}
       {%- endif -%}
@@ -347,7 +347,7 @@ git commit -m "feat(filtering): emit hidden series-member cards in home grid"
 **Files:**
 - Modify: `_includes/listing-with-series.html`
 
-s6 home rows are four bare `<span class="s6-cell">` per row in a CSS grid. Wrap each row's four cells in a single `<div class="filter-item" style="display:contents" data-*>` so each row is one toggleable element while staying in the grid. The series-summary row gets `data-kind="series"`; member rows get `data-kind="entry"` + `is-series-member`.
+s6 home rows are four bare `<span class="s6-cell">` per row in a CSS grid. Wrap each row's four cells in a single `<div class="filter-item" data-*>` so each row is one toggleable element while staying in the grid. The series-summary row gets `data-kind="series"`; member rows get `data-kind="entry"` + `is-series-member`.
 
 - [ ] **Step 1: Add a reusable data-attribute capture at the top of the loop**
 
@@ -392,7 +392,7 @@ Replace with:
 
 ```liquid
   {%- else -%}
-    <div class="filter-item" style="display:contents" {{ _row_attrs }}>
+    <div class="filter-item" {{ _row_attrs }}>
     <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
     <span class="s6-cell depth-cell">{{ _depth_label }}</span>
     <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
@@ -415,7 +415,7 @@ There are two identical series-row emissions (one in the `forloop.first` block, 
 Wrap **each** of the two with a series wrapper:
 
 ```liquid
-      <div class="filter-item" style="display:contents" data-kind="series" data-series="{{ _series_slug }}">
+      <div class="filter-item" data-kind="series" data-series="{{ _series_slug }}">
       <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
       <span class="s6-cell depth-cell">series</span>
       <span class="s6-cell series-cell"><a href="{{ '/series/' | append: _series_slug | append: '/' | relative_url }}"><span class="series-arrow">↳</span>{{ _s_obj.slug }}/</a></span>
@@ -437,7 +437,7 @@ with a hidden member row:
 ```liquid
   {%- elsif _series_slug != "" and _already_emitted -%}
     {%- comment -%} Member of an already-emitted series: emit hidden for flat filtering {%- endcomment -%}
-    <div class="filter-item is-series-member" style="display:contents" {{ _row_attrs }}>
+    <div class="filter-item is-series-member" {{ _row_attrs }}>
     <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
     <span class="s6-cell depth-cell">{{ _depth_label }}</span>
     <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
@@ -448,7 +448,7 @@ with a hidden member row:
 Also, in the `elsif … _already_emitted == false` branch (the one that emits the series summary row), append a hidden member row for the triggering member right after the series `</div>` wrapper you added in Step 3:
 
 ```liquid
-    <div class="filter-item is-series-member" style="display:contents" {{ _row_attrs }}>
+    <div class="filter-item is-series-member" {{ _row_attrs }}>
     <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
     <span class="s6-cell depth-cell">{{ _depth_label }}</span>
     <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
@@ -537,24 +537,32 @@ Create `assets/filters.css`:
 
 ```css
 /* --- visibility engine ------------------------------------------------ */
+/* IMPORTANT: this whole engine is CLASS-BASED (no inline styles on the
+   wrappers). The `.filter-item` wrappers MUST NOT carry inline display:contents
+   — inline styles outrank class selectors and would defeat the hide/reveal
+   rules below. The wrappers are layout-transparent via the rule here instead.
+   Ordering matters: `.is-series-member` must come AFTER `.filter-item` so it
+   wins by source order. */
+
 /* Bar is inert until JS removes [hidden]. */
 .filter-bar[hidden] { display: none; }
 
-/* Series members are collapsed by default (no JS / no filter). */
+/* Row/member wrappers are layout-transparent so the card (entry-grid) or the
+   cells (s6-listing) stay direct grid items. */
+.filter-item { display: contents; }
+
+/* Series members collapsed by default (no JS / no active filter). After
+   .filter-item so it wins by source order → wrapper (and its card) hidden. */
 .is-series-member { display: none; }
 
-/* Flat mode (JS adds .is-flat to the grid when any filter is active): reveal
-   members, hide the series stand-in cards. */
-.entry-grid.is-flat .is-series-member:not(.is-hidden) { display: block; }
-.entry-grid.is-flat [data-kind="series"] { display: none; }
-
-/* s6 rows use display:contents wrappers so cells stay in the grid. */
-.s6-listing .filter-item { display: contents; }
-.s6-listing .filter-item.is-series-member { display: none; }
-.s6-listing.is-flat .filter-item.is-series-member:not(.is-hidden) { display: contents; }
+/* Flat mode (JS adds .is-flat to the grid/listing when any filter is active):
+   reveal matching members (stay layout-transparent), hide the series stand-in. */
+.entry-grid.is-flat .is-series-member:not(.is-hidden),
+.s6-listing.is-flat .is-series-member:not(.is-hidden) { display: contents; }
+.entry-grid.is-flat [data-kind="series"],
 .s6-listing.is-flat [data-kind="series"] { display: none; }
 
-/* JS hard-hide for non-matching items (wins over the reveal rules above). */
+/* JS hard-hide for non-matching items (wins over everything via !important). */
 .is-hidden { display: none !important; }
 
 /* Empty group sections hidden by JS. */
@@ -1109,7 +1117,7 @@ Replace with:
               {%- assign _m_tags = e.tags | join: "," | downcase -%}
               {%- capture _m_search -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
               {%- assign _m_search = _m_search | downcase | strip_newlines | replace: '"', '' -%}
-              <div class="filter-item" style="display:contents" data-kind="entry" data-slug="{{ _m_slug }}" data-tags="{{ _m_tags }}" data-series="{{ s.slug }}" data-category="{{ g.label | downcase }}" data-search="{{ _m_search | escape }}">
+              <div class="filter-item" data-kind="entry" data-slug="{{ _m_slug }}" data-tags="{{ _m_tags }}" data-series="{{ s.slug }}" data-category="{{ g.label | downcase }}" data-search="{{ _m_search | escape }}">
               <span class="s6-cell">{{ e.date | date: "%Y-%m-%d" }}</span>
               <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span>
               </div>
@@ -1146,7 +1154,7 @@ Replace with:
           {%- assign _m_tags = e.tags | join: "," | downcase -%}
           {%- capture _m_search -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
           {%- assign _m_search = _m_search | downcase | strip_newlines | replace: '"', '' -%}
-          <div class="filter-item" style="display:contents" data-kind="entry" data-slug="{{ _m_slug }}" data-tags="{{ _m_tags }}" data-series="{{ s.slug }}" data-category="" data-search="{{ _m_search | escape }}">
+          <div class="filter-item" data-kind="entry" data-slug="{{ _m_slug }}" data-tags="{{ _m_tags }}" data-series="{{ s.slug }}" data-category="" data-search="{{ _m_search | escape }}">
           <span class="s6-cell">{{ e.date | date: "%Y-%m-%d" }}</span>
           <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span>
           </div>
