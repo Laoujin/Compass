@@ -757,9 +757,9 @@ Create `assets/filters.js`:
     });
 
     groups.forEach(function (g) {
-      var visible = g.querySelectorAll('[data-kind="entry"]:not(.is-hidden)').length;
-      // a member entry inside a display:contents wrapper that is hidden still
-      // matches :not(.is-hidden) on the card itself, so also check the wrapper:
+      // A member's card sits inside a display:contents .filter-item wrapper; the
+      // wrapper (or the card itself, when unwrapped) carries .is-hidden — check
+      // whichever applies.
       var anyVisible = toArray(g.querySelectorAll('[data-kind="entry"]')).some(function (el) {
         var w = el.closest('.filter-item');
         return !(w || el).classList.contains('is-hidden');
