@@ -20,7 +20,7 @@ Algorithm:
         - Then if series_slug != "" and series not yet emitted: emit series card.
     - Else if in a series:
         - If series not yet emitted: emit series card (newest unseen member).
-        - Else: skip.
+        - Else: emit the member card hidden (.is-series-member) for filtering.
     - Else: emit the card.
 {%- endcomment -%}
 {%- assign _emitted_series = "," -%}
@@ -46,7 +46,7 @@ Algorithm:
   {%- if forloop.first -%}
     {%- unless _skip_first == "true" -%}
       {%- if _series_slug != "" -%}
-        <div class="filter-item is-series-member" style="display:contents">{%- include {{ _card_path }} entry=e -%}</div>
+        <div class="filter-item is-series-member">{%- include {{ _card_path }} entry=e -%}</div>
       {%- else -%}
         {%- include {{ _card_path }} entry=e -%}
       {%- endif -%}
@@ -65,11 +65,11 @@ Algorithm:
     {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
     {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
     {%- include series-card.html series=_s_obj newest=e count=_cnt -%}
-    <div class="filter-item is-series-member" style="display:contents">{%- include {{ _card_path }} entry=e -%}</div>
+    <div class="filter-item is-series-member">{%- include {{ _card_path }} entry=e -%}</div>
     {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
   {%- elsif _series_slug != "" and _already_emitted -%}
     {%- comment -%} Member of an already-emitted series: emit hidden, for flat filtering {%- endcomment -%}
-    <div class="filter-item is-series-member" style="display:contents">{%- include {{ _card_path }} entry=e -%}</div>
+    <div class="filter-item is-series-member">{%- include {{ _card_path }} entry=e -%}</div>
   {%- else -%}
     {%- include {{ _card_path }} entry=e -%}
   {%- endif -%}
