@@ -1,0 +1,21 @@
+{%- comment -%}
+Shared filter bar. Inputs:
+  include.scope — "home" (default) | "series"
+JS (assets/filters.js) populates tag chips and the series/category selects from
+the cards present on the page, and toggles visibility. Hidden until JS runs.
+{%- endcomment -%}
+{%- assign _scope = include.scope | default: 'home' -%}
+<div class="filter-bar" data-scope="{{ _scope }}" hidden>
+  <input class="filter-search js-filter-search" type="search" placeholder="Search research…" aria-label="Search research">
+  <div class="filter-tags js-filter-tags" role="group" aria-label="Filter by tag"></div>
+  {%- if _scope != 'series' -%}
+  <select class="filter-select js-filter-series" aria-label="Filter by series">
+    <option value="">All series</option>
+  </select>
+  {%- endif -%}
+  <select class="filter-select js-filter-category" aria-label="Filter by category">
+    <option value="">All categories</option>
+  </select>
+  <span class="filter-count"><strong class="js-filter-count">0</strong> shown</span>
+  <button type="button" class="filter-clear js-filter-clear">Clear</button>
+</div>
