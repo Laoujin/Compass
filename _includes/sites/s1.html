@@ -51,9 +51,13 @@
     {%- endunless -%}
 
     <section class="s1-content">
+      {%- if series_mode -%}
+        {%- include series-grid.html -%}
+      {%- else -%}
       <div class="entry-grid">
-        {%- if series_mode -%}{%- include series-grid.html -%}{%- else -%}{%- include grid-with-series.html items=entries -%}{%- endif -%}
+        {%- include grid-with-series.html items=entries -%}
       </div>
+      {%- endif -%}
     </section>
 
     <footer class="s1-footer">

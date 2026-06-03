@@ -81,14 +81,18 @@
       <span class="s5-watermark" aria-hidden="true">{% if series_mode %}{{ s.title | upcase }}{% else %}{{ site.title | default: 'ATLAS' | upcase }}{% endif %}</span>
     </header>
     <section class="s5-content">
+      {%- if series_mode -%}
+        {%- include series-grid.html -%}
+      {%- else -%}
       <div class="entry-grid">
         {%- comment -%}
         s5: pass `entries` (not `rest`) so the latest's series card has a chance
         to be emitted. skip_first="true" suppresses the latest's entry card
         because it's already shown in the s5-featured hero above.
         {%- endcomment -%}
-        {%- if series_mode -%}{%- include series-grid.html -%}{%- else -%}{%- include grid-with-series.html items=entries skip_first="true" -%}{%- endif -%}
+        {%- include grid-with-series.html items=entries skip_first="true" -%}
       </div>
+      {%- endif -%}
     </section>
     <footer class="s5-footer">
       <span>{{ site.title | default: 'Atlas' }} · <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" target="_blank" rel="noopener">{{ site.github.owner_name }}/{{ site.github.repository_name }} ↗</a></span>
