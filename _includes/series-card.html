@@ -21,7 +21,7 @@ the "Latest:" line is a sibling <a> so we don't nest anchors.
 {%- else -%}
   {%- assign cover_src = "" -%}
 {%- endif -%}
-<article class="card card--series" style="--h:280;">
+<article class="card card--series" style="--h:280;" data-kind="series" data-series="{{ s.slug }}">
   <a href="{{ '/series/' | append: s.slug | append: '/' | relative_url }}" class="card-link">
     {%- if cover_src != "" -%}
       <div class="card-cover cover ratio"><img class="cover-img" src="{{ cover_src }}" alt="" loading="lazy"></div>

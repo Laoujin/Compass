@@ -18,7 +18,24 @@ in place of the format pill.
 {%- endcomment -%}
 {%- assign is_expedition = false -%}
 {%- if e.children or depth_label == 'expedition' -%}{%- assign is_expedition = true -%}{%- endif -%}
-<article class="card{% if is_expedition %} card-expedition{% endif %}" style="--h:{{ e.hue | default: 210 }};">
+{%- comment -%} Filter metadata (read maps set by entries.html) {%- endcomment -%}
+{%- assign _fseg = e.url | split: '/' -%}
+{%- assign _fslug = _fseg[2] -%}
+{%- assign _fseries = "" -%}
+{%- assign _fslookup = "," | append: _fslug | append: "=" -%}
+{%- if entry_series_map contains _fslookup -%}
+  {%- assign _fseries = entry_series_map | split: _fslookup | last | split: "," | first -%}
+{%- endif -%}
+{%- assign _fcat = "" -%}
+{%- if entry_category_map contains _fslookup -%}
+  {%- assign _fcat = entry_category_map | split: _fslookup | last | split: "," | first -%}
+{%- endif -%}
+{%- assign _ftags = e.tags | join: "," | downcase -%}
+{%- capture _fsearch -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
+{%- assign _fsearch = _fsearch | downcase | strip_newlines | replace: '"', '' -%}
+<article class="card{% if is_expedition %} card-expedition{% endif %}" style="--h:{{ e.hue | default: 210 }};"
+  data-kind="entry" data-slug="{{ _fslug }}" data-tags="{{ _ftags }}"
+  data-series="{{ _fseries }}" data-category="{{ _fcat | downcase }}" data-search="{{ _fsearch | escape }}">
   <a href="{{ e.url | relative_url }}" class="card-link">
     {%- if e.cover -%}
       {%- assign cover_src = e.url | append: e.cover | relative_url -%}
