@@ -1,0 +1,20 @@
+# Demo series for the Compass theme preview site. Mirrors Atlas's _data/series.yml
+# schema so the series feature is exercised by `serve.ps1` / a plain build.
+- slug: tooling
+  title: Tooling & research
+  blurb: Notes on the tools behind Compass and Scout.
+  groups:
+    - label: Research
+      entries:
+        - 2026-04-19-deep-research-tools-compared
+        - 2026-04-20-static-site-generators
+    - label: Infrastructure
+      entries:
+        - 2026-04-17-reverse-proxy-personal-lab
+        - 2026-04-22-always-on-home-server
+
+- slug: gift-guides
+  title: Gift guides
+  blurb: Curated present ideas.
+  entries:
+    - 2026-04-15-unique-birthday-gift-ideas
