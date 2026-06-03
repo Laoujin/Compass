@@ -19,21 +19,22 @@ The work tree is the **compass submodule inside atlas**: `atlas/compass/`. Real 
 Absolute paths (this machine):
 - atlas root: `/mnt/c/Users/woute/Dropbox/Personal/Programming/UnixCode/projects/Scout+Atlas/atlas`
 - compass:   `…/atlas/compass`
-- `bundle`:  `/mnt/c/tools/ruby34/bin/bundle` (not on PATH)
 
-**Build (default skeleton s5):**
+**Build via Docker** (the local Ruby `bundle` shim is a Windows binary that can't exec under
+WSL — use Docker; `-u 0` avoids drvfs `_site` permission errors):
 ```bash
 cd /mnt/c/Users/woute/Dropbox/Personal/Programming/UnixCode/projects/Scout+Atlas/atlas
-/mnt/c/tools/ruby34/bin/bundle exec jekyll build
+docker run --rm -u 0 -v "$PWD:/srv/jekyll" jekyll/jekyll:4 sh -c "jekyll build"
 ```
 
-**Build a specific skeleton** without editing `_config.yml` — create a one-line override and pass it:
+**Build a specific skeleton** without editing `_config.yml`. The override file must live
+**inside** the mounted volume (`atlas/`) so the container sees it:
 ```bash
-printf 'skeleton: s1\n' > /tmp/skel.yml
-/mnt/c/tools/ruby34/bin/bundle exec jekyll build --config _config.yml,/tmp/skel.yml
+printf 'skeleton: s1\n' > _skel.yml   # in the atlas root
+docker run --rm -u 0 -v "$PWD:/srv/jekyll" jekyll/jekyll:4 \
+  sh -c "jekyll build --config _config.yml,/srv/jekyll/_skel.yml"
 ```
-(swap `s1` for `s2`…`s6`). Docker fallback if Ruby misbehaves:
-`docker run --rm -v "$PWD:/srv/jekyll" jekyll/jekyll:4 jekyll build`.
+(swap `s1` for `s2`…`s6`; `rm _skel.yml` when done — don't commit it).
 
 Built output lands in `atlas/_site/`. A series page is at
 `atlas/_site/series/michelin-weekends/index.html`; the home page at `atlas/_site/index.html`.
@@ -1178,15 +1179,16 @@ git commit -m "feat(filtering): wire filter bar into s6 home + series, group ser
 
 No JS unit harness exists; verify behaviour by driving the built site. Use the **verify** skill / Playwright MCP. Serve the built site first.
 
-- [ ] **Step 1: Build default + serve**
+- [ ] **Step 1: Build + serve via Docker**
 
 ```bash
 cd /mnt/c/Users/woute/Dropbox/Personal/Programming/UnixCode/projects/Scout+Atlas/atlas
-/mnt/c/tools/ruby34/bin/bundle exec jekyll build
-# serve _site at the baseurl; jekyll serve also works:
-/mnt/c/tools/ruby34/bin/bundle exec jekyll serve --skip-initial-build --no-watch --detach --port 4000
+docker run -d --name atlas-serve -u 0 -p 4000:4000 -v "$PWD:/srv/jekyll" jekyll/jekyll:4 \
+  sh -c "jekyll serve --host 0.0.0.0"
 ```
-Home page: `http://localhost:4000/<baseurl>/` (baseurl from `atlas/_config.yml`).
+Home page: `http://localhost:4000/Atlas/` (baseurl `/Atlas` from `atlas/_config.yml`).
+Stop later with `docker rm -f atlas-serve`. To test another skeleton, `docker rm -f atlas-serve`,
+write `_skel.yml`, and re-run with `jekyll serve --host 0.0.0.0 --config _config.yml,/srv/jekyll/_skel.yml`.
 
 - [ ] **Step 2: Home page (s5 default) — collapsed→flat**
 
