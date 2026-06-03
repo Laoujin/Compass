@@ -1,0 +1,80 @@
+/* --- visibility engine ------------------------------------------------ */
+/* IMPORTANT: this whole engine is CLASS-BASED (no inline styles on the
+   wrappers). The `.filter-item` wrappers MUST NOT carry inline display:contents
+   — inline styles outrank class selectors and would defeat the hide/reveal
+   rules below. The wrappers are layout-transparent via the rule here instead.
+   Ordering matters: `.is-series-member` must come AFTER `.filter-item` so it
+   wins by source order. */
+
+/* Bar is inert until JS removes [hidden]. */
+.filter-bar[hidden] { display: none; }
+
+/* Row/member wrappers are layout-transparent so the card (entry-grid) or the
+   cells (s6-listing) stay direct grid items. */
+.filter-item { display: contents; }
+
+/* Series members collapsed by default (no JS / no active filter). After
+   .filter-item so it wins by source order → wrapper (and its card) hidden. */
+.is-series-member { display: none; }
+
+/* Flat mode (JS adds .is-flat to the grid/listing when any filter is active):
+   reveal matching members (stay layout-transparent), hide the series stand-in. */
+.entry-grid.is-flat .is-series-member:not(.is-hidden),
+.s6-listing.is-flat .is-series-member:not(.is-hidden) { display: contents; }
+.entry-grid.is-flat [data-kind="series"],
+.s6-listing.is-flat [data-kind="series"] { display: none; }
+
+/* JS hard-hide for non-matching items (wins over everything via !important). */
+.is-hidden { display: none !important; }
+
+/* Empty group sections hidden by JS. */
+.series-group.is-hidden { display: none !important; }
+
+/* --- bar styling (palette-aware; reuses palette custom props) ---------- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  margin: 0 auto 1.5rem;
+  padding: .75rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 15%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--pal-bg, #fff) 92%, var(--pal-fg, #333));
+}
+.filter-search {
+  flex: 1 1 12rem;
+  min-width: 8rem;
+  padding: .4rem .6rem;
+  font: inherit;
+  color: var(--pal-fg, #222);
+  background: var(--pal-bg, #fff);
+  border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 25%, transparent);
+  border-radius: 6px;
+}
+.filter-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.filter-tags .chip { cursor: pointer; user-select: none; }
+.filter-tags .chip.is-on {
+  background: var(--pal-accent, #b5532f);
+  color: var(--pal-bg, #fff);
+  border-color: var(--pal-accent, #b5532f);
+}
+.filter-select {
+  padding: .4rem .5rem;
+  font: inherit;
+  color: var(--pal-fg, #222);
+  background: var(--pal-bg, #fff);
+  border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 25%, transparent);
+  border-radius: 6px;
+}
+.filter-count { font-size: .85em; opacity: .75; margin-left: auto; }
+.filter-clear {
+  cursor: pointer;
+  padding: .35rem .7rem;
+  font: inherit;
+  color: var(--pal-fg, #222);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 25%, transparent);
+  border-radius: 6px;
+}
+.filter-clear:hover { background: color-mix(in srgb, var(--pal-fg, #333) 8%, transparent); }
