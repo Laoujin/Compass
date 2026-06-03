@@ -93,3 +93,22 @@
 
 .series-back { display: inline-block; margin: 24px 0; color: var(--pal-fg-faint); text-decoration: none; }
 .series-back:hover { color: var(--pal-fg); }
+
+/* ── Series mode inside a skeleton's chrome ───────────────────────────────
+   The hero skeletons (s1/s4/s5) render the series kicker + back-link inside
+   their own header; topbar skeletons (s2/s3) render .series-cover in content.
+   These rules add breathing room without overriding skeleton typography. */
+.s5-fold .research-kicker,
+.s1-hero .research-kicker,
+.s4-hero .research-kicker {
+  display: flex; gap: 12px; align-items: center;
+  font-size: 12.5px; margin: 6px 0 10px;
+}
+.s1-hero .research-kicker { justify-content: center; }
+
+/* Topbar skeletons: the .series-cover strip sits at the top of content. */
+.s2-content > .series-cover,
+.s3-content > .series-cover { margin-bottom: 8px; }
+
+/* s3: with the sidebar suppressed, let content use the full width. */
+.s3-main--series { display: block; }
