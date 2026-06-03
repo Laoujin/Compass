@@ -26,19 +26,23 @@
     var s = el.getAttribute('data-series'); if (s) seriesSet[s] = 1;
     var c = el.getAttribute('data-category'); if (c) catSet[c] = 1;
   });
-  Object.keys(tagSet).sort().forEach(function (t) {
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'chip js-filter-tag';
-    b.setAttribute('data-tag', t);
-    b.textContent = t;
-    tagsWrap.appendChild(b);
-  });
+  if (tagsWrap) {
+    Object.keys(tagSet).sort().forEach(function (t) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip js-filter-tag';
+      b.setAttribute('data-tag', t);
+      b.textContent = t;
+      tagsWrap.appendChild(b);
+    });
+  }
   if (seriesSel) {
     Object.keys(seriesSet).sort().forEach(function (s) { addOption(seriesSel, s, s); });
   }
-  Object.keys(catSet).sort().forEach(function (c) { addOption(catSel, c, titleCase(c)); });
-  var tagButtons = toArray(tagsWrap.querySelectorAll('.js-filter-tag'));
+  if (catSel) {
+    Object.keys(catSet).sort().forEach(function (c) { addOption(catSel, c, titleCase(c)); });
+  }
+  var tagButtons = tagsWrap ? toArray(tagsWrap.querySelectorAll('.js-filter-tag')) : [];
 
   // --- wire events --------------------------------------------------------
   if (searchInput) searchInput.addEventListener('input', debounce(function () {
@@ -71,7 +75,7 @@
   }
 
   function matches(el) {
-    var hay = el.getAttribute('data-search') || '';
+    var hay = (el.getAttribute('data-search') || '').toLowerCase();
     if (state.q) {
       var toks = state.q.toLowerCase().split(/\s+/);
       for (var i = 0; i < toks.length; i++) {
