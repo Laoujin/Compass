@@ -45,7 +45,16 @@
       });
   }
   if (seriesSel) {
-    Object.keys(seriesSet).sort().forEach(function (s) { addOption(seriesSel, s, s); });
+    // Label series options with their display title (from the stand-in cards),
+    // falling back to the slug if a title isn't present.
+    var seriesTitle = {};
+    items.forEach(function (el) {
+      if (el.getAttribute('data-kind') === 'series') {
+        var sl = el.getAttribute('data-series'), ti = el.getAttribute('data-series-title');
+        if (sl && ti) seriesTitle[sl] = ti;
+      }
+    });
+    Object.keys(seriesSet).sort().forEach(function (s) { addOption(seriesSel, s, seriesTitle[s] || s); });
   }
   if (catSel) {
     Object.keys(catSet).sort().forEach(function (c) { addOption(catSel, c, titleCase(c)); });
