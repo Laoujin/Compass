@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title | default: site.title | default: 'Atlas' }}</title>
+  <title>{% if series_mode %}{{ series_title }} · {{ site.title | default: 'Atlas' }}{% else %}{{ page.title | default: site.title | default: 'Atlas' }}{% endif %}</title>
   {%- if site.description -%}<meta name="description" content="{{ site.description }}">{%- endif -%}
   <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
@@ -20,10 +20,47 @@
   <div class="s6">
     <div class="s6-tabs">
       <div class="s6-tab">~/{{ site.title | default: 'atlas' | downcase }}</div>
-      {%- if first -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/research/{{ first.date | date: "%Y-%m-%d" }}-{{ first.title | slugify }}</div>{%- endif -%}
+      {%- if series_mode -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }}</div>
+      {%- elsif first -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/research/{{ first.date | date: "%Y-%m-%d" }}-{{ first.title | slugify }}</div>{%- endif -%}
       <div class="s6-tab bg">+</div>
     </div>
     <div class="s6-body">
+      {%- if series_mode -%}
+      <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span>cd series/{{ s.slug }}/ &amp;&amp; ls</p>
+      <p class="s6-prompt" style="opacity:.7"># {{ s.title }} — {{ all_members | size }} {% if all_members.size == 1 %}entry{% else %}entries{% endif %}{% if s.blurb %} · {{ s.blurb }}{% endif %}</p>
+      {%- if s.groups -%}
+        {%- for g in s.groups -%}
+          {%- assign group_members = "" | split: "," -%}
+          {%- for mslug in g.entries -%}
+            {%- assign _needle = "," | append: mslug | append: "," -%}
+            {%- if all_slugs contains _needle -%}
+              {%- assign _page = entries | where_exp: "p", "p.url contains mslug" | first -%}
+              {%- if _page -%}{%- assign group_members = group_members | push: _page -%}{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if group_members.size > 0 -%}
+            {%- assign group_members = group_members | sort: 'date' | reverse -%}
+            <p class="s6-prompt" style="opacity:.55">## {{ g.label }}</p>
+            <div class="s6-listing">
+              {%- for e in group_members -%}
+              <span class="s6-cell">{{ e.date | date: "%Y-%m-%d" }}</span>
+              <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- assign flat_members = all_members | sort: 'date' | reverse -%}
+        <div class="s6-listing">
+          {%- for e in flat_members -%}
+          <span class="s6-cell">{{ e.date | date: "%Y-%m-%d" }}</span>
+          <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      {%- if all_members.size == 0 -%}<p class="s6-prompt" style="opacity:.55"># no research yet — coming soon</p>{%- endif -%}
+      <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span><span class="s6-caret">_</span></p>
+      {%- else -%}
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span>ls research/ --sort=date</p>
       <div class="s6-listing">
         <span class="s6-header">date</span>
@@ -33,9 +70,10 @@
         {%- include listing-with-series.html items=entries -%}
       </div>
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span><span class="s6-caret">_</span></p>
+      {%- endif -%}
     </div>
     <footer class="s6-statusbar">
-      <span>{{ site.title | default: 'atlas' | downcase }} · {{ entry_count }} entries{% if first %} · last run {{ first.date | date: "%Y-%m-%d" }}{% endif %}</span>
+      <span>{% if series_mode %}{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }} · {{ all_members | size }} entries{% if newest %} · updated {{ newest.date | date: "%Y-%m-%d" }}{% endif %}{% else %}{{ site.title | default: 'atlas' | downcase }} · {{ entry_count }} entries{% if first %} · last run {{ first.date | date: "%Y-%m-%d" }}{% endif %}{% endif %}</span>
       {%- if site.scout_repo -%}<span><a href="https://github.com/{{ site.scout_repo }}">scout ↗</a> · <a href="https://github.com/Laoujin/Compass">compass ↗</a></span>{%- endif -%}
     </footer>
   </div>
