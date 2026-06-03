@@ -122,7 +122,10 @@ Controls:
 
 Server-side facet generation:
 
-- tags = union of `tags[]` over `entries`
+- tags = tags shared by **≥2 entries**, ordered by frequency (most-used first), in a
+  scroll-capped strip. (The real dataset has ~350 distinct tags — a long tail of
+  near-unique place/restaurant tags — so a flat union is unusable. The tail stays
+  findable via free-text search, since tags are part of `data-search`.)
 - series = `site.data.series` entries with ≥1 resolved member
 - categories = group labels; on the home page across all series, on a series page scoped to
   that series' groups

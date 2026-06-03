@@ -817,6 +817,13 @@ Create `assets/filters.js`:
 
 > `Element.closest` and `URLSearchParams` are supported in all evergreen browsers; this theme targets modern GitHub Pages visitors, so no polyfill is added (YAGNI).
 
+> **Tag-chip capping (added during verification):** the live dataset has ~350 distinct
+> tags (a long tail of near-unique place/restaurant tags), which made a flat chip list a
+> wall. The facet population renders chips only for tags shared by `>= MIN_TAG_FREQ` (2)
+> entries, sorted by frequency (most-used first); `assets/filters.css` `.filter-tags` gets
+> a `max-height` + `overflow-y:auto`. The dropped tail stays searchable via free text (tags
+> are in `data-search`). See commit history for the exact `tagCount`-based population.
+
 - [ ] **Step 2: Commit**
 
 ```bash
