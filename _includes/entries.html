@@ -40,6 +40,7 @@ preserved. Only RESOLVED members (matching a real page in `entries`) are
 counted in series_count_map.
 {%- endcomment -%}
 {%- assign entry_series_map = "" -%}
+{%- assign entry_category_map = "" -%}
 {%- assign series_count_map = "" -%}
 {%- assign series_anymember_map = "" -%}
 
@@ -56,6 +57,11 @@ counted in series_count_map.
     {%- for _g in _s.groups -%}
       {%- for _mslug in _g.entries -%}
         {%- assign _members = _members | push: _mslug -%}
+        {%- assign _cat_needle = "," | append: _mslug | append: "=" -%}
+        {%- assign _cat_check = "," | append: entry_category_map -%}
+        {%- unless _cat_check contains _cat_needle -%}
+          {%- assign entry_category_map = entry_category_map | append: _mslug | append: "=" | append: _g.label | append: "," -%}
+        {%- endunless -%}
       {%- endfor -%}
     {%- endfor -%}
   {%- elsif _s.entries -%}
@@ -88,5 +94,6 @@ counted in series_count_map.
 {%- endfor -%}
 
 {%- assign entry_series_map = "," | append: entry_series_map -%}
+{%- assign entry_category_map = "," | append: entry_category_map -%}
 {%- assign series_count_map = "," | append: series_count_map -%}
 {%- assign series_anymember_map = "," | append: series_anymember_map -%}
