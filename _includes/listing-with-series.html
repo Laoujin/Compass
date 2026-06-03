@@ -5,10 +5,16 @@ matching the s6-listing markup (date, depth, title, cit/read).
 A series row looks like a directory in `ls`:
   2026-05-25  series  michelin-weekends/  10 entries
 
+Each emitted row is wrapped in <div class="filter-item" …> so the client-side
+filter can toggle it; the wrapper is display:contents (assets/filters.css) so
+the 4-column grid is unaffected. Series-member rows additionally carry
+is-series-member (hidden until a filter is active); the series summary row
+carries data-kind="series".
+
 Inputs:
   include.items  — array of pages (typically `entries`)
 
-Relies on entries.html vars: entry_series_map, series_count_map.
+Relies on entries.html vars: entry_series_map, entry_category_map, series_count_map.
 {%- endcomment -%}
 {%- assign _emitted_series = "," -%}
 {%- for e in include.items -%}
@@ -37,21 +43,36 @@ Relies on entries.html vars: entry_series_map, series_count_map.
     {%- assign _depth_label = e.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' -%}
   {%- endif -%}
 
+  {%- comment -%} Filter data-* for this entry's row (read maps from entries.html) {%- endcomment -%}
+  {%- assign _row_cat = "" -%}
+  {%- assign _ccheck = "," | append: _slug | append: "=" -%}
+  {%- if entry_category_map contains _ccheck -%}
+    {%- assign _row_cat = entry_category_map | split: _ccheck | last | split: "," | first -%}
+  {%- endif -%}
+  {%- assign _row_tags = e.tags | join: "," | downcase -%}
+  {%- capture _row_search -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
+  {%- assign _row_search = _row_search | downcase | strip_newlines | replace: '"', '' -%}
+  {%- capture _row_attrs -%}data-kind="entry" data-slug="{{ _slug }}" data-tags="{{ _row_tags }}" data-series="{{ _series_slug }}" data-category="{{ _row_cat | downcase }}" data-search="{{ _row_search | escape }}"{%- endcapture -%}
+
   {%- if forloop.first -%}
-    {%- comment -%} Always emit the latest as its own row {%- endcomment -%}
+    {%- comment -%} Always emit the latest as its own (filterable) row {%- endcomment -%}
+    <div class="filter-item" {{ _row_attrs }}>
     <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
     <span class="s6-cell depth-cell">{{ _depth_label }}</span>
     <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
     <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
+    </div>
     {%- if _series_slug != "" and _already_emitted == false -%}
       {%- assign _s_obj = site.data.series | where: "slug", _series_slug | first -%}
       {%- assign _cnt_lookup = "," | append: _series_slug | append: "=" -%}
       {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
       {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
+      <div class="filter-item" data-kind="series" data-series="{{ _series_slug }}">
       <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
       <span class="s6-cell depth-cell">series</span>
       <span class="s6-cell series-cell"><a href="{{ '/series/' | append: _series_slug | append: '/' | relative_url }}"><span class="series-arrow">↳</span>{{ _s_obj.slug }}/</a></span>
       <span class="s6-cell">{{ _cnt }} {% if _cnt == 1 %}entry{% else %}entries{% endif %}</span>
+      </div>
       {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
     {%- endif -%}
   {%- elsif _series_slug != "" and _already_emitted == false -%}
@@ -59,17 +80,33 @@ Relies on entries.html vars: entry_series_map, series_count_map.
     {%- assign _cnt_lookup = "," | append: _series_slug | append: "=" -%}
     {%- assign _cnt_after = series_count_map | split: _cnt_lookup | last -%}
     {%- assign _cnt = _cnt_after | split: "," | first | plus: 0 -%}
+    <div class="filter-item" data-kind="series" data-series="{{ _series_slug }}">
     <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
     <span class="s6-cell depth-cell">series</span>
     <span class="s6-cell series-cell"><a href="{{ '/series/' | append: _series_slug | append: '/' | relative_url }}"><span class="series-arrow">↳</span>{{ _s_obj.slug }}/</a></span>
     <span class="s6-cell">{{ _cnt }} {% if _cnt == 1 %}entry{% else %}entries{% endif %}</span>
-    {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
-  {%- elsif _series_slug != "" and _already_emitted -%}
-    {%- comment -%} Skip member of already-emitted series {%- endcomment -%}
-  {%- else -%}
+    </div>
+    <div class="filter-item is-series-member" {{ _row_attrs }}>
     <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
     <span class="s6-cell depth-cell">{{ _depth_label }}</span>
     <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
     <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
+    </div>
+    {%- assign _emitted_series = _emitted_series | append: _series_slug | append: "," -%}
+  {%- elsif _series_slug != "" and _already_emitted -%}
+    {%- comment -%} Member of an already-emitted series: emit hidden for flat filtering {%- endcomment -%}
+    <div class="filter-item is-series-member" {{ _row_attrs }}>
+    <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
+    <span class="s6-cell depth-cell">{{ _depth_label }}</span>
+    <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
+    <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
+    </div>
+  {%- else -%}
+    <div class="filter-item" {{ _row_attrs }}>
+    <span class="s6-cell date">{{ e.date | date: "%Y-%m-%d" }}</span>
+    <span class="s6-cell depth-cell">{{ _depth_label }}</span>
+    <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title | slugify | truncate: 40, "" }}</a></span>
+    <span class="s6-cell">{{ e.citations | default: 0 }} · {{ e.reading_time_min | default: 0 }}m</span>
+    </div>
   {%- endif -%}
 {%- endfor -%}
