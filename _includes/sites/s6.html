@@ -29,6 +29,7 @@
       {%- if series_mode -%}
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span>cd series/{{ s.slug }}/ &amp;&amp; ls</p>
       <p class="s6-prompt" style="opacity:.7"># {{ s.title }} — {{ all_members | size }} {% if all_members.size == 1 %}entry{% else %}entries{% endif %}{% if s.blurb %} · {{ s.blurb }}{% endif %}</p>
+      {%- include filter-bar.html scope="series" -%}
       {%- if s.groups -%}
         {%- for g in s.groups -%}
           {%- assign group_members = "" | split: "," -%}
@@ -41,27 +42,44 @@
           {%- endfor -%}
           {%- if group_members.size > 0 -%}
             {%- assign group_members = group_members | sort: 'date' | reverse -%}
+            <section class="series-group">
             <p class="s6-prompt" style="opacity:.55">## {{ g.label }}</p>
             <div class="s6-listing">
               {%- for e in group_members -%}
+              {%- assign _m_seg = e.url | split: '/' -%}
+              {%- assign _m_slug = _m_seg[2] -%}
+              {%- assign _m_tags = e.tags | join: "," | downcase -%}
+              {%- capture _m_search -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
+              {%- assign _m_search = _m_search | strip_html | downcase | strip_newlines | replace: '"', '' -%}
+              <div class="filter-item" data-kind="entry" data-slug="{{ _m_slug }}" data-tags="{{ _m_tags }}" data-series="{{ s.slug }}" data-category="{{ g.label | downcase }}" data-search="{{ _m_search | escape }}">
               <span class="s6-cell">{{ e.date | date: "%Y-%m-%d" }}</span>
               <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span>
+              </div>
               {%- endfor -%}
             </div>
+            </section>
           {%- endif -%}
         {%- endfor -%}
       {%- else -%}
         {%- assign flat_members = all_members | sort: 'date' | reverse -%}
         <div class="s6-listing">
           {%- for e in flat_members -%}
+          {%- assign _m_seg = e.url | split: '/' -%}
+          {%- assign _m_slug = _m_seg[2] -%}
+          {%- assign _m_tags = e.tags | join: "," | downcase -%}
+          {%- capture _m_search -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
+          {%- assign _m_search = _m_search | strip_html | downcase | strip_newlines | replace: '"', '' -%}
+          <div class="filter-item" data-kind="entry" data-slug="{{ _m_slug }}" data-tags="{{ _m_tags }}" data-series="{{ s.slug }}" data-category="" data-search="{{ _m_search | escape }}">
           <span class="s6-cell">{{ e.date | date: "%Y-%m-%d" }}</span>
           <span class="s6-cell"><a href="{{ e.url | relative_url }}">{{ e.title }}</a></span>
+          </div>
           {%- endfor -%}
         </div>
       {%- endif -%}
       {%- if all_members.size == 0 -%}<p class="s6-prompt" style="opacity:.55"># no research yet — coming soon</p>{%- endif -%}
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span><span class="s6-caret">_</span></p>
       {%- else -%}
+      {%- include filter-bar.html scope="home" -%}
       <p class="s6-prompt"><span class="path">{{ site.title | default: 'atlas' | downcase }}</span>ls research/ --sort=date</p>
       <div class="s6-listing">
         <span class="s6-header">date</span>
