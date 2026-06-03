@@ -22,7 +22,7 @@
 {%- endif -%}
 {%- assign _ftags = e.tags | join: "," | downcase -%}
 {%- capture _fsearch -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
-{%- assign _fsearch = _fsearch | downcase | strip_newlines | replace: '"', '' -%}
+{%- assign _fsearch = _fsearch | strip_html | downcase | strip_newlines | replace: '"', '' -%}
 <article class="card{% if is_expedition %} card-expedition{% endif %} v7-card" style="--h:{{ e.hue | default: 210 }};"
   data-kind="entry" data-slug="{{ _fslug }}" data-tags="{{ _ftags }}"
   data-series="{{ _fseries }}" data-category="{{ _fcat | downcase }}" data-search="{{ _fsearch | escape }}">

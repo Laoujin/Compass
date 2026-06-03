@@ -45,13 +45,12 @@ Relies on entries.html vars: entry_series_map, entry_category_map, series_count_
 
   {%- comment -%} Filter data-* for this entry's row (read maps from entries.html) {%- endcomment -%}
   {%- assign _row_cat = "" -%}
-  {%- assign _ccheck = "," | append: _slug | append: "=" -%}
-  {%- if entry_category_map contains _ccheck -%}
-    {%- assign _row_cat = entry_category_map | split: _ccheck | last | split: "," | first -%}
+  {%- if entry_category_map contains _lookup -%}
+    {%- assign _row_cat = entry_category_map | split: _lookup | last | split: "," | first -%}
   {%- endif -%}
   {%- assign _row_tags = e.tags | join: "," | downcase -%}
   {%- capture _row_search -%}{{ e.title }} {{ e.summary }} {{ e.topic }} {{ e.tags | join: " " }}{%- endcapture -%}
-  {%- assign _row_search = _row_search | downcase | strip_newlines | replace: '"', '' -%}
+  {%- assign _row_search = _row_search | strip_html | downcase | strip_newlines | replace: '"', '' -%}
   {%- capture _row_attrs -%}data-kind="entry" data-slug="{{ _slug }}" data-tags="{{ _row_tags }}" data-series="{{ _series_slug }}" data-category="{{ _row_cat | downcase }}" data-search="{{ _row_search | escape }}"{%- endcapture -%}
 
   {%- if forloop.first -%}
