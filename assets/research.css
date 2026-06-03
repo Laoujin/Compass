@@ -308,7 +308,8 @@ body.research-page {
 :is(.research-toc, .children-rail) .sibling-card:has(> .view-badges) > a {
   padding-right: 78px;
 }
-:is(.research-toc, .children-rail) .sibling-card a {
+:is(.research-toc, .children-rail) .sibling-card a,
+:is(.research-toc, .children-rail) .sibling-card .sc-link {
   display: flex;
   gap: 10px;
   padding: 8px 10px;
@@ -323,6 +324,12 @@ body.research-page {
 :is(.research-toc, .children-rail) .sibling-card a:hover {
   border-color: var(--pal-accent);
   transform: translateX(2px);
+}
+/* Failed angle: disabled, non-linked card mirroring the .child-card-failed grid card. */
+:is(.research-toc, .children-rail) .sibling-card-failed .sc-link {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: color-mix(in srgb, var(--pal-surface-tint) 50%, var(--pal-surface));
 }
 :is(.research-toc, .children-rail) .sibling-card .num {
   font-family: 'Fraunces', Georgia, serif;

@@ -84,6 +84,17 @@
           {% for c in page.children %}
           {% assign c_depth = c.depth | replace: 'ceo', 'recon' | replace: 'standard', 'survey' | replace: 'deep', 'expedition' %}
           {% assign c_url = page.url | append: c.slug | append: '/' %}
+          {% if c.status == 'failed' %}
+          <li class="sibling-card sibling-card-failed" aria-disabled="true">
+            <div class="sc-link">
+              <span class="num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
+              <span class="sc-body">
+                <span class="sc-ttl">{{ c.title }}</span>
+                <span class="sc-meta"><span class="failed-badge">failed</span></span>
+              </span>
+            </div>
+          </li>
+          {% else %}
           <li class="sibling-card">
             <a href="{{ c_url | relative_url }}">
               <span class="num">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</span>
@@ -94,6 +105,7 @@
             </a>
             {%- include view-badge.html entry_url=c_url -%}
           </li>
+          {% endif %}
           {% endfor %}
         </ol>
       </aside>
