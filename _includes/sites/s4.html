@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title | default: site.title | default: 'Atlas' }}</title>
+  <title>{% if series_mode %}{{ series_title }} · {{ site.title | default: 'Atlas' }}{% else %}{{ page.title | default: site.title | default: 'Atlas' }}{% endif %}</title>
   {%- if site.description -%}<meta name="description" content="{{ site.description }}">{%- endif -%}
   <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
@@ -24,6 +24,12 @@
   <div class="s4">
     <aside class="s4-hero">
       <img class="s4-logo" src="{{ '/icon.png' | prepend: site.assets_base | relative_url }}" alt="{{ site.title | default: 'Atlas' }}">
+      {%- if series_mode -%}
+      <h1>{{ s.title }}</h1>
+      {%- if s.blurb -%}<p>{{ s.blurb }}</p>{%- endif -%}
+      {%- include series-kicker.html -%}
+      <a class="s4-cta" href="{{ '/' | relative_url }}">← {{ site.title | default: 'Atlas' }}</a>
+      {%- else -%}
       <h1>{{ site.title | default: 'Atlas' }}</h1>
       <p>{{ site.description | default: 'Personal research notes. Cited on every line. Published automatically by Scout.' }}</p>
       {%- if latest.size > 0 -%}
@@ -36,18 +42,23 @@
         </ul>
       </div>
       {%- endif -%}
+      {%- endif -%}
       <div class="s4-credits">
         <span>{{ site.title | default: 'Atlas' }} · <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" target="_blank" rel="noopener">{{ site.github.owner_name }}/{{ site.github.repository_name }} ↗</a></span>
         {%- if site.scout_repo -%}<span>Built with <a href="https://github.com/{{ site.scout_repo }}" target="_blank" rel="noopener">Scout ↗</a>, styled by <a href="https://github.com/Laoujin/Compass" target="_blank" rel="noopener">Compass ↗</a></span>{%- endif -%}
       </div>
     </aside>
     <section class="s4-content">
+      {%- if series_mode -%}
+        {%- include series-grid.html -%}
+      {%- else -%}
       {%- if site.scout_repo -%}
       <a class="s4-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
       {%- endif -%}
       <div class="entry-grid">
         {%- include grid-with-series.html items=entries -%}
       </div>
+      {%- endif -%}
     </section>
   </div>
 </body>
