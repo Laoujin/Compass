@@ -11,6 +11,8 @@
   var catSel = bar.querySelector('.js-filter-category');
   var countEl = bar.querySelector('.js-filter-count');
   var clearBtn = bar.querySelector('.js-filter-clear');
+  var moreBtn = bar.querySelector('.js-filter-more');
+  var advanced = bar.querySelector('.js-filter-advanced');
 
   var items = toArray(document.querySelectorAll('[data-kind]'));
   var entries = items.filter(function (el) { return el.getAttribute('data-kind') === 'entry'; });
@@ -78,9 +80,15 @@
   if (clearBtn) clearBtn.addEventListener('click', function () {
     state = { q: '', tags: [], series: '', cat: '' }; commit();
   });
+  if (moreBtn && advanced) moreBtn.addEventListener('click', function () {
+    setAdvanced(advanced.hidden);
+  });
 
   // --- boot ---------------------------------------------------------------
   readURL();
+  // Reveal the advanced controls up front when a facet filter arrived via URL,
+  // so the user can see what's narrowing the results (search stays always-visible).
+  setAdvanced(!!(state.tags.length || state.series || state.cat));
   bar.hidden = false;
   apply();
 
@@ -178,6 +186,11 @@
   }
 
   // --- helpers ------------------------------------------------------------
+  function setAdvanced(open) {
+    if (!advanced) return;
+    advanced.hidden = !open;
+    if (moreBtn) moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
   function toArray(nl) { return Array.prototype.slice.call(nl); }
   function addOption(sel, value, label) {
     var o = document.createElement('option');

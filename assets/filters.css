@@ -33,8 +33,7 @@
 /* --- bar styling (palette-aware; reuses palette custom props) ---------- */
 .filter-bar {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: .5rem;
   margin: 0 auto 1.5rem;
   padding: .75rem 1rem;
@@ -42,8 +41,13 @@
   border-radius: 10px;
   background: color-mix(in srgb, var(--pal-bg, #fff) 92%, var(--pal-fg, #333));
 }
+.filter-primary {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
 .filter-search {
-  flex: 1 1 12rem;
+  flex: 1 1 auto;
   min-width: 8rem;
   padding: .4rem .6rem;
   font: inherit;
@@ -52,6 +56,28 @@
   border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 25%, transparent);
   border-radius: 6px;
 }
+.filter-more {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .4rem .5rem;
+  cursor: pointer;
+  color: var(--pal-fg, #222);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 25%, transparent);
+  border-radius: 6px;
+}
+.filter-more:hover { background: color-mix(in srgb, var(--pal-fg, #333) 8%, transparent); }
+.filter-more-icon { transition: transform .15s ease; }
+.filter-more[aria-expanded="true"] .filter-more-icon { transform: rotate(180deg); }
+.filter-advanced {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+.filter-advanced[hidden] { display: none; }
 .filter-tags {
   display: flex;
   flex-wrap: wrap;
