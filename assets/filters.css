@@ -52,7 +52,14 @@
   border: 1px solid color-mix(in srgb, var(--pal-fg, #333) 25%, transparent);
   border-radius: 6px;
 }
-.filter-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  align-content: flex-start;
+  max-height: 5.5rem;       /* shared-tag chips can still be many → scroll, don't sprawl */
+  overflow-y: auto;
+}
 .filter-tags .chip { cursor: pointer; user-select: none; }
 .filter-tags .chip.is-on {
   background: var(--pal-accent, #b5532f);

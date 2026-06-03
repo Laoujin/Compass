@@ -20,21 +20,29 @@
   var state = { q: '', tags: [], series: '', cat: '' };
 
   // --- populate facet controls from the cards on the page -----------------
-  var tagSet = {}, seriesSet = {}, catSet = {};
+  // Only tags shared by >= MIN_TAG_FREQ entries become chips. Research datasets
+  // carry a long tail of near-unique tags (place/restaurant names) — hundreds of
+  // them — which would make a flat chip list unusable. The dropped tail stays
+  // reachable via free-text search (tags are part of data-search).
+  var MIN_TAG_FREQ = 2;
+  var tagCount = {}, seriesSet = {}, catSet = {};
   entries.forEach(function (el) {
-    (el.getAttribute('data-tags') || '').split(',').forEach(function (t) { if (t) tagSet[t] = 1; });
+    (el.getAttribute('data-tags') || '').split(',').forEach(function (t) { if (t) tagCount[t] = (tagCount[t] || 0) + 1; });
     var s = el.getAttribute('data-series'); if (s) seriesSet[s] = 1;
     var c = el.getAttribute('data-category'); if (c) catSet[c] = 1;
   });
   if (tagsWrap) {
-    Object.keys(tagSet).sort().forEach(function (t) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chip js-filter-tag';
-      b.setAttribute('data-tag', t);
-      b.textContent = t;
-      tagsWrap.appendChild(b);
-    });
+    Object.keys(tagCount)
+      .filter(function (t) { return tagCount[t] >= MIN_TAG_FREQ; })
+      .sort(function (a, b) { return tagCount[b] - tagCount[a] || (a < b ? -1 : 1); })
+      .forEach(function (t) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'chip js-filter-tag';
+        b.setAttribute('data-tag', t);
+        b.textContent = t;
+        tagsWrap.appendChild(b);
+      });
   }
   if (seriesSel) {
     Object.keys(seriesSet).sort().forEach(function (s) { addOption(seriesSel, s, s); });
