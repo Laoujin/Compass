@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/filters.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
@@ -77,5 +78,6 @@
       {%- if site.scout_repo -%}<span><a href="https://github.com/{{ site.scout_repo }}">scout ↗</a> · <a href="https://github.com/Laoujin/Compass">compass ↗</a></span>{%- endif -%}
     </footer>
   </div>
+  <script src="{{ '/filters.js' | prepend: site.assets_base | relative_url }}" defer></script>
 </body>
 </html>

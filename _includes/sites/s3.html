@@ -15,12 +15,11 @@
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/filters.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
   {%- include entries.html -%}
-  {%- assign all_tags = '' | split: '' -%}
-  {%- for e in entries -%}{%- for t in e.tags -%}{%- unless all_tags contains t -%}{%- assign all_tags = all_tags | push: t -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
 
   <div class="s3">
     <header class="s3-topbar">
@@ -52,23 +51,15 @@
           <li>Survey <span class="c">{{ survey_count }}</span></li>
           <li>Expedition <span class="c">{{ exped_count }}</span></li>
         </ul>
-        {%- if all_tags.size > 0 -%}
-        <h4>Tags</h4>
-        <ul>
-          {%- for t in all_tags -%}
-            {%- assign c = 0 -%}
-            {%- for e in entries -%}{%- if e.tags contains t -%}{%- assign c = c | plus: 1 -%}{%- endif -%}{%- endfor -%}
-            <li>{{ t }} <span class="c">{{ c }}</span></li>
-          {%- endfor -%}
-        </ul>
-        {%- endif -%}
       </aside>
       {%- endunless -%}
       <section class="s3-content">
         {%- if series_mode -%}
           {%- include series-head.html -%}
+          {%- include filter-bar.html scope="series" -%}
           {%- include series-grid.html -%}
         {%- else -%}
+        {%- include filter-bar.html scope="home" -%}
         <div class="entry-grid">
           {%- include grid-with-series.html items=entries -%}
         </div>
@@ -77,5 +68,6 @@
     </div>
     <footer class="s3-footer">{{ site.title | default: 'Atlas' }} · <a href="https://github.com/{{ site.github.owner_name }}/{{ site.github.repository_name }}" target="_blank" rel="noopener">{{ site.github.owner_name }}/{{ site.github.repository_name }} ↗</a>{% if site.scout_repo %} · Built with <a href="https://github.com/{{ site.scout_repo }}" target="_blank" rel="noopener">Scout ↗</a>, styled by <a href="https://github.com/Laoujin/Compass" target="_blank" rel="noopener">Compass ↗</a>{% endif %}</footer>
   </div>
+  <script src="{{ '/filters.js' | prepend: site.assets_base | relative_url }}" defer></script>
 </body>
 </html>

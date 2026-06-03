@@ -15,12 +15,11 @@
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/filters.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
   {%- include entries.html -%}
-  {%- assign all_tags = '' | split: '' -%}
-  {%- for e in entries -%}{%- for t in e.tags -%}{%- unless all_tags contains t -%}{%- assign all_tags = all_tags | push: t -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
 
   <div class="s1">
     <header class="s1-hero"{% if series_mode and cover_src != "" %} style="background: linear-gradient(to bottom, color-mix(in srgb, var(--pal-bg) 25%, transparent), var(--pal-bg) 100%), url('{{ cover_src }}') center / cover no-repeat;"{% endif %}>
@@ -40,18 +39,12 @@
     </header>
 
     {%- unless series_mode -%}
-    <nav class="s1-filter">
-      <span class="chip solid">All · {{ entry_count }}</span>
-      {%- for t in all_tags -%}
-        {%- assign c = 0 -%}
-        {%- for e in entries -%}{%- if e.tags contains t -%}{%- assign c = c | plus: 1 -%}{%- endif -%}{%- endfor -%}
-        <span class="chip">{{ t }} · {{ c }}</span>
-      {%- endfor -%}
-    </nav>
+    {%- include filter-bar.html scope="home" -%}
     {%- endunless -%}
 
     <section class="s1-content">
       {%- if series_mode -%}
+        {%- include filter-bar.html scope="series" -%}
         {%- include series-grid.html -%}
       {%- else -%}
       <div class="entry-grid">
@@ -65,5 +58,6 @@
       {%- if site.scout_repo -%}<span>Built with <a href="https://github.com/{{ site.scout_repo }}" target="_blank" rel="noopener">Scout ↗</a>, styled by <a href="https://github.com/Laoujin/Compass" target="_blank" rel="noopener">Compass ↗</a></span>{%- endif -%}
     </footer>
   </div>
+  <script src="{{ '/filters.js' | prepend: site.assets_base | relative_url }}" defer></script>
 </body>
 </html>

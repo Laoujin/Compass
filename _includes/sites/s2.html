@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/filters.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
@@ -34,8 +35,10 @@
     <section class="s2-content">
       {%- if series_mode -%}
         {%- include series-head.html -%}
+        {%- include filter-bar.html scope="series" -%}
         {%- include series-grid.html -%}
       {%- else -%}
+      {%- include filter-bar.html scope="home" -%}
       <div class="entry-grid">
         {%- include grid-with-series.html items=entries -%}
       </div>
@@ -47,5 +50,6 @@
       {%- if site.scout_repo -%}<span>Built with <a href="https://github.com/{{ site.scout_repo }}" target="_blank" rel="noopener">Scout ↗</a>, styled by <a href="https://github.com/Laoujin/Compass" target="_blank" rel="noopener">Compass ↗</a></span>{%- endif -%}
     </footer>
   </div>
+  <script src="{{ '/filters.js' | prepend: site.assets_base | relative_url }}" defer></script>
 </body>
 </html>

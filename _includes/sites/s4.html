@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="{{ '/sites/' | prepend: site.assets_base | append: site.skeleton | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/cards/' | prepend: site.assets_base | append: site.card | append: '.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/series.css' | prepend: site.assets_base | relative_url }}">
+  <link rel="stylesheet" href="{{ '/filters.css' | prepend: site.assets_base | relative_url }}">
   {%- include analytics.html -%}
 </head>
 <body>
@@ -50,16 +51,19 @@
     </aside>
     <section class="s4-content">
       {%- if series_mode -%}
+        {%- include filter-bar.html scope="series" -%}
         {%- include series-grid.html -%}
       {%- else -%}
       {%- if site.scout_repo -%}
       <a class="s4-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
       {%- endif -%}
+      {%- include filter-bar.html scope="home" -%}
       <div class="entry-grid">
         {%- include grid-with-series.html items=entries -%}
       </div>
       {%- endif -%}
     </section>
   </div>
+  <script src="{{ '/filters.js' | prepend: site.assets_base | relative_url }}" defer></script>
 </body>
 </html>
