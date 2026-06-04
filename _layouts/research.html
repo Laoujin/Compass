@@ -68,7 +68,7 @@
       <div class="research-stack">
         {% if page.citations %}<span><b>{{ page.citations }}</b> sources</span>{% endif %}
         {% if page.reading_time_min %}<span><b>~{{ page.reading_time_min }}</b> min read</span>{% endif %}
-        {% if page.issue %}<span>{% if site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener"><b>#{{ page.issue }}</b></a>{% else %}<b>#{{ page.issue }}</b>{% endif %}</span>{% endif %}
+        {% if page.issue and page.issue != "n/a" %}<span>{% if site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener"><b>#{{ page.issue }}</b></a>{% else %}<b>#{{ page.issue }}</b>{% endif %}</span>{% endif %}
         {% if page.tags %}<span class="research-tags-inline">{{ page.tags | join: ' · ' }}</span>{% endif %}
       </div>
       {% include view-switcher.html %}
@@ -190,7 +190,7 @@
         <span class="ribbon-links">
           {% assign artifact_ext = page.path | split: '.' | last %}
           {% if site.atlas_repo %}<a href="https://github.com/{{ site.atlas_repo }}/blob/main/{{ page.path }}" target="_blank" rel="noopener">Raw .{{ artifact_ext }} ↗</a>{% endif %}
-          {% if page.issue and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener">Issue #{{ page.issue }} ↗</a>{% endif %}
+          {% if page.issue and page.issue != "n/a" and site.scout_repo %}<a href="https://github.com/{{ site.scout_repo }}/issues/{{ page.issue }}" target="_blank" rel="noopener">Issue #{{ page.issue }} ↗</a>{% endif %}
         </span>
       </div>
     </div>
