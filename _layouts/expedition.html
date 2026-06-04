@@ -131,10 +131,13 @@
       <div class="pgrid">
         <div class="pcell"><div class="lbl">Depth</div><div class="val">Expedition</div></div>
         <div class="pcell"><div class="lbl">Angles</div><div class="val">{{ total }}{% if warning_count > 0 or failed_count > 0 %} ({{ success_count }} ok{% if warning_count > 0 %}, {{ warning_count }} ⚠{% endif %}{% if failed_count > 0 %}, {{ failed_count }} failed{% endif %}){% endif %}</div></div>
-        {% if page.model %}<div class="pcell"><div class="lbl">Model</div><div class="val">{{ page.model }}</div></div>{% endif %}
+        {% if page.model == "n/a" %}<div class="pcell"><div class="lbl">Model</div><div class="val val-na" title="not recorded">—</div></div>
+        {% elsif page.model %}<div class="pcell"><div class="lbl">Model</div><div class="val">{{ page.model }}</div></div>{% endif %}
         {% if page.cost_usd == "sub" %}<div class="pcell"><div class="lbl">Cost</div><div class="val">on subscription</div></div>
+        {% elsif page.cost_usd == "n/a" %}<div class="pcell"><div class="lbl">Cost</div><div class="val val-na" title="not recorded">—</div></div>
         {% elsif page.cost_usd %}<div class="pcell"><div class="lbl">Cost</div><div class="val">${{ page.cost_usd }}</div></div>{% endif %}
-        {% if page.duration_sec %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ page.duration_sec | divided_by: 60.0 | round }} min</div></div>{% endif %}
+        {% if page.duration_sec == "n/a" %}<div class="pcell"><div class="lbl">Duration</div><div class="val val-na" title="not recorded">—</div></div>
+        {% elsif page.duration_sec %}<div class="pcell"><div class="lbl">Duration</div><div class="val">{{ page.duration_sec | divided_by: 60.0 | round }} min</div></div>{% endif %}
         {% if page.date %}<div class="pcell"><div class="lbl">Date</div><div class="val">{{ page.date | date: "%-d %b %Y" }}</div></div>{% endif %}
       </div>
       {% if page.topic %}

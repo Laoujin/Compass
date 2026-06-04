@@ -760,6 +760,9 @@ body.research-page {
   font-size: 26px;
   color: #faf6ea;
 }
+/* Unrecorded metric on a legacy run (model/cost/duration never captured): a
+   muted em-dash, clearly not a real value. */
+.pcell .val.val-na { opacity: .4; }
 .research-provenance .prompt-lbl {
   font-size: 11px;
   text-transform: uppercase;
