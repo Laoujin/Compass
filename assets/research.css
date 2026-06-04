@@ -17,7 +17,7 @@ body.research-page {
 
 .research-back {
   position: fixed; top: 16px; left: 18px; z-index: 50;
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 0;
   font-size: 12px;
   background: color-mix(in srgb, var(--pal-surface) 80%, transparent);
   padding: 6px 10px; border-radius: 4px;
@@ -26,7 +26,27 @@ body.research-page {
 }
 .research-back a { color: var(--pal-fg); text-decoration: none; }
 .research-back a:hover { color: var(--pal-accent); }
-.research-back-sep { color: var(--pal-fg-faint); }
+.research-back-label { margin-left: .35em; }
+.research-back-sep { color: var(--pal-fg-faint); margin: 0 .3em; }
+
+/* Collapsed back-nav: on hover-capable devices the pill shows just the ← arrow
+   and reveals the label(s) on hover/focus. Touch devices (no hover) fall through
+   to the rules above and keep the full text, so the series link stays reachable. */
+@media (hover: hover) {
+  .research-back-label,
+  .research-back-sep,
+  .research-back-series {
+    display: inline-block; overflow: hidden; white-space: nowrap;
+    vertical-align: bottom; max-width: 0; opacity: 0; margin-left: 0; margin-right: 0;
+    transition: max-width .3s ease, opacity .2s ease, margin .25s ease;
+  }
+  .research-back:hover .research-back-label,
+  .research-back:focus-within .research-back-label { max-width: 16ch; opacity: 1; margin-left: .35em; }
+  .research-back:hover .research-back-sep,
+  .research-back:focus-within .research-back-sep { max-width: 2ch; opacity: 1; margin: 0 .3em; }
+  .research-back:hover .research-back-series,
+  .research-back:focus-within .research-back-series { max-width: 24ch; opacity: 1; }
+}
 
 /* =========================================================================
    Cover

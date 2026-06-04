@@ -48,7 +48,7 @@
   {%- assign _series_key = url_parts[2] -%}
   {%- include series-of.html slug=_series_key -%}
   <nav class="research-back">
-    <a href="{{ '/' | relative_url }}">← {{ site.title }}</a>
+    <a href="{{ '/' | relative_url }}">←<span class="research-back-label">{{ site.title }}</span></a>
     {%- if series_of_slug != "" -%}
     <span class="research-back-sep" aria-hidden="true">·</span>
     <a class="research-back-series" href="{{ '/series/' | append: series_of_slug | append: '/' | relative_url }}">↩ {{ series_of_title }}</a>
