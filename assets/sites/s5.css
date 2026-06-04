@@ -39,6 +39,15 @@
 }
 .s5-cta:hover { transform: translateY(-1px); filter: brightness(1.05); }
 
+/* Corner action group: kept out of the .s5-fold grid (absolute) so the pill
+   doesn't steal a grid cell and bump the featured card into the wide column. */
+.s5-actions {
+  position: absolute; top: 18px; right: 22px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.s5-actions .s5-cta { position: static; }
+.s5-actions .atlas-health { margin-left: 0; }
+
 .s5-featured { position: relative; z-index: 1; }
 .s5-tag-above {
   font: 600 10px ui-monospace, Menlo, monospace;
