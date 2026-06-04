@@ -1,0 +1,13 @@
+{%- comment -%} Renders one severity tier's research list. Param: group (array of {slug, items}). {%- endcomment -%}
+{%- for r in include.group -%}
+<article class="health-item">
+  <h3><a href="{{ r.slug | prepend: '/research/' | append: '/' | relative_url }}">{{ r.slug }}</a></h3>
+  {%- for it in r.items -%}
+  <ul class="health-findings">
+    {%- for f in it.findings -%}
+    <li><code class="health-cat">{{ f.category }}</code>{% if it.node == 'child' %} <span class="health-node">{{ it.path | split: '/' | last }}</span>{% endif %} — {{ f.detail }}</li>
+    {%- endfor -%}
+  </ul>
+  {%- endfor -%}
+</article>
+{%- endfor -%}

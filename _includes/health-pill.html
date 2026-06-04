@@ -1,0 +1,22 @@
+{%- comment -%}
+Homepage health pill. Counts CRITICAL research only (h.counts.critical) so a backlog
+of cosmetic hygiene findings can never make the homepage scream. Renders only when
+_data/health.json exists. Quiet green dot when clear; rust "⚠ N · health" when not.
+{%- endcomment -%}
+{%- assign h = site.data.health -%}
+{%- if h -%}
+{%- assign crit = h.counts.critical | default: 0 -%}
+<a class="atlas-health{% if crit > 0 %} atlas-health--warn{% endif %}" href="{{ '/health/' | relative_url }}"
+   title="{% if crit > 0 %}{{ crit }} research need attention{% else %}all research healthy{% endif %}">
+  <span class="atlas-health-dot"></span>{% if crit > 0 %}⚠ {{ crit }} · health{% else %}health{% endif %}</a>
+<style>
+.atlas-health{display:inline-flex;align-items:center;gap:.45em;font:500 .8rem/1 'JetBrains Mono',monospace;
+  padding:.45em .75em;border-radius:999px;border:1px solid var(--pal-border);color:var(--pal-fg-muted);
+  background:var(--pal-surface);text-decoration:none;vertical-align:middle;margin-left:.5rem;transition:.15s ease}
+.atlas-health:hover{border-color:var(--pal-fg-muted);color:var(--pal-fg)}
+.atlas-health-dot{width:.5em;height:.5em;border-radius:50%;background:#3f9d6a;flex:0 0 auto}
+.atlas-health--warn{color:var(--pal-accent);background:var(--pal-accent-soft);border-color:var(--pal-accent)}
+.atlas-health--warn:hover{color:var(--pal-accent)}
+.atlas-health--warn .atlas-health-dot{background:var(--pal-accent)}
+</style>
+{%- endif -%}

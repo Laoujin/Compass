@@ -1,0 +1,26 @@
+{%- assign h = site.data.health -%}
+<div class="health">
+  <p class="health-back"><a href="{{ '/' | relative_url }}">← {{ site.title | default: 'Atlas' }}</a></p>
+  <h1>Atlas health</h1>
+  {%- if h.generated -%}<p class="health-meta">checked {{ h.generated }}</p>{%- endif -%}
+
+  <section class="health-tier health-tier--crit">
+    <h2>Critical <span class="health-count">{{ h.counts.critical | default: 0 }}</span></h2>
+    {%- if h.critical and h.critical.size > 0 -%}
+      {%- include health-group.html group=h.critical -%}
+    {%- else -%}
+      <p class="health-clear">✓ nothing critical — no broken, failed, or stray research.</p>
+    {%- endif -%}
+  </section>
+
+  <section class="health-tier">
+    <details{% if h.critical.size == 0 and h.hygiene.size > 0 %} open{% endif %}>
+      <summary><span class="health-summary-label">Hygiene</span> <span class="health-count">{{ h.counts.hygiene | default: 0 }}</span> <span class="health-hint">— cosmetic metadata gaps; click to expand</span></summary>
+      {%- if h.hygiene and h.hygiene.size > 0 -%}
+        {%- include health-group.html group=h.hygiene -%}
+      {%- else -%}
+        <p class="health-clear">✓ no hygiene findings.</p>
+      {%- endif -%}
+    </details>
+  </section>
+</div>

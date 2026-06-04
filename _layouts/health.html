@@ -1,0 +1,43 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Health — {{ site.title | default: 'Atlas' }}</title>
+  <link rel="icon" type="image/png" href="{{ '/icon.png' | prepend: site.assets_base | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/palettes/' | prepend: site.assets_base | append: site.palette | append: '.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/base.css' | prepend: site.assets_base | relative_url }}">
+  <style>
+    .health-page{background:var(--pal-bg);color:var(--pal-fg);margin:0;font-family:'Fraunces',Georgia,serif}
+    .health{max-width:820px;margin:0 auto;padding:3rem 1.25rem 5rem}
+    .health-back a{color:var(--pal-fg-muted);text-decoration:none;font:500 .85rem/1 'JetBrains Mono',monospace}
+    .health-back a:hover{color:var(--pal-accent)}
+    .health h1{font-size:2rem;margin:.7rem 0 .15rem}
+    .health-meta{color:var(--pal-fg-faint);font:400 .8rem/1 'JetBrains Mono',monospace;margin:0 0 2.5rem}
+    .health-tier{margin:2.2rem 0}
+    .health-tier h2,.health-tier summary{font-size:1.15rem;font-weight:600}
+    .health-count{font:500 .78rem/1 'JetBrains Mono',monospace;background:var(--pal-surface);
+      border:1px solid var(--pal-border);border-radius:999px;padding:.25em .6em;color:var(--pal-fg-muted)}
+    .health-tier--crit h2 .health-count{background:var(--pal-accent-soft);border-color:var(--pal-accent);color:var(--pal-accent)}
+    .health-hint{color:var(--pal-fg-faint);font-size:.85rem;font-weight:400}
+    .health-clear{color:var(--pal-fg-muted);font:400 .9rem/1.5 'JetBrains Mono',monospace}
+    .health-item{border-top:1px solid var(--pal-border);padding:1rem 0}
+    .health-item h3{margin:0 0 .4rem;font-size:1rem}
+    .health-item h3 a{color:var(--pal-fg);text-decoration:none}
+    .health-item h3 a:hover{color:var(--pal-accent)}
+    .health-findings{list-style:none;margin:.2rem 0;padding:0;font:400 .85rem/1.6 'JetBrains Mono',monospace}
+    .health-findings li{color:var(--pal-fg-muted);padding:.1rem 0}
+    .health-cat{color:var(--pal-accent);background:var(--pal-accent-soft);padding:.1em .4em;border-radius:4px;font-size:.82em}
+    .health-node{color:var(--pal-fg-faint)}
+    summary{cursor:pointer;list-style-position:outside}
+  </style>
+</head>
+<body class="health-page">
+  {%- include health-list.html -%}
+</body>
+</html>

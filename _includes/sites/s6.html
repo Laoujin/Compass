@@ -24,6 +24,7 @@
       {%- if series_mode -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }}</div>
       {%- elsif first -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/research/{{ first.date | date: "%Y-%m-%d" }}-{{ first.title | slugify }}</div>{%- endif -%}
       <div class="s6-tab bg">+</div>
+      {%- include health-pill.html -%}
     </div>
     <div class="s6-body">
       {%- if series_mode -%}

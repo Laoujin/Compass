@@ -29,6 +29,7 @@
       <a class="s2-cta" href="{{ '/' | relative_url }}">← {{ site.title | default: 'Atlas' }}</a>
       {%- elsif site.scout_repo -%}
       <a class="s2-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
+      {%- include health-pill.html -%}
       {%- endif -%}
     </header>
 
