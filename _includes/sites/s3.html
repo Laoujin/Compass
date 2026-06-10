@@ -52,6 +52,7 @@
           <li>Survey <span class="c">{{ survey_count }}</span></li>
           <li>Expedition <span class="c">{{ exped_count }}</span></li>
         </ul>
+        {%- include filter-bar.html scope="home" -%}
       </aside>
       {%- endunless -%}
       <section class="s3-content">
@@ -60,7 +61,6 @@
           {%- include filter-bar.html scope="series" -%}
           {%- include series-grid.html -%}
         {%- else -%}
-        {%- include filter-bar.html scope="home" -%}
         <div class="entry-grid">
           {%- include grid-with-series.html items=entries -%}
         </div>
