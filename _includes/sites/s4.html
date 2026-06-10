@@ -25,6 +25,14 @@
   <div class="s4">
     <aside class="s4-hero">
       <img class="s4-logo" src="{{ '/icon.png' | prepend: site.assets_base | relative_url }}" alt="{{ site.title | default: 'Atlas' }}">
+      {%- unless series_mode -%}
+      <div class="s4-actions">
+        {%- if site.scout_repo -%}
+        <a class="s4-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
+        {%- endif -%}
+        {%- include health-pill.html -%}
+      </div>
+      {%- endunless -%}
       {%- if series_mode -%}
       <h1>{{ s.title }}</h1>
       {%- if s.blurb -%}<p>{{ s.blurb }}</p>{%- endif -%}
@@ -54,12 +62,6 @@
         {%- include filter-bar.html scope="series" -%}
         {%- include series-grid.html -%}
       {%- else -%}
-      <div class="s4-actions">
-        {%- if site.scout_repo -%}
-        <a class="s4-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
-        {%- endif -%}
-        {%- include health-pill.html -%}
-      </div>
       {%- include filter-bar.html scope="home" -%}
       <div class="entry-grid">
         {%- include grid-with-series.html items=entries -%}

@@ -8,6 +8,7 @@
     var(--pal-surface-tint);
   border-right: 1px solid var(--pal-border);
   display: flex; flex-direction: column; gap: 16px;
+  position: relative;
 }
 .s4-logo { width: 52px; height: 52px; border-radius: 12px; display: block; }
 .s4-hero h1 {
@@ -48,11 +49,11 @@
 }
 .s4-cta:hover { transform: translateY(-1px); filter: brightness(1.05); }
 
-/* Corner action group (home mode): CTA + health pill together, top-right of the
-   content column (its 64px top padding reserves the room). */
+/* Corner action group (home mode): CTA + health pill stacked in the hero's
+   top-right corner. */
 .s4-actions {
-  position: absolute; top: 18px; right: 22px; z-index: 2;
-  display: inline-flex; align-items: center; gap: 10px;
+  position: absolute; top: 28px; right: 28px; z-index: 2;
+  display: inline-flex; flex-direction: column; align-items: flex-end; gap: 8px;
 }
 .s4-actions .s4-cta { position: static; }
 .s4-actions .atlas-health { margin-left: 0; }
@@ -75,7 +76,4 @@
   .s4-hero { border-right: none; border-bottom: 1px solid var(--pal-border); }
   .s4-content { padding: 24px 20px; }
   .s4-content .entry-grid { grid-template-columns: 1fr; }
-  /* In one column there's no top-right corner to reserve; let the actions flow at
-     the top of the content, pill stacked under the CTA (matches s5). */
-  .s4-actions { position: static; flex-direction: column; align-items: flex-start; margin-bottom: 14px; }
 }
