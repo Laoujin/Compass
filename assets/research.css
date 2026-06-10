@@ -231,8 +231,11 @@ body.research-page {
     left: -16px; right: -16px;   /* span the full image width past the cover's side padding */
     bottom: 100%;                /* park the band on the bottom edge of the image */
     margin: 0;
-    padding: 32px 16px 10px;
-    background: linear-gradient(to top, rgba(0, 0, 0, .62), transparent);
+    padding: 36px 16px 10px;
+    /* Light scrim only — legibility comes mostly from the text-shadow, so the
+       image reads through instead of sitting under a heavy dark band. */
+    background: linear-gradient(to top, rgba(0, 0, 0, .32), transparent);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, .55);
     color: #fff;
   }
   .research-cover:not(.research-cover-bare) .research-kicker .kicker-site { color: #fff; }
