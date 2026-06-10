@@ -45,8 +45,8 @@
   position: absolute; top: 18px; right: 22px; z-index: 2;
   display: inline-flex; align-items: center; gap: 10px;
 }
-.s5-actions .s5-cta { position: static; }
-.s5-actions .atlas-health { margin-left: 0; }
+.s5-actions .s5-cta { position: static; text-align: center; }
+.s5-actions .atlas-health { margin-left: 0; justify-content: center; }
 
 .s5-featured { position: relative; z-index: 1; }
 .s5-tag-above {
@@ -99,7 +99,7 @@
 @media (max-width: 800px) {
   .s5-fold { grid-template-columns: 1fr; padding: 32px 20px 36px; }
   /* Stack the health pill under the "+ New research" button instead of beside it. */
-  .s5-actions { flex-direction: column; align-items: flex-start; }
+  .s5-actions { flex-direction: column; align-items: stretch; }
   .s5-fold h1 { font-size: 30px; }
   .s5-content { padding: 24px 20px; }
   .s5-footer { padding: 14px 20px; flex-wrap: wrap; }

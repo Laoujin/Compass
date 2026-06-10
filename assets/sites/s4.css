@@ -53,10 +53,12 @@
    top-right corner. */
 .s4-actions {
   position: absolute; top: 28px; right: 28px; z-index: 2;
-  display: inline-flex; flex-direction: column; align-items: flex-end; gap: 8px;
+  display: inline-flex; flex-direction: column; align-items: stretch; gap: 8px;
 }
-.s4-actions .s4-cta { position: static; }
-.s4-actions .atlas-health { margin-left: 0; }
+/* Stack the CTA and health pill at equal width (the wider one's) so both edges
+   line up, with their labels centred — instead of right-aligned ragged widths. */
+.s4-actions .s4-cta { position: static; text-align: center; }
+.s4-actions .atlas-health { margin-left: 0; justify-content: center; }
 
 .s4-credits {
   margin-top: auto; padding-top: 14px;
