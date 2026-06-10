@@ -8,10 +8,14 @@
 
 /* Series cards share a regular card's footprint: one grid column, no stack
    pseudo-elements / overlay. The purple "series" badge + Latest link carry the cue. */
-.card--series { position: relative; }
+/* Always a column (even under v2's horizontal `.card { flex-direction: row }`) so the
+   cover/body sit on top and the Latest link drops to the bottom of the card. */
+.card--series { position: relative; flex-direction: column; }
 
-/* "Latest" sub-link sits below the main card-link, sibling not nested. */
+/* "Latest" sub-link sits at the bottom of the card (margin-top:auto pins it there
+   when the card stretches to a taller neighbour), sibling not nested. */
 .series-card-latest {
+  margin-top: auto;
   display: flex; align-items: baseline; gap: 8px;
   padding: 8px 14px 12px;
   border-top: 1px solid var(--pal-border);

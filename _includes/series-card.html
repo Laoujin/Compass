@@ -34,6 +34,7 @@ to the newest member's research, kept out of the title anchor so we don't nest a
     </div>
     <div class="card-body">
       <h4 class="card-title">{{ s.title }}</h4>
+      {%- if s.blurb -%}<p class="card-summary">{{ s.blurb }}</p>{%- endif -%}
     </div>
   </a>
   <a class="series-card-latest" href="{{ n.url | relative_url }}">

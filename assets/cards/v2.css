@@ -4,6 +4,8 @@
 .card-link { flex-direction: row; }
 .card-cover { width: 110px; aspect-ratio: auto; flex-shrink: 0; }
 .card-body { padding: 10px 12px; }
+/* Series cards on v2 lead with the Latest link, not the blurb. */
+.card--series .card-summary { display: none; }
 .card-top { position: absolute; top: 8px; right: 10px; z-index: 3; margin: 0; gap: 6px; }
 
 /* View-badges sit bottom-right on the horizontal layout (the body is wide
