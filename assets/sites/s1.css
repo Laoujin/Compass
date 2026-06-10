@@ -1,9 +1,10 @@
 /* Site S1 — Hero + footer */
 .s1 { display: flex; flex-direction: column; min-height: 100vh; }
 
-/* Hero, filter and content sit in a centered 1280px column; the footer below
-   spans the full viewport (its text stays aligned to the column — see padding). */
-.s1-hero, .s1-filter, .s1-content { width: 100%; max-width: 1280px; margin-inline: auto; }
+/* Filter and content sit in a centered 1280px column; the hero above and footer
+   below span the full viewport (hero text is centered; footer text stays aligned
+   to the column — see padding). */
+.s1-filter, .s1-content { width: 100%; max-width: 1280px; margin-inline: auto; }
 
 .s1-hero {
   padding: 56px 32px 40px; text-align: center;
