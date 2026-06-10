@@ -220,12 +220,13 @@ body.research-page {
   .research-cover-text { max-width: 100%; }
   .research-cover h1 { max-width: none; }
 
-  /* Mobile hero: the cover.svg goes full-bleed from the top (covers are always
-     600×400 → height is exactly 2/3 of the width), with the kicker as a caption
-     band overlaid on the image's bottom edge. Title/summary/meta flow below on
-     solid background — keeps long titles readable instead of fighting the image. */
+  /* Mobile hero: the cover.svg goes full-bleed from the top. Covers are 16:9, so a
+     full-width image is exactly 9/16 of the width tall — reserve precisely that as
+     top padding so the image fills the band edge-to-edge with no gap (a 2/3 reserve
+     left a strip of background that pushed the kicker below the image). The kicker
+     overlays the image's bottom; title/summary/meta flow below on solid background. */
   .research-cover:not(.research-cover-bare) {
-    padding: calc(100vw * 2 / 3) 16px 28px;
+    padding: calc(100vw * 9 / 16) 16px 28px;
     background:
       var(--cover-img, none) top center / 100% auto no-repeat,
       linear-gradient(to bottom, var(--cover-bg-top), var(--cover-bg-bottom));
