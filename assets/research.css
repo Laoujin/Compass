@@ -63,9 +63,11 @@ body.research-page {
       transparent 58%),
     var(--cover-img, none) center center / cover no-repeat,
     linear-gradient(to bottom, var(--cover-bg-top), var(--cover-bg-bottom));
-  height: 70vh;
-  min-height: 480px;
-  padding: 0 8vw 56px;
+  /* min-height (not height) so a long title that's taller than the hero grows the
+     box instead of overflowing it. With justify-content:flex-end + overflow:hidden,
+     a fixed height clips the overflow off the TOP — hiding the kicker and title. */
+  min-height: max(70vh, 480px);
+  padding: clamp(40px, 8vh, 96px) 8vw 56px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -84,8 +86,7 @@ body.research-page {
     radial-gradient(ellipse at 30% 30%, rgba(220, 229, 209, .15), transparent 60%),
     linear-gradient(160deg, #2b4326 0%, #1a2e1f 50%, #0d1810 100%);
   color: var(--pal-surface);
-  height: 78vh;
-  min-height: 520px;
+  min-height: max(78vh, 520px);
 }
 .research-cover-bare::before {
   content: '';
