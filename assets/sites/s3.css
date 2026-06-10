@@ -43,13 +43,15 @@
 .s3-sidenav li.active { background: var(--pal-accent); color: var(--pal-accent-fg); }
 .s3-sidenav li .c { font: 500 10px ui-monospace, Menlo, monospace; opacity: 0.7; }
 
-/* Filter controls stacked down the sidenav — drop the shared filter-bar card chrome. */
-.s3-filter { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; border: 0; background: none; }
-.s3-filter h4 { margin: 4px 0 2px; }
-.s3-filter h4:first-child { margin-top: 0; }
+/* Filter controls stacked down the sidenav. Drop the shared filter-bar card chrome
+   and match the original Filter/Depth section rhythm (h4 at 0 0 6px, 14px between
+   groups) rather than the tighter rebuilt spacing. */
+.s3-filter { display: flex; flex-direction: column; margin: 0; padding: 0; border: 0; background: none; }
+.s3-filter h4 { margin: 0 0 6px; }
 .s3-filter .filter-search,
-.s3-filter .filter-select { width: 100%; box-sizing: border-box; }
-.s3-filter .filter-clear { align-self: flex-start; margin-top: 4px; }
+.s3-filter .filter-tags,
+.s3-filter .filter-select { width: 100%; box-sizing: border-box; margin-bottom: 14px; }
+.s3-filter .filter-clear { align-self: flex-start; }
 /* Hide the Tags label when no shared-tag chips were generated. */
 .s3-filter .filter-tags:empty { display: none; }
 .s3-filter h4.s3-filter-tags-label:has(+ .filter-tags:empty) { display: none; }

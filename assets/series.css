@@ -1,35 +1,14 @@
 /* ===========================================================================
    Series card (home grid) and series page
    --------------------------------------------------------------------------
-   Visual: stack effect (two card edges peeking out behind), and a 2-column
-   grid span at desktop sizes. The existing breakpoints in base.css are:
-   3-col default, 2-col @900px, 1-col @600px. The span clamps to 1 on mobile.
+   The series card uses a regular card's footprint (base.css grid: 3-col default,
+   2-col @900px, 1-col @600px) — no span, no stack overlay. A purple "series" badge
+   and a Latest link to the newest member are what set it apart.
    =========================================================================== */
 
-.card--series {
-  position: relative;
-}
-
-/* Stack pseudo-elements — fake card edges behind the main card. */
-.card--series::before,
-.card--series::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--pal-surface);
-  border: 1px solid var(--pal-border);
-  border-radius: 8px;
-  z-index: -1;
-  pointer-events: none;
-}
-.card--series::before { transform: translate(6px, 6px); opacity: 0.85; }
-.card--series::after  { transform: translate(12px, 12px); opacity: 0.55; }
-
-/* Desktop: span 2 columns at >=2-col breakpoints; on 1-col mobile, the
-   span is clamped by the grid. */
-@media (min-width: 601px) {
-  .card--series { grid-column: span 2; }
-}
+/* Series cards share a regular card's footprint: one grid column, no stack
+   pseudo-elements / overlay. The purple "series" badge + Latest link carry the cue. */
+.card--series { position: relative; }
 
 /* "Latest" sub-link sits below the main card-link, sibling not nested. */
 .series-card-latest {
@@ -45,7 +24,7 @@
   font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
   color: var(--pal-fg);
 }
-.series-card-latest-title { flex: 1; color: var(--pal-fg); }
+.series-card-latest-title { flex: 1; color: var(--pal-fg-muted); }
 .series-card-latest-date  { font-family: ui-monospace, Menlo, monospace; }
 
 /* Series badge — reuse depth-badge sizing; pick a purple hue. */

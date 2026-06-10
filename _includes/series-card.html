@@ -7,9 +7,9 @@ Inputs:
                            and as a cover fallback when series.cover is absent
   include.count   (int)  — number of resolved members
 
-Visual: stack effect via ::before/::after; spans 2 grid columns on desktop
-(see assets/series.css). The series title is the primary link (to /series/<slug>/);
-the "Latest:" line is a sibling <a> so we don't nest anchors.
+Visual: a regular card's footprint (see assets/series.css). The series title is the
+primary link (to /series/<slug>/); the "Latest" line is a sibling <a> linking straight
+to the newest member's research, kept out of the title anchor so we don't nest anchors.
 {%- endcomment -%}
 {%- assign s = include.series -%}
 {%- assign n = include.newest -%}
@@ -34,7 +34,6 @@ the "Latest:" line is a sibling <a> so we don't nest anchors.
     </div>
     <div class="card-body">
       <h4 class="card-title">{{ s.title }}</h4>
-      {%- if s.blurb -%}<p class="card-summary">{{ s.blurb }}</p>{%- endif -%}
     </div>
   </a>
   <a class="series-card-latest" href="{{ n.url | relative_url }}">
