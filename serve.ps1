@@ -13,10 +13,15 @@
 
 .EXAMPLE
     .\serve.ps1 -Sweep cards -Port 8080
+
+.EXAMPLE
+    .\serve.ps1 -Sweep gallery
+    # builds every skeleton x card combo (s1-v1 .. s6-v7) and serves an interactive
+    # picker (layout + card + palette dropdowns) that updates the preview live
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('skeletons', 'palettes', 'cards')]
+    [ValidateSet('skeletons', 'palettes', 'cards', 'gallery')]
     [string]$Sweep = 'skeletons',
     [int]$Port = 4000
 )
@@ -74,37 +79,73 @@ try {
     }
 
     try {
-        foreach ($v in $variants[$Sweep]) {
-            Write-Host "Building $configKey=$v ..." -ForegroundColor Cyan
+        if ($Sweep -eq 'gallery') {
+            # Build every skeleton x card combo (v7's markup diverges from v1-v6, so
+            # each card must be server-rendered, not CSS-swapped), then serve the
+            # interactive _gallery.html picker. Palette is swapped live in the browser.
+            $skels = $variants['skeletons']
+            $cards = $variants['cards']
+            foreach ($s in $skels) {
+                foreach ($c in $cards) {
+                    Write-Host "Building skeleton=$s card=$c ..." -ForegroundColor Cyan
 
-            (Get-Content $configPath) | ForEach-Object {
-                if ($_ -match "^$configKey\s*:") { "${configKey}: $v" } else { $_ }
-            } | Set-Content $configPath
+                    (Get-Content $configPath) | ForEach-Object {
+                        if     ($_ -match '^skeleton\s*:') { "skeleton: $s" }
+                        elseif ($_ -match '^card\s*:')     { "card: $c" }
+                        else   { $_ }
+                    } | Set-Content $configPath
 
-            $dest = "_previews/$prefix$v"
-            $base = "/$prefix$v"
-            $buildOut = docker run --rm `
-                -v "${pwd}:/srv/jekyll" `
-                -v "${bundleVol}:/usr/local/bundle" `
-                -w /srv/jekyll `
-                $rubyImage bundle exec jekyll build -d $dest --baseurl $base 2>&1
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host $buildOut
-                throw "jekyll build failed for $v (exit $LASTEXITCODE)"
+                    $dest = "_previews/$s-$c"
+                    $base = "/$s-$c"
+                    $buildOut = docker run --rm `
+                        -v "${pwd}:/srv/jekyll" `
+                        -v "${bundleVol}:/usr/local/bundle" `
+                        -w /srv/jekyll `
+                        $rubyImage bundle exec jekyll build -d $dest --baseurl $base 2>&1
+                    if ($LASTEXITCODE -ne 0) {
+                        Write-Host $buildOut
+                        throw "jekyll build failed for $s-$c (exit $LASTEXITCODE)"
+                    }
+                    Write-Host "  done: $s-$c"
+                }
             }
-            Write-Host "  done: $v"
-        }
 
-        $sb = [System.Text.StringBuilder]::new()
-        [void]$sb.AppendLine('<!doctype html><meta charset=utf-8>')
-        [void]$sb.AppendLine("<title>Atlas seed - $Sweep previews</title>")
-        [void]$sb.AppendLine('<style>body{font-family:system-ui;padding:2rem;max-width:560px;margin:auto}h1{margin:0 0 1rem}a{display:block;padding:.5rem .75rem;border:1px solid #ddd;border-radius:6px;margin:.25rem 0;text-decoration:none;color:#222}a:hover{background:#f5f5f5}small{color:#888;margin-left:.5rem}</style>')
-        [void]$sb.AppendLine("<h1>Atlas seed - $Sweep previews</h1>")
-        foreach ($v in $variants[$Sweep]) {
-            $label = $names[$v]
-            [void]$sb.AppendLine("<a href=`"/$prefix$v/`">$v<small>$label</small></a>")
+            Copy-Item -Path (Join-Path $PSScriptRoot '_gallery.html') `
+                      -Destination (Join-Path $previewsDir 'index.html') -Force
         }
-        Set-Content -Path (Join-Path $previewsDir 'index.html') -Value $sb.ToString()
+        else {
+            foreach ($v in $variants[$Sweep]) {
+                Write-Host "Building $configKey=$v ..." -ForegroundColor Cyan
+
+                (Get-Content $configPath) | ForEach-Object {
+                    if ($_ -match "^$configKey\s*:") { "${configKey}: $v" } else { $_ }
+                } | Set-Content $configPath
+
+                $dest = "_previews/$prefix$v"
+                $base = "/$prefix$v"
+                $buildOut = docker run --rm `
+                    -v "${pwd}:/srv/jekyll" `
+                    -v "${bundleVol}:/usr/local/bundle" `
+                    -w /srv/jekyll `
+                    $rubyImage bundle exec jekyll build -d $dest --baseurl $base 2>&1
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Host $buildOut
+                    throw "jekyll build failed for $v (exit $LASTEXITCODE)"
+                }
+                Write-Host "  done: $v"
+            }
+
+            $sb = [System.Text.StringBuilder]::new()
+            [void]$sb.AppendLine('<!doctype html><meta charset=utf-8>')
+            [void]$sb.AppendLine("<title>Atlas seed - $Sweep previews</title>")
+            [void]$sb.AppendLine('<style>body{font-family:system-ui;padding:2rem;max-width:560px;margin:auto}h1{margin:0 0 1rem}a{display:block;padding:.5rem .75rem;border:1px solid #ddd;border-radius:6px;margin:.25rem 0;text-decoration:none;color:#222}a:hover{background:#f5f5f5}small{color:#888;margin-left:.5rem}</style>')
+            [void]$sb.AppendLine("<h1>Atlas seed - $Sweep previews</h1>")
+            foreach ($v in $variants[$Sweep]) {
+                $label = $names[$v]
+                [void]$sb.AppendLine("<a href=`"/$prefix$v/`">$v<small>$label</small></a>")
+            }
+            Set-Content -Path (Join-Path $previewsDir 'index.html') -Value $sb.ToString()
+        }
     }
     finally {
         Set-Content -Path $configPath -Value $origConfig -NoNewline

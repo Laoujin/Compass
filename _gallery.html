@@ -1,0 +1,93 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Compass gallery</title>
+<!--
+  Interactive preview shell, copied to _previews/index.html by serve.ps1 -Sweep gallery.
+  Layout + card pick a server-rendered build (iframe src = /<skeleton>-<card>/, since v7's
+  markup diverges from v1-v6 and can't be CSS-swapped). Palette is pure CSS over shared
+  markup, so it's swapped live by rewriting the iframe's palette <link>.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; flex-direction: column;
+         font-family: system-ui, sans-serif; }
+  .bar { display: flex; gap: 1.25rem; align-items: flex-end; flex-wrap: wrap;
+         padding: .6rem 1rem; border-bottom: 1px solid #ddd; background: #fafafa; }
+  .bar strong { font-size: .95rem; align-self: center; margin-right: .5rem; }
+  label { display: flex; flex-direction: column; gap: .2rem;
+          font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; color: #777; }
+  select { padding: .3rem .4rem; font: inherit; font-size: .85rem; }
+  iframe { flex: 1; width: 100%; border: 0; }
+</style>
+
+<div class="bar">
+  <strong>Compass</strong>
+  <label>Layout
+    <select id="sk">
+      <option value="s1">s1 · Hero + footer</option>
+      <option value="s2">s2 · Top bar + footer</option>
+      <option value="s3">s3 · Top bar + sidenav</option>
+      <option value="s4">s4 · Split hero</option>
+      <option value="s5">s5 · Magazine cover</option>
+      <option value="s6">s6 · Terminal frame</option>
+    </select>
+  </label>
+  <label>Card
+    <select id="cd">
+      <option value="v1">v1 · Image-top</option>
+      <option value="v2">v2 · Horizontal</option>
+      <option value="v3">v3 · Hero overlay</option>
+      <option value="v4">v4 · Terminal</option>
+      <option value="v5">v5 · Index card</option>
+      <option value="v6">v6 · No-image</option>
+      <option value="v7">v7 · Compact row</option>
+    </select>
+  </label>
+  <label>Palette
+    <select id="pal">
+      <option value="rust">Warm rust</option>
+      <option value="paper">Paper &amp; ink</option>
+      <option value="cartography">Cartography</option>
+      <option value="midnight">Midnight</option>
+      <option value="minimal">Minimal</option>
+      <option value="fieldnotes">Field notes</option>
+      <option value="solarized">Solarized</option>
+      <option value="nord">Nord</option>
+    </select>
+  </label>
+</div>
+
+<iframe id="frame" title="preview"></iframe>
+
+<script>
+  var sk = document.getElementById('sk');
+  var cd = document.getElementById('cd');
+  var pal = document.getElementById('pal');
+  var frame = document.getElementById('frame');
+
+  // Layout + card => reload the matching server build.
+  function loadCombo() { frame.src = '/' + sk.value + '-' + cd.value + '/'; }
+
+  // Palette => rewrite the iframe's palette stylesheet link in place (no reload).
+  function applyPalette() {
+    var doc;
+    try { doc = frame.contentDocument; } catch (e) { return; }
+    if (!doc) return;
+    var links = doc.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute('href') || '';
+      if (href.indexOf('/palettes/') !== -1) {
+        links[i].setAttribute('href', href.replace(/\/palettes\/[^/]+\.css/, '/palettes/' + pal.value + '.css'));
+        return;
+      }
+    }
+  }
+
+  sk.addEventListener('change', loadCombo);
+  cd.addEventListener('change', loadCombo);
+  pal.addEventListener('change', applyPalette);
+  // Re-apply the chosen palette every time a new combo finishes loading.
+  frame.addEventListener('load', applyPalette);
+
+  loadCombo();
+</script>
