@@ -18,10 +18,15 @@
     .\serve.ps1 -Sweep gallery
     # builds every skeleton x card combo (s1-v1 .. s6-v7) and serves an interactive
     # picker (layout + card + palette dropdowns) that updates the preview live
+
+.EXAMPLE
+    .\serve.ps1 -Sweep live
+    # same picker, but builds each combo on demand (only when selected) and rebuilds
+    # on source change — no 42-combo upfront wait. Best for the edit loop.
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('skeletons', 'palettes', 'cards', 'gallery')]
+    [ValidateSet('skeletons', 'palettes', 'cards', 'gallery', 'live')]
     [string]$Sweep = 'skeletons',
     [int]$Port = 4000
 )
@@ -30,6 +35,15 @@ $ErrorActionPreference = 'Stop'
 Push-Location $PSScriptRoot
 
 try {
+    # On-demand picker: builds each combo only when selected, rebuilds on source
+    # change — no 42-combo upfront wait. Delegates to gallery-server.py.
+    if ($Sweep -eq 'live') {
+        $pythonCmd = if (Get-Command py -ErrorAction SilentlyContinue) { 'py' } else { 'python' }
+        $env:PORT = "$Port"
+        & $pythonCmd (Join-Path $PSScriptRoot 'gallery-server.py')
+        return
+    }
+
     $variants = @{
         skeletons = @('s1','s2','s3','s4','s5','s6')
         palettes  = @('rust','paper','cartography','midnight','minimal','fieldnotes','solarized','nord')
