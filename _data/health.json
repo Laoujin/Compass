@@ -2,7 +2,7 @@
   "generated": "2026-06-10T06:00:00+00:00",
   "counts": {
     "critical": 1,
-    "hygiene": 2
+    "hygiene": 4
   },
   "critical": [
     {
@@ -51,6 +51,16 @@
             {
               "category": "MISSING_MODEL",
               "detail": "no `model:` — which model produced this is unrecorded"
+            }
+          ]
+        },
+        {
+          "node": "child",
+          "path": "2026-04-22-always-on-home-server/storage-and-replication",
+          "findings": [
+            {
+              "category": "MISSING_COVER",
+              "detail": "no cover.svg and no `cover:` — never illustrated (or illustrator skipped)"
             }
           ]
         }
