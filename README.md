@@ -23,18 +23,14 @@ Open http://localhost:4000/Atlas/ (the `baseurl` is `/Atlas` for parity with dep
 
 ## Preview the theme
 
-`serve.ps1` (PowerShell, requires Docker) serves an interactive picker — choose a layout, card, and palette and the preview updates live. Each `skeleton-card` combo is built on demand the first time you view it and rebuilt on every refresh, so edits show up immediately (~1.5 s) with no upfront 42-combo wait.
-
-```powershell
-./serve.ps1            # http://localhost:4000/
-./serve.ps1 -Port 8080
-```
-
-`serve.ps1` is just a launcher for `gallery-server.py`; on non-Windows run that directly:
+`gallery-server.py` (Python 3, requires Docker) serves an interactive picker — choose a layout, card, and palette and the preview updates live. Each `skeleton-card` combo is built on demand the first time you view it and rebuilt on every refresh, so edits show up immediately (~1.5 s) with no upfront 42-combo wait.
 
 ```bash
-python gallery-server.py       # PORT=8080 python gallery-server.py
+python gallery-server.py            # http://localhost:4000/
+PORT=8080 python gallery-server.py
 ```
+
+On Windows use `py gallery-server.py` if `python` isn't on PATH.
 
 ## Layout
 

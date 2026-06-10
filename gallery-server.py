@@ -14,7 +14,7 @@ iframe shows the Jekyll error instead of silently serving an old page.
 Run:  python gallery-server.py            # http://localhost:4000/
       PORT=8080 python gallery-server.py
 
-Needs Docker (same ruby:3.3 + cached bundle volume as serve.ps1).
+Needs Docker (builds run in ruby:3.3 with a cached bundle volume).
 """
 import http.server
 import os

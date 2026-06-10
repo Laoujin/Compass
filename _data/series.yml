@@ -1,5 +1,5 @@
 # Demo series for the Compass theme preview site. Mirrors Atlas's _data/series.yml
-# schema so the series feature is exercised by `serve.ps1` / a plain build.
+# schema so the series feature is exercised by the gallery preview / a plain build.
 - slug: tooling
   title: Tooling & research
   blurb: Notes on the tools behind Compass and Scout.
