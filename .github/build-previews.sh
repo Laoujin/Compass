@@ -10,7 +10,10 @@ set -euo pipefail
 SITE_BASE="${PAGES_BASE:-/Compass}"
 OUT="_site"
 rm -rf "$OUT"; mkdir -p "$OUT"
-OVERRIDE="$(mktemp)"
+# NOTE: the .yml suffix is required — Jekyll's --config silently ignores a config
+# file without a .yml/.yaml extension ("Error reading configuration. Using defaults"),
+# which would build every variant with the default skeleton.
+OVERRIDE="$(mktemp --suffix=.yml)"
 trap 'rm -f "$OVERRIDE"' EXIT
 
 skeletons=(s1 s2 s3 s4 s5 s6)
