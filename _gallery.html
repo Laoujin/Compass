@@ -24,7 +24,8 @@
   label { display: flex; flex-direction: column; gap: .2rem;
           font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; color: #777; }
   select { padding: .3rem .4rem; font: inherit; font-size: .85rem; }
-  .bar button { align-self: center; margin-left: auto; padding: .4rem .7rem;
+  .bar-actions { margin-left: auto; align-self: center; display: flex; gap: .5rem; }
+  .bar button { align-self: center; padding: .4rem .7rem;
                 font: inherit; font-size: .85rem; border: 1px solid #ccc;
                 border-radius: 5px; background: #fff; cursor: pointer; }
   .bar button:hover { background: #f0f0f0; }
@@ -77,7 +78,10 @@
     </select>
   </label>
   <label class="toggle"><input type="checkbox" id="health" checked> Health pill</label>
-  <button id="refresh" type="button" title="Rebuild the current combo from source (pick up local edits)">↻ Refresh</button>
+  <div class="bar-actions">
+    <button id="open" type="button" title="Open this layout + card as a standalone page (no selector)">Open ↗</button>
+    <button id="refresh" type="button" title="Rebuild the current combo from source (pick up local edits)">↻ Refresh</button>
+  </div>
 </div>
 
 <div class="stage">
@@ -92,6 +96,7 @@
   var frame = document.getElementById('frame');
   var spinner = document.getElementById('spinner');
   var refresh = document.getElementById('refresh');
+  var openBtn = document.getElementById('open');
   var health = document.getElementById('health');
 
   // Reflect the current selection in the tab title so you know what you're viewing.
@@ -137,6 +142,10 @@
   refresh.addEventListener('click', function () {
     spinner.hidden = false;
     frame.contentWindow.location.reload();
+  });
+  // Open the current combo on its own — the standalone Atlas page, no selector.
+  openBtn.addEventListener('click', function () {
+    window.open('/' + sk.value + '-' + cd.value + '/', '_blank', 'noopener');
   });
   // Combo finished loading (or failed): hide spinner, re-apply palette + health toggle.
   frame.addEventListener('load', function () { spinner.hidden = true; applyPalette(); applyHealth(); });
