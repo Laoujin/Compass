@@ -211,16 +211,32 @@ body.research-page {
 }
 
 @media (max-width: 760px) {
-  .research-cover {
-    height: auto;
-    min-height: 0;
-    padding: clamp(260px, 56vw, 360px) 16px 28px;
-    background:
-      var(--cover-img, none) center 70px / 80% auto no-repeat,
-      linear-gradient(to bottom, var(--cover-bg-top), var(--cover-bg-bottom));
-  }
+  .research-cover { height: auto; min-height: 0; }
   .research-cover-text { max-width: 100%; }
   .research-cover h1 { max-width: none; }
+
+  /* Mobile hero: the cover.svg goes full-bleed from the top (covers are always
+     600×400 → height is exactly 2/3 of the width), with the kicker as a caption
+     band overlaid on the image's bottom edge. Title/summary/meta flow below on
+     solid background — keeps long titles readable instead of fighting the image. */
+  .research-cover:not(.research-cover-bare) {
+    padding: calc(100vw * 2 / 3) 16px 28px;
+    background:
+      var(--cover-img, none) top center / 100% auto no-repeat,
+      linear-gradient(to bottom, var(--cover-bg-top), var(--cover-bg-bottom));
+  }
+  .research-cover:not(.research-cover-bare) .research-cover-text { padding-top: 18px; }
+  .research-cover:not(.research-cover-bare) .research-kicker {
+    position: absolute;
+    left: -16px; right: -16px;   /* span the full image width past the cover's side padding */
+    bottom: 100%;                /* park the band on the bottom edge of the image */
+    margin: 0;
+    padding: 32px 16px 10px;
+    background: linear-gradient(to top, rgba(0, 0, 0, .62), transparent);
+    color: #fff;
+  }
+  .research-cover:not(.research-cover-bare) .research-kicker .kicker-site { color: #fff; }
+  .research-cover:not(.research-cover-bare) .research-kicker time { color: rgba(255, 255, 255, .88); }
 }
 
 /* =========================================================================
