@@ -98,6 +98,8 @@
 
 @media (max-width: 800px) {
   .s5-fold { grid-template-columns: 1fr; padding: 32px 20px 36px; }
+  /* Stack the health pill under the "+ New research" button instead of beside it. */
+  .s5-actions { flex-direction: column; align-items: flex-start; }
   .s5-fold h1 { font-size: 30px; }
   .s5-content { padding: 24px 20px; }
   .s5-footer { padding: 14px 20px; flex-wrap: wrap; }
