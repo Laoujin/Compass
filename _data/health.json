@@ -1,0 +1,60 @@
+{
+  "generated": "2026-06-10T06:00:00+00:00",
+  "counts": {
+    "critical": 1,
+    "hygiene": 2
+  },
+  "critical": [
+    {
+      "slug": "2026-04-17-reverse-proxy-personal-lab",
+      "items": [
+        {
+          "node": "parent",
+          "path": "2026-04-17-reverse-proxy-personal-lab",
+          "findings": [
+            {
+              "category": "MANIFEST_MISMATCH",
+              "detail": "manifest.json unreadable: Expecting value: line 1 column 1 (char 0)"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "hygiene": [
+    {
+      "slug": "2026-04-20-static-site-generators",
+      "items": [
+        {
+          "node": "parent",
+          "path": "2026-04-20-static-site-generators",
+          "findings": [
+            {
+              "category": "MISSING_COVER",
+              "detail": "no cover.svg and no `cover:` — never illustrated (or illustrator skipped)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "2026-04-22-always-on-home-server",
+      "items": [
+        {
+          "node": "parent",
+          "path": "2026-04-22-always-on-home-server",
+          "findings": [
+            {
+              "category": "MISSING_COST",
+              "detail": "no `cost_usd` — backfillable from .scout-result.json"
+            },
+            {
+              "category": "MISSING_MODEL",
+              "detail": "no `model:` — which model produced this is unrecorded"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
