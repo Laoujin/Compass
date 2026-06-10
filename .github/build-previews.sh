@@ -72,6 +72,10 @@ section() {
     text-decoration:none;color:#1a1a1a;transition:.12s}
   a:hover{border-color:#999;background:#fafafa}
   a small{color:#888;margin-top:.15rem}
+  footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid #e2e2e2;
+    display:flex;gap:1.5rem;flex-wrap:wrap;font-size:.9rem}
+  footer a{display:inline;border:0;padding:0;border-radius:0;color:#555}
+  footer a:hover{color:#000;background:none}
 </style>
 <h1>Compass theme previews</h1>
 <p class=lede>Every skeleton, palette, and card variant built against the sample research content.</p>
@@ -79,6 +83,12 @@ HTML
   section "Skeletons" ""      "${skeletons[@]}"
   section "Palettes"  "pal-"  "${palettes[@]}"
   section "Cards"     "card-" "${cards[@]}"
+  cat <<'HTML'
+<footer>
+  <a href="https://laoujin.github.io/Scout/" target="_blank" rel="noopener">Scout — marketing site ↗</a>
+  <a href="https://github.com/Laoujin/Compass" target="_blank" rel="noopener">Compass on GitHub ↗</a>
+</footer>
+HTML
 } > "$OUT/index.html"
 
 echo "Built $(( ${#skeletons[@]} + ${#palettes[@]} + ${#cards[@]} )) variants into $OUT/"
