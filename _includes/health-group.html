@@ -8,7 +8,7 @@ Param: group (array of {slug, items}). {%- endcomment -%}
   {%- for it in r.items -%}
   <ul class="health-findings">
     {%- for f in it.findings -%}
-    <li><code class="health-cat">{{ f.category }}</code>{% if it.node == 'child' %} <span class="health-node">{{ it.path | split: '/' | last }}</span>{% endif %} — {{ f.detail }}</li>
+    <li><code class="health-cat">{{ f.category }}</code>{% if it.node == 'child' %} <a class="health-node" href="{{ it.path | prepend: '/research/' | append: '/' | relative_url }}">{{ it.path | split: '/' | last }}</a>{% endif %} — {{ f.detail }}</li>
     {%- endfor -%}
   </ul>
   {%- endfor -%}
