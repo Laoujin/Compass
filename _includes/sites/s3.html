@@ -35,24 +35,19 @@
     <div class="s3-main{% if series_mode %} s3-main--series{% endif %}">
       {%- unless series_mode -%}
       <aside class="s3-sidenav">
-        <h4>Filter</h4>
-        <ul>
-          <li class="active">All <span class="c">{{ entry_count }}</span></li>
-        </ul>
-        <h4>Depth</h4>
-        <ul>
-          {%- assign recon_count = 0 -%}{%- assign survey_count = 0 -%}{%- assign exped_count = 0 -%}
-          {%- for e in entries -%}
-            {%- if e.depth == 'ceo' -%}{%- assign recon_count = recon_count | plus: 1 -%}
-            {%- elsif e.depth == 'standard' -%}{%- assign survey_count = survey_count | plus: 1 -%}
-            {%- elsif e.depth == 'deep' -%}{%- assign exped_count = exped_count | plus: 1 -%}
-            {%- endif -%}
-          {%- endfor -%}
-          <li>Recon <span class="c">{{ recon_count }}</span></li>
-          <li>Survey <span class="c">{{ survey_count }}</span></li>
-          <li>Expedition <span class="c">{{ exped_count }}</span></li>
-        </ul>
-        {%- include filter-bar.html scope="home" -%}
+        {%- comment -%} s3-specific filter layout: the shared filter-bar's controls,
+        stacked down the sidenav with section labels (no category select, no advanced
+        toggle — everything visible). filters.js wires by the js-* hook classes. {%- endcomment -%}
+        <div class="filter-bar s3-filter" data-scope="home" hidden>
+          <h4>Filter</h4>
+          <input class="filter-search js-filter-search" type="search" placeholder="Search research…" aria-label="Search research">
+          <h4 class="s3-filter-tags-label">Tags</h4>
+          <div class="filter-tags js-filter-tags" role="group" aria-label="Filter by tag"></div>
+          <select class="filter-select js-filter-series" aria-label="Filter by series">
+            <option value="">All series</option>
+          </select>
+          <button type="button" class="filter-clear js-filter-clear">Clear</button>
+        </div>
       </aside>
       {%- endunless -%}
       <section class="s3-content">
