@@ -36,7 +36,7 @@
 .s4-latest a { color: inherit; }
 .s4-latest a:hover { color: var(--pal-accent); }
 
-.s4-content { padding: 64px 26px 26px; overflow: hidden; position: relative; }
+.s4-content { padding: 26px; overflow: hidden; position: relative; }
 .s4-content .entry-grid { grid-template-columns: repeat(2, 1fr); }
 .s4-cta {
   position: absolute; top: 18px; right: 22px;
