@@ -21,14 +21,19 @@ docker run --rm -p 4000:4000 -v "$PWD:/srv/jekyll" jekyll/jekyll:4 jekyll serve 
 
 Open http://localhost:4000/Atlas/ (the `baseurl` is `/Atlas` for parity with deployed Atlas sites — change `_config.yml` if you want it at root).
 
-## Preview every variant at once
+## Preview the theme
 
-`serve.ps1` (PowerShell, requires Docker) builds every skeleton / palette / card into its own subdir of `_previews/` and serves the lot:
+`serve.ps1` (PowerShell, requires Docker) serves an interactive picker — choose a layout, card, and palette and the preview updates live. Each `skeleton-card` combo is built on demand the first time you view it and rebuilt on every refresh, so edits show up immediately (~1.5 s) with no upfront 42-combo wait.
 
 ```powershell
-./serve.ps1                    # sweep skeletons (s1..s6)
-./serve.ps1 -Sweep palettes    # sweep all palettes with current skeleton
-./serve.ps1 -Sweep cards       # sweep all cards
+./serve.ps1            # http://localhost:4000/
+./serve.ps1 -Port 8080
+```
+
+`serve.ps1` is just a launcher for `gallery-server.py`; on non-Windows run that directly:
+
+```bash
+python gallery-server.py       # PORT=8080 python gallery-server.py
 ```
 
 ## Layout

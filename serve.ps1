@@ -1,182 +1,29 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Build every compass skeleton (or palette/card) into its own subdir of
-    _previews/ and serve the whole lot on http://localhost:4000/.
+    Serve the live Compass gallery: an interactive layout/card/palette picker
+    that builds each combo on demand and rebuilds on every refresh.
+
+.DESCRIPTION
+    Thin launcher for gallery-server.py — picks the available Python and forwards
+    the port. The server builds each skeleton x card combo only when you view it
+    (no 42-combo upfront wait) and rebuilds from source on refresh, so edits show
+    up immediately. Needs Docker (builds run in ruby:3.3 with a cached bundle volume).
 
 .EXAMPLE
     .\serve.ps1
-    # builds s1..s6 previews, then serves at http://localhost:4000/
+    # http://localhost:4000/
 
 .EXAMPLE
-    .\serve.ps1 -Sweep palettes
-
-.EXAMPLE
-    .\serve.ps1 -Sweep cards -Port 8080
-
-.EXAMPLE
-    .\serve.ps1 -Sweep gallery
-    # builds every skeleton x card combo (s1-v1 .. s6-v7) and serves an interactive
-    # picker (layout + card + palette dropdowns) that updates the preview live
-
-.EXAMPLE
-    .\serve.ps1 -Sweep live
-    # same picker, but builds each combo on demand (only when selected) and rebuilds
-    # on source change — no 42-combo upfront wait. Best for the edit loop.
+    .\serve.ps1 -Port 8080
 #>
 [CmdletBinding()]
 param(
-    [ValidateSet('skeletons', 'palettes', 'cards', 'gallery', 'live')]
-    [string]$Sweep = 'skeletons',
     [int]$Port = 4000
 )
 
 $ErrorActionPreference = 'Stop'
-Push-Location $PSScriptRoot
 
-try {
-    # On-demand picker: builds each combo only when selected, rebuilds on source
-    # change — no 42-combo upfront wait. Delegates to gallery-server.py.
-    if ($Sweep -eq 'live') {
-        $pythonCmd = if (Get-Command py -ErrorAction SilentlyContinue) { 'py' } else { 'python' }
-        $env:PORT = "$Port"
-        & $pythonCmd (Join-Path $PSScriptRoot 'gallery-server.py')
-        return
-    }
-
-    $variants = @{
-        skeletons = @('s1','s2','s3','s4','s5','s6')
-        palettes  = @('rust','paper','cartography','midnight','minimal','fieldnotes','solarized','nord')
-        cards     = @('v1','v2','v3','v4','v5','v6','v7')
-    }
-    $configKey = @{ skeletons = 'skeleton'; palettes = 'palette'; cards = 'card' }[$Sweep]
-    $prefix    = @{ skeletons = '';         palettes = 'pal-';    cards = 'card-' }[$Sweep]
-    $names = @{
-        s1='Hero + footer'; s2='Top bar + footer'; s3='Top bar + sidenav'
-        s4='Split hero';    s5='Magazine cover';   s6='Terminal frame'
-        rust='Warm rust';   paper='Paper & ink';   cartography='Cartography'
-        midnight='Midnight'; minimal='Minimal';    fieldnotes='Field notes'
-        solarized='Solarized'; nord='Nord'
-        v1='Image-top';     v2='Horizontal';       v3='Hero overlay'
-        v4='Terminal';      v5='Index card';       v6='No-image'; v7='Compact row'
-    }
-
-    $configPath  = Join-Path $PSScriptRoot '_config.yml'
-    $previewsDir = Join-Path $PSScriptRoot '_previews'
-
-    $origConfig = Get-Content $configPath -Raw
-
-    if (Test-Path $previewsDir) {
-        Write-Host "Cleaning $previewsDir..."
-        Remove-Item $previewsDir -Recurse -Force
-    }
-
-    # The official jekyll/jekyll image was archived in 2024. Use plain ruby +
-    # bundle, with a named volume so gems install once and persist across
-    # iterations (and across runs).
-    $rubyImage = 'ruby:3.3'
-    $bundleVol = 'compass-bundle'
-    docker volume inspect $bundleVol 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        docker volume create $bundleVol | Out-Null
-    }
-
-    Write-Host "Installing gems (cached in volume '$bundleVol')..." -ForegroundColor Cyan
-    $bundleOut = docker run --rm `
-        -v "${pwd}:/srv/jekyll" `
-        -v "${bundleVol}:/usr/local/bundle" `
-        -w /srv/jekyll `
-        $rubyImage bundle install --quiet 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host $bundleOut
-        throw "bundle install failed (exit $LASTEXITCODE)"
-    }
-
-    try {
-        if ($Sweep -eq 'gallery') {
-            # Build every skeleton x card combo (v7's markup diverges from v1-v6, so
-            # each card must be server-rendered, not CSS-swapped), then serve the
-            # interactive _gallery.html picker. Palette is swapped live in the browser.
-            $skels = $variants['skeletons']
-            $cards = $variants['cards']
-            foreach ($s in $skels) {
-                foreach ($c in $cards) {
-                    Write-Host "Building skeleton=$s card=$c ..." -ForegroundColor Cyan
-
-                    (Get-Content $configPath) | ForEach-Object {
-                        if     ($_ -match '^skeleton\s*:') { "skeleton: $s" }
-                        elseif ($_ -match '^card\s*:')     { "card: $c" }
-                        else   { $_ }
-                    } | Set-Content $configPath
-
-                    $dest = "_previews/$s-$c"
-                    $base = "/$s-$c"
-                    $buildOut = docker run --rm `
-                        -v "${pwd}:/srv/jekyll" `
-                        -v "${bundleVol}:/usr/local/bundle" `
-                        -w /srv/jekyll `
-                        $rubyImage bundle exec jekyll build -d $dest --baseurl $base 2>&1
-                    if ($LASTEXITCODE -ne 0) {
-                        Write-Host $buildOut
-                        throw "jekyll build failed for $s-$c (exit $LASTEXITCODE)"
-                    }
-                    Write-Host "  done: $s-$c"
-                }
-            }
-
-            Copy-Item -Path (Join-Path $PSScriptRoot '_gallery.html') `
-                      -Destination (Join-Path $previewsDir 'index.html') -Force
-        }
-        else {
-            foreach ($v in $variants[$Sweep]) {
-                Write-Host "Building $configKey=$v ..." -ForegroundColor Cyan
-
-                (Get-Content $configPath) | ForEach-Object {
-                    if ($_ -match "^$configKey\s*:") { "${configKey}: $v" } else { $_ }
-                } | Set-Content $configPath
-
-                $dest = "_previews/$prefix$v"
-                $base = "/$prefix$v"
-                $buildOut = docker run --rm `
-                    -v "${pwd}:/srv/jekyll" `
-                    -v "${bundleVol}:/usr/local/bundle" `
-                    -w /srv/jekyll `
-                    $rubyImage bundle exec jekyll build -d $dest --baseurl $base 2>&1
-                if ($LASTEXITCODE -ne 0) {
-                    Write-Host $buildOut
-                    throw "jekyll build failed for $v (exit $LASTEXITCODE)"
-                }
-                Write-Host "  done: $v"
-            }
-
-            $sb = [System.Text.StringBuilder]::new()
-            [void]$sb.AppendLine('<!doctype html><meta charset=utf-8>')
-            [void]$sb.AppendLine("<title>Atlas seed - $Sweep previews</title>")
-            [void]$sb.AppendLine('<style>body{font-family:system-ui;padding:2rem;max-width:560px;margin:auto}h1{margin:0 0 1rem}a{display:block;padding:.5rem .75rem;border:1px solid #ddd;border-radius:6px;margin:.25rem 0;text-decoration:none;color:#222}a:hover{background:#f5f5f5}small{color:#888;margin-left:.5rem}</style>')
-            [void]$sb.AppendLine("<h1>Atlas seed - $Sweep previews</h1>")
-            foreach ($v in $variants[$Sweep]) {
-                $label = $names[$v]
-                [void]$sb.AppendLine("<a href=`"/$prefix$v/`">$v<small>$label</small></a>")
-            }
-            Set-Content -Path (Join-Path $previewsDir 'index.html') -Value $sb.ToString()
-        }
-    }
-    finally {
-        Set-Content -Path $configPath -Value $origConfig -NoNewline
-    }
-
-    Write-Host ""
-    Write-Host "Serving http://localhost:$Port/  (Ctrl+C to stop)" -ForegroundColor Green
-
-    Push-Location $previewsDir
-    try {
-        $pythonCmd = if (Get-Command py -ErrorAction SilentlyContinue) { 'py' } else { 'python' }
-        & $pythonCmd -m http.server $Port
-    }
-    finally {
-        Pop-Location
-    }
-}
-finally {
-    Pop-Location
-}
+$pythonCmd = if (Get-Command py -ErrorAction SilentlyContinue) { 'py' } else { 'python' }
+$env:PORT = "$Port"
+& $pythonCmd (Join-Path $PSScriptRoot 'gallery-server.py')
