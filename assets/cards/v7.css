@@ -54,3 +54,16 @@
   padding: 2px 8px;
 }
 .angles-chip::before { font-size: 11px; }
+
+/* Series card (shared series-card.html markup) in the compact list: two lines —
+   row 1 = series title (left) + series/entries badges (right); row 2 = LATEST link.
+   Scoped as .card--series X (0,2,0) to win over series.css, which loads later. */
+.card--series { align-items: stretch; gap: 3px; }
+.card--series .card-link { flex-direction: row; align-items: center; gap: 8px; width: 100%; }
+.card--series .card-body { order: 1; flex: 1 1 auto; min-width: 0; padding: 0; gap: 0; }
+.card--series .card-title { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card--series .card-top { order: 2; flex-shrink: 0; justify-content: flex-end; gap: 6px; }
+.card--series .series-card-latest { width: 100%; margin: 0; padding: 0; border-top: 0; gap: 5px; font-size: 11px; }
+.card--series .series-card-latest-label::after { content: ":"; }
+.card--series .series-card-latest-date { display: none; }
+.card--series .series-card-latest-title { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
