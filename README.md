@@ -4,26 +4,11 @@ The Jekyll theme used by Atlas — the static research site that [Scout](https:/
 
 Compass holds the layouts, includes, palettes, skeletons, and card variants. Atlas repos consume it as a git submodule at `compass/` and override `layouts_dir` / `includes_dir` in their `_config.yml`. This repo is a fully working Jekyll site on its own — there's one dummy research entry under `research/` purely so the layouts can be previewed without any real content.
 
-## Run locally
-
-Either via bundle (Ruby ≥ 3.0):
-
-```bash
-bundle install
-bundle exec jekyll serve
-```
-
-Or via Docker (no local Ruby needed):
-
-```bash
-docker run --rm -p 4000:4000 -v "$PWD:/srv/jekyll" jekyll/jekyll:4 jekyll serve --host 0.0.0.0
-```
-
-Open http://localhost:4000/Atlas/ (the `baseurl` is `/Atlas` for parity with deployed Atlas sites — change `_config.yml` if you want it at root).
-
 ## Preview the theme
 
-`gallery-server.py` (Python 3, requires Docker) serves an interactive picker — choose a layout, card, and palette and the preview updates live. Each `skeleton-card` combo is built on demand the first time you view it and rebuilt on every refresh, so edits show up immediately (~1.5 s) with no upfront 42-combo wait.
+The published gallery lives at **<https://laoujin.github.io/Compass/>** — an interactive picker (layout / card / palette dropdowns) over the sample research content, rebuilt on every push to `main`.
+
+To run it locally, `gallery-server.py` (Python 3, requires Docker) serves the same picker but builds each `skeleton-card` combo on demand and rebuilds on every refresh, so local edits show up immediately (~1.5 s) with no upfront 42-combo wait.
 
 ```bash
 python gallery-server.py            # http://localhost:4000/
