@@ -17,6 +17,10 @@
   label { display: flex; flex-direction: column; gap: .2rem;
           font-size: .72rem; letter-spacing: .04em; text-transform: uppercase; color: #777; }
   select { padding: .3rem .4rem; font: inherit; font-size: .85rem; }
+  .bar button { align-self: center; margin-left: auto; padding: .4rem .7rem;
+                font: inherit; font-size: .85rem; border: 1px solid #ccc;
+                border-radius: 5px; background: #fff; cursor: pointer; }
+  .bar button:hover { background: #f0f0f0; }
   .stage { flex: 1; position: relative; }
   iframe { width: 100%; height: 100%; border: 0; }
   .spinner { position: absolute; inset: 0; display: flex; align-items: center;
@@ -62,6 +66,7 @@
       <option value="nord">Nord</option>
     </select>
   </label>
+  <button id="refresh" type="button" title="Rebuild the current combo from source (pick up local edits)">↻ Refresh</button>
 </div>
 
 <div class="stage">
@@ -75,10 +80,16 @@
   var pal = document.getElementById('pal');
   var frame = document.getElementById('frame');
   var spinner = document.getElementById('spinner');
+  var refresh = document.getElementById('refresh');
+
+  // Reflect the current selection in the tab title so you know what you're viewing.
+  function updateTitle() {
+    document.title = sk.value + ' · ' + cd.value + ' · ' + pal.value + ' — Compass';
+  }
 
   // Layout + card => reload the matching server build (~1.5s rebuild). Show the
   // spinner until the new combo finishes loading.
-  function loadCombo() { spinner.hidden = false; frame.src = '/' + sk.value + '-' + cd.value + '/'; }
+  function loadCombo() { updateTitle(); spinner.hidden = false; frame.src = '/' + sk.value + '-' + cd.value + '/'; }
 
   // Palette => rewrite the iframe's palette stylesheet link in place (no reload).
   function applyPalette() {
@@ -97,7 +108,13 @@
 
   sk.addEventListener('change', loadCombo);
   cd.addEventListener('change', loadCombo);
-  pal.addEventListener('change', applyPalette);
+  pal.addEventListener('change', function () { applyPalette(); updateTitle(); });
+  // Refresh => re-request the same combo so the server rebuilds it from current
+  // source (picks up local edits). reload() forces it even though the URL is unchanged.
+  refresh.addEventListener('click', function () {
+    spinner.hidden = false;
+    frame.contentWindow.location.reload();
+  });
   // Combo finished loading (or failed): hide spinner, re-apply the chosen palette.
   frame.addEventListener('load', function () { spinner.hidden = true; applyPalette(); });
 
