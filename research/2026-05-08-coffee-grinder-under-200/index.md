@@ -3,6 +3,7 @@ title: Best coffee grinder under €200
 date: 2026-05-08
 depth: ceo
 format: md
+cover: cover.svg
 topic: "A grinder under €200 for pour-over and the occasional espresso."
 topic_raw: |
   Want to upgrade from a blade grinder. Budget under 200 EUR. Mostly pour-over,

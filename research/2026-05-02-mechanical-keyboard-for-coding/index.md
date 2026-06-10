@@ -3,6 +3,7 @@ title: Mechanical keyboard for long coding sessions
 date: 2026-05-02
 depth: deep
 format: md
+cover: cover.svg
 topic: "Which mechanical keyboard actually reduces fatigue over 8-hour coding days?"
 topic_raw: |
   I code 8+ hours a day and my wrists are starting to complain. Looking for a
