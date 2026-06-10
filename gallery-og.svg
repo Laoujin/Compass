@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#f4ecdf"/>
+  <rect width="1200" height="630" fill="none" stroke="#2a2622" stroke-width="16"/>
+  <!-- compass rose, left -->
+  <g transform="translate(300 315) scale(4.2)">
+    <circle cx="0" cy="0" r="30" fill="#fff8ec" stroke="#2a2622" stroke-width="3"/>
+    <polygon points="-26,0 0,-4 0,4" fill="#8a7f70"/>
+    <polygon points="26,0 0,-4 0,4" fill="#3a342e"/>
+    <polygon points="0,-26 5,0 -5,0" fill="#b5532e"/>
+    <polygon points="0,26 5,0 -5,0" fill="#6b6257"/>
+    <circle cx="0" cy="0" r="3.5" fill="#fff8ec" stroke="#2a2622" stroke-width="1.6"/>
+  </g>
+  <!-- title -->
+  <text x="560" y="300" font-family="Georgia, 'Times New Roman', serif" font-style="italic"
+        font-size="120" fill="#2a2622">Compass</text>
+  <text x="562" y="370" font-family="system-ui, sans-serif" font-size="34" fill="#6b6257">Theme gallery</text>
+  <text x="562" y="420" font-family="ui-monospace, monospace" font-size="26" fill="#b5532e">layouts · cards · palettes</text>
+</svg>

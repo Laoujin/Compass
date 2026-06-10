@@ -98,6 +98,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             path = self.path.split("?", 1)[0]
             if path in ("/", "/index.html"):
                 return self._send(open(os.path.join(ROOT, "_gallery.html"), "rb").read(), "text/html")
+            if path in ("/gallery-favicon.png", "/gallery-og.png"):  # shell assets live in ROOT, not _previews
+                return self._send(open(os.path.join(ROOT, path.lstrip("/")), "rb").read(), "image/png")
             m = INDEX_RE.match(path)
             if m:                                   # combo home page -> always rebuild fresh
                 combo = m.group(1)
