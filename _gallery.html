@@ -28,6 +28,9 @@
                 font: inherit; font-size: .85rem; border: 1px solid #ccc;
                 border-radius: 5px; background: #fff; cursor: pointer; }
   .bar button:hover { background: #f0f0f0; }
+  .bar .toggle { flex-direction: row; align-items: center; gap: .4rem;
+                 align-self: center; text-transform: none; letter-spacing: 0;
+                 font-size: .8rem; color: #444; cursor: pointer; }
   .stage { flex: 1; position: relative; }
   iframe { width: 100%; height: 100%; border: 0; }
   .spinner { position: absolute; inset: 0; display: flex; align-items: center;
@@ -73,6 +76,7 @@
       <option value="nord">Nord</option>
     </select>
   </label>
+  <label class="toggle"><input type="checkbox" id="health" checked> Health pill</label>
   <button id="refresh" type="button" title="Rebuild the current combo from source (pick up local edits)">↻ Refresh</button>
 </div>
 
@@ -88,6 +92,7 @@
   var frame = document.getElementById('frame');
   var spinner = document.getElementById('spinner');
   var refresh = document.getElementById('refresh');
+  var health = document.getElementById('health');
 
   // Reflect the current selection in the tab title so you know what you're viewing.
   function updateTitle() {
@@ -113,17 +118,28 @@
     }
   }
 
+  // Health pill => show/hide it in the iframe (no reload; the pill is server-rendered
+  // from _data/health.json, so this just toggles its visibility for previewing).
+  function applyHealth() {
+    var doc;
+    try { doc = frame.contentDocument; } catch (e) { return; }
+    if (!doc) return;
+    var pills = doc.querySelectorAll('.atlas-health');
+    for (var i = 0; i < pills.length; i++) pills[i].style.display = health.checked ? '' : 'none';
+  }
+
   sk.addEventListener('change', loadCombo);
   cd.addEventListener('change', loadCombo);
   pal.addEventListener('change', function () { applyPalette(); updateTitle(); });
+  health.addEventListener('change', applyHealth);
   // Refresh => re-request the same combo so the server rebuilds it from current
   // source (picks up local edits). reload() forces it even though the URL is unchanged.
   refresh.addEventListener('click', function () {
     spinner.hidden = false;
     frame.contentWindow.location.reload();
   });
-  // Combo finished loading (or failed): hide spinner, re-apply the chosen palette.
-  frame.addEventListener('load', function () { spinner.hidden = true; applyPalette(); });
+  // Combo finished loading (or failed): hide spinner, re-apply palette + health toggle.
+  frame.addEventListener('load', function () { spinner.hidden = true; applyPalette(); applyHealth(); });
 
   loadCombo();
 </script>
