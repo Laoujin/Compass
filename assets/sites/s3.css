@@ -43,9 +43,17 @@
 .s3-sidenav li.active { background: var(--pal-accent); color: var(--pal-accent-fg); }
 .s3-sidenav li .c { font: 500 10px ui-monospace, Menlo, monospace; opacity: 0.7; }
 
-/* Filter controls stacked down the sidenav — drop the shared filter-bar card chrome. */
-.s3-filter { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; border: 0; background: none; }
-.s3-filter h4 { margin: 4px 0 2px; }
+/* The sidenav IS the filter-bar. This combined selector (0,2,0) outranks the
+   shared .filter-bar card chrome (border/radius/bg from filters.css, which loads
+   later) so the panel keeps its plain sidenav look — no box. */
+.s3-sidenav.s3-filter {
+  display: flex; flex-direction: column; gap: 8px;
+  margin: 0; padding: 16px 14px; border: 0; border-radius: 0;
+  border-right: 1px solid var(--pal-border);
+  background: var(--pal-surface-tint);
+}
+/* Orange uppercase section titles, matching the old sidenav nav look. */
+.s3-filter h4 { margin: 4px 0 2px; color: var(--pal-accent); }
 .s3-filter h4:first-child { margin-top: 0; }
 .s3-filter .filter-search,
 .s3-filter .filter-select { width: 100%; box-sizing: border-box; }
@@ -53,19 +61,6 @@
 /* Hide the Tags label when no shared-tag chips were generated. */
 .s3-filter .filter-tags:empty { display: none; }
 .s3-filter h4.s3-filter-tags-label:has(+ .filter-tags:empty) { display: none; }
-
-/* Render the tag filters as the original sidenav nav rows (vertical list,
-   active highlight) rather than pill chips — filters.js still drives them by
-   class, only the presentation changes. */
-.s3-filter .filter-tags { flex-direction: column; gap: 2px; max-height: none; overflow: visible; }
-.s3-filter .filter-tags .chip {
-  display: block; width: 100%; box-sizing: border-box; text-align: left;
-  padding: 3px 8px; border: 0; border-radius: 4px; background: none;
-  font: inherit; font-size: 12px; color: var(--pal-fg-muted);
-}
-.s3-filter .filter-tags .chip::before { content: none; }
-.s3-filter .filter-tags .chip:hover { background: var(--pal-surface); }
-.s3-filter .filter-tags .chip.is-on { background: var(--pal-accent); color: var(--pal-accent-fg); }
 
 .s3-content { padding: 20px 24px; }
 .s3-content .entry-grid { grid-template-columns: repeat(2, 1fr); }
@@ -84,6 +79,6 @@
 
 @media (max-width: 700px) {
   .s3-main { grid-template-columns: 1fr; }
-  .s3-sidenav { border-right: none; border-bottom: 1px solid var(--pal-border); }
+  .s3-sidenav, .s3-sidenav.s3-filter { border-right: none; border-bottom: 1px solid var(--pal-border); }
   .s3-content .entry-grid { grid-template-columns: 1fr; }
 }

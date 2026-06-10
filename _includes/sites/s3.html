@@ -34,21 +34,19 @@
     </header>
     <div class="s3-main{% if series_mode %} s3-main--series{% endif %}">
       {%- unless series_mode -%}
-      <aside class="s3-sidenav">
-        {%- comment -%} s3-specific filter layout: the shared filter-bar's controls,
-        stacked down the sidenav with section labels (no category select, no advanced
-        toggle — everything visible). filters.js wires by the js-* hook classes. {%- endcomment -%}
-        <div class="filter-bar s3-filter" data-scope="home" hidden>
-          <h4>Filter</h4>
-          <input class="filter-search js-filter-search" type="search" placeholder="Search research…" aria-label="Search research">
-          <h4 class="s3-filter-tags-label">Tags</h4>
-          <div class="filter-tags js-filter-tags" role="group" aria-label="Filter by tag"></div>
-          <h4>Series</h4>
-          <select class="filter-select js-filter-series" aria-label="Filter by series">
-            <option value="">All series</option>
-          </select>
-          <button type="button" class="filter-clear js-filter-clear">Clear</button>
-        </div>
+      {%- comment -%} The sidenav itself IS the filter-bar — no wrapper div, no card
+      chrome — so the controls sit directly in the panel like the old nav. filters.js
+      wires by the .filter-bar hook + js-* classes; data-scope drives home/series. {%- endcomment -%}
+      <aside class="s3-sidenav s3-filter filter-bar" data-scope="home">
+        <h4>Filter</h4>
+        <input class="filter-search js-filter-search" type="search" placeholder="Search research…" aria-label="Search research">
+        <h4 class="s3-filter-tags-label">Tags</h4>
+        <div class="filter-tags js-filter-tags" role="group" aria-label="Filter by tag"></div>
+        <h4>Series</h4>
+        <select class="filter-select js-filter-series" aria-label="Filter by series">
+          <option value="">All series</option>
+        </select>
+        <button type="button" class="filter-clear js-filter-clear">Clear</button>
       </aside>
       {%- endunless -%}
       <section class="s3-content">
