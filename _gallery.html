@@ -1,5 +1,6 @@
 <!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Compass gallery</title>
 <link rel="icon" type="image/png" href="/gallery-favicon.png?v=1">
 <meta name="description" content="Interactive Compass theme gallery — preview every layout, card and palette combination live.">
@@ -16,7 +17,7 @@
 -->
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; height: 100vh; display: flex; flex-direction: column;
+  body { margin: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column;
          font-family: system-ui, sans-serif; }
   .bar { display: flex; gap: 1.25rem; align-items: flex-end; flex-wrap: wrap;
          padding: .6rem 1rem; border-bottom: 1px solid #ddd; background: #fafafa; }
@@ -40,6 +41,18 @@
   .spinner i { width: 36px; height: 36px; border: 4px solid #ddd; border-top-color: #555;
                border-radius: 50%; animation: spin .7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Phones: full-width selects (16px font stops iOS zoom-on-focus); toggle and
+     buttons each get their own full-width row as comfortable tap targets. */
+  @media (max-width: 640px) {
+    .bar { gap: .55rem .7rem; padding: .55rem .75rem; }
+    .bar strong { display: none; }
+    .bar label { flex: 1 1 7rem; }
+    .bar select { width: 100%; padding: .5rem .4rem; font-size: 16px; }
+    .bar .toggle { flex: 1 1 100%; }
+    .bar-actions { flex: 1 1 100%; margin-left: 0; }
+    .bar-actions button { flex: 1; padding: .6rem; }
+  }
 </style>
 
 <div class="bar">
