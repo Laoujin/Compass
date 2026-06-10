@@ -7,7 +7,9 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Compass — theme gallery">
 <meta property="og:description" content="Preview every Compass layout, card and palette combination live.">
-<meta property="og:image" content="gallery-og.png">
+<!-- og:image/url must be absolute — social crawlers (Facebook, LinkedIn, Slack) won't resolve relative paths. -->
+<meta property="og:url" content="https://laoujin.github.io/Compass/">
+<meta property="og:image" content="https://laoujin.github.io/Compass/gallery-og.png">
 <meta name="twitter:card" content="summary_large_image">
 <!--
   Interactive preview shell. Served at / by gallery-server.py locally, and deployed
