@@ -2,16 +2,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Compass gallery</title>
-<link rel="icon" type="image/png" href="/gallery-favicon.png?v=1">
+<link rel="icon" type="image/png" href="gallery-favicon.png?v=1">
 <meta name="description" content="Interactive Compass theme gallery — preview every layout, card and palette combination live.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Compass — theme gallery">
 <meta property="og:description" content="Preview every Compass layout, card and palette combination live.">
-<meta property="og:image" content="/gallery-og.png">
+<meta property="og:image" content="gallery-og.png">
 <meta name="twitter:card" content="summary_large_image">
 <!--
-  Interactive preview shell, served at / by gallery-server.py.
-  Layout + card pick a server-rendered build (iframe src = /<skeleton>-<card>/, since v7's
+  Interactive preview shell. Served at / by gallery-server.py locally, and deployed
+  to GitHub Pages under /Compass/ by .github/build-previews.sh — so all asset and
+  combo paths are RELATIVE (no leading slash) to work under either base.
+  Layout + card pick a server-rendered build (iframe src = <skeleton>-<card>/, since v7's
   markup diverges from v1-v6 and can't be CSS-swapped). Palette is pure CSS over shared
   markup, so it's swapped live by rewriting the iframe's palette <link>.
 -->
@@ -119,7 +121,7 @@
 
   // Layout + card => reload the matching server build (~1.5s rebuild). Show the
   // spinner until the new combo finishes loading.
-  function loadCombo() { updateTitle(); spinner.hidden = false; frame.src = '/' + sk.value + '-' + cd.value + '/'; }
+  function loadCombo() { updateTitle(); spinner.hidden = false; frame.src = sk.value + '-' + cd.value + '/'; }
 
   // Palette => rewrite the iframe's palette stylesheet link in place (no reload).
   function applyPalette() {
@@ -158,7 +160,7 @@
   });
   // Open the current combo on its own — the standalone Atlas page, no selector.
   openBtn.addEventListener('click', function () {
-    window.open('/' + sk.value + '-' + cd.value + '/', '_blank', 'noopener');
+    window.open(sk.value + '-' + cd.value + '/', '_blank', 'noopener');
   });
   // Combo finished loading (or failed): hide spinner, re-apply palette + health toggle.
   frame.addEventListener('load', function () { spinner.hidden = true; applyPalette(); applyHealth(); });

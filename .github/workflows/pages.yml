@@ -1,7 +1,7 @@
 name: pages
 
-# Build the full theme-preview gallery (skeletons + palettes + cards) and publish
-# it to GitHub Pages at https://<owner>.github.io/Compass/.
+# Build the interactive theme gallery (all skeleton×card combos + the picker shell)
+# and publish it to GitHub Pages at https://<owner>.github.io/Compass/.
 # One-time setup: repo Settings → Pages → Source = "GitHub Actions".
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         with:
           ruby-version: "3.3"
           bundler-cache: true
-      - name: Build variant gallery
+      - name: Build interactive gallery
         run: bash .github/build-previews.sh
       - uses: actions/upload-pages-artifact@v3
         with:
