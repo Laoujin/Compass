@@ -19,9 +19,9 @@ body { background: var(--pal-surface); }
   border-radius: 5px 5px 0 0; margin-bottom: -1px;
 }
 .s6-tab.bg { background: transparent; color: var(--pal-fg-faint); border-color: transparent; }
-/* "+ new research" reads as a new-tab affordance in the terminal frame. */
-.s6-newtab { text-decoration: none; cursor: pointer; }
-.s6-newtab:hover { color: var(--pal-accent); }
+/* The active ~/atlas tab is a link home; "+ new research" reads as a new-tab. */
+a.s6-tab { text-decoration: none; cursor: pointer; }
+a.s6-tab:hover { color: var(--pal-accent); }
 
 .s6-body { flex: 1; padding: 14px 18px 8px; background: var(--pal-bg); }
 .s6-prompt { margin: 8px 0 3px; color: var(--pal-accent); }
@@ -32,6 +32,10 @@ body { background: var(--pal-surface); }
   display: grid; grid-template-columns: 100px 90px 1fr 100px;
   gap: 3px 16px; margin: 10px 0 12px; font-size: 12px;
 }
+/* Series rows are wrapped in .filter-item (display:contents), so the 4-column home
+   grid mis-packs them. Use a clean date | title row at every width — the single
+   layout that already worked on mobile. */
+.s6-listing--series { grid-template-columns: auto 1fr; }
 .s6-header {
   color: var(--pal-fg-faint);
   border-bottom: 1px dashed var(--pal-border);

@@ -20,7 +20,7 @@
 
   <div class="s6">
     <div class="s6-tabs">
-      <div class="s6-tab">~/{{ site.title | default: 'atlas' | downcase }}</div>
+      <a class="s6-tab" href="{{ '/' | relative_url }}">~/{{ site.title | default: 'atlas' | downcase }}</a>
       {%- if series_mode -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }}</div>{%- endif -%}
       {%- if site.scout_repo -%}<a class="s6-tab bg s6-newtab" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener" title="Open a new research issue">+ new research</a>{%- endif -%}
     </div>
@@ -43,7 +43,7 @@
             {%- assign group_members = group_members | sort: 'date' | reverse -%}
             <section class="series-group">
             <p class="s6-prompt" style="opacity:.55">## {{ g.label }}</p>
-            <div class="s6-listing">
+            <div class="s6-listing s6-listing--series">
               {%- for e in group_members -%}
               {%- assign _m_seg = e.url | split: '/' -%}
               {%- assign _m_slug = _m_seg[2] -%}
@@ -61,7 +61,7 @@
         {%- endfor -%}
       {%- else -%}
         {%- assign flat_members = all_members | sort: 'date' | reverse -%}
-        <div class="s6-listing">
+        <div class="s6-listing s6-listing--series">
           {%- for e in flat_members -%}
           {%- assign _m_seg = e.url | split: '/' -%}
           {%- assign _m_slug = _m_seg[2] -%}
