@@ -1,13 +1,17 @@
 {%- comment -%}
 Homepage health pill. Counts CRITICAL research only (h.counts.critical) so a backlog
 of cosmetic hygiene findings can never make the homepage scream. Renders only when
-_data/health.json exists. Quiet green dot when clear; rust "⚠ N · health" when not.
+_data/health.json exists AND there is at least one finding (critical or hygiene) —
+a fully clean Atlas shows no pill at all. Quiet green dot for hygiene-only; rust
+"⚠ N · health" when critical.
 {%- endcomment -%}
 {%- assign h = site.data.health -%}
-{%- if h -%}
 {%- assign crit = h.counts.critical | default: 0 -%}
+{%- assign hyg = h.counts.hygiene | default: 0 -%}
+{%- assign total = crit | plus: hyg -%}
+{%- if h and total > 0 -%}
 <a class="atlas-health{% if crit > 0 %} atlas-health--warn{% endif %}" href="{{ '/health/' | relative_url }}"
-   title="{% if crit > 0 %}{{ crit }} research need attention{% else %}all research healthy{% endif %}">
+   title="{% if crit > 0 %}{{ crit }} research need attention{% else %}{{ hyg }} hygiene findings{% endif %}">
   <span class="atlas-health-dot"></span>{% if crit > 0 %}⚠ {{ crit }} · health{% else %}health{% endif %}</a>
 <style>
 .atlas-health{display:inline-flex;align-items:center;gap:.45em;font:500 .8rem/1 'JetBrains Mono',monospace;
