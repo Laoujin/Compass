@@ -9,6 +9,12 @@ baseurl: /Atlas
 # If you renamed your Scout fork, the installer updates this too.
 scout_repo: Laoujin/Scout
 
+# Standalone-preview only: real Atlas deployments get site.github from GitHub Pages.
+# Drives the footer "owner/repo" link.
+github:
+  owner_name: Laoujin
+  repository_name: Atlas
+
 # --- Theme variables (edit any of these, push, GitHub Pages rebuilds) ---
 # Skeletons:  s1 s2 s3 s4 s5 s6   (site layout)
 # Palettes:   rust paper cartography midnight minimal fieldnotes solarized nord
