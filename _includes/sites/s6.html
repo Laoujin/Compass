@@ -21,10 +21,8 @@
   <div class="s6">
     <div class="s6-tabs">
       <div class="s6-tab">~/{{ site.title | default: 'atlas' | downcase }}</div>
-      {%- if series_mode -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }}</div>
-      {%- elsif first -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/research/{{ first.date | date: "%Y-%m-%d" }}-{{ first.title | slugify }}</div>{%- endif -%}
-      <div class="s6-tab bg">+</div>
-      {%- include health-pill.html -%}
+      {%- if series_mode -%}<div class="s6-tab bg">~/{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }}</div>{%- endif -%}
+      {%- if site.scout_repo -%}<a class="s6-tab bg s6-newtab" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener" title="Open a new research issue">+ new research</a>{%- endif -%}
     </div>
     <div class="s6-body">
       {%- if series_mode -%}
@@ -94,7 +92,7 @@
     </div>
     <footer class="s6-statusbar">
       <span>{% if series_mode %}{{ site.title | default: 'atlas' | downcase }}/series/{{ s.slug }} · {{ all_members | size }} entries{% if newest %} · updated {{ newest.date | date: "%Y-%m-%d" }}{% endif %}{% else %}{{ site.title | default: 'atlas' | downcase }} · {{ entry_count }} entries{% if first %} · last run {{ first.date | date: "%Y-%m-%d" }}{% endif %}{% endif %}</span>
-      {%- if site.scout_repo -%}<span><a href="https://github.com/{{ site.scout_repo }}">scout ↗</a> · <a href="https://github.com/Laoujin/Compass">compass ↗</a></span>{%- endif -%}
+      <span class="s6-status-right">{%- include health-pill.html -%}{%- if site.scout_repo -%}<a href="https://github.com/{{ site.scout_repo }}">scout ↗</a> · <a href="https://github.com/Laoujin/Compass">compass ↗</a>{%- endif -%}</span>
     </footer>
   </div>
   <script src="{{ '/filters.js' | prepend: site.assets_base | relative_url }}" defer></script>

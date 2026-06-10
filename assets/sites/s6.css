@@ -19,6 +19,9 @@ body { background: var(--pal-surface); }
   border-radius: 5px 5px 0 0; margin-bottom: -1px;
 }
 .s6-tab.bg { background: transparent; color: var(--pal-fg-faint); border-color: transparent; }
+/* "+ new research" reads as a new-tab affordance in the terminal frame. */
+.s6-newtab { text-decoration: none; cursor: pointer; }
+.s6-newtab:hover { color: var(--pal-accent); }
 
 .s6-body { flex: 1; padding: 14px 18px 8px; background: var(--pal-bg); }
 .s6-prompt { margin: 8px 0 3px; color: var(--pal-accent); }
@@ -56,6 +59,15 @@ body { background: var(--pal-surface); }
   display: flex; justify-content: space-between; letter-spacing: 0.04em;
 }
 .s6-statusbar a { color: inherit; }
+.s6-status-right { display: inline-flex; align-items: center; gap: 12px; }
+/* Flatten the health pill into plain status-bar text (no pill chrome) so it reads
+   as a terminal status indicator rather than a floating badge. */
+.s6-statusbar .atlas-health {
+  margin: 0; padding: 0; border: 0; border-radius: 0;
+  background: none; color: inherit; font: inherit; letter-spacing: inherit;
+}
+.s6-statusbar .atlas-health:hover { background: none; color: inherit; }
+.s6-statusbar .atlas-health-dot { background: currentColor; }
 
 @media (max-width: 700px) {
   .s6-listing { grid-template-columns: 1fr; }

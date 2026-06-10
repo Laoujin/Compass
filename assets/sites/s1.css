@@ -31,11 +31,16 @@
 }
 .s1-cta:hover { transform: translateY(-1px); filter: brightness(1.05); }
 
-.s1-filter {
-  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
-  padding: 12px 32px;
-  border-bottom: 1px solid var(--pal-border);
+/* Corner action group (home mode): CTA + health pill together, top-right. */
+.s1-actions {
+  position: absolute; top: 14px; right: 16px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 10px;
 }
+.s1-actions .s1-cta { position: static; }
+.s1-actions .atlas-health { margin-left: 0; }
+
+/* Home filter/search bar: full width with breathing room below the hero. */
+.s1-filter { padding: 24px 28px 0; }
 
 .s1-content { padding: 20px 28px 24px; flex: 1; }
 
@@ -56,6 +61,8 @@
   .s1-hero { padding: 40px 20px 28px; }
   .s1-hero h1 { font-size: 30px; }
   .s1-content { padding: 24px 20px 32px; }
-  .s1-filter { padding: 14px 20px; }
+  .s1-filter { padding: 16px 20px 0; }
+  /* Stack the pill under the CTA on mobile (matches s5). */
+  .s1-actions { flex-direction: column; align-items: flex-start; }
   .s1-footer { padding: 14px 20px; }
 }

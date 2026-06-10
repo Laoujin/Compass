@@ -32,15 +32,17 @@
       {%- else -%}
       <h1>{{ site.title | default: 'Atlas' }}</h1>
       <p>{{ site.description | default: 'Research notes published by Scout.' }}</p>
-      {%- if site.scout_repo -%}
-      <a class="s1-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
-      {%- endif -%}
-      {%- include health-pill.html -%}
+      <div class="s1-actions">
+        {%- if site.scout_repo -%}
+        <a class="s1-cta" href="https://github.com/{{ site.scout_repo }}/issues/new?template=research.yml" target="_blank" rel="noopener">+ New research</a>
+        {%- endif -%}
+        {%- include health-pill.html -%}
+      </div>
       {%- endif -%}
     </header>
 
     {%- unless series_mode -%}
-    {%- include filter-bar.html scope="home" -%}
+    <div class="s1-filter">{%- include filter-bar.html scope="home" -%}</div>
     {%- endunless -%}
 
     <section class="s1-content">
