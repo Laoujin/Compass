@@ -55,8 +55,10 @@
 /* Orange uppercase section titles, matching the old sidenav nav look. */
 .s3-filter h4 { margin: 4px 0 2px; color: var(--pal-accent); }
 .s3-filter h4:first-child { margin-top: 0; }
+/* filters.css gives .filter-search flex:1 1 auto (for the horizontal bar); in this
+   vertical column it would grow to fill the full-height sidenav — pin it to content. */
 .s3-filter .filter-search,
-.s3-filter .filter-select { width: 100%; box-sizing: border-box; }
+.s3-filter .filter-select { width: 100%; box-sizing: border-box; flex: 0 0 auto; }
 .s3-filter .filter-clear { align-self: flex-start; margin-top: 4px; }
 /* Hide the Tags label when no shared-tag chips were generated. */
 .s3-filter .filter-tags:empty { display: none; }
