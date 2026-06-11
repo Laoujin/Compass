@@ -1,14 +1,27 @@
 {%- comment -%} Renders one severity tier's research list, newest expedition first.
 Slugs are date-prefixed (YYYY-MM-DD-…), so a slug sort + reverse is date-descending.
 Param: group (array of {slug, items}). {%- endcomment -%}
+{%- assign imgexts = 'webp png jpg jpeg gif svg avif' | split: ' ' -%}
 {%- assign rows = include.group | sort: 'slug' | reverse -%}
 {%- for r in rows -%}
 <article class="health-item">
   <h3><a href="{{ r.slug | prepend: '/research/' | append: '/' | relative_url }}">{{ r.slug }}</a></h3>
   {%- for it in r.items -%}
+  {%- comment -%} it.path is research-relative. Image findings point at the asset
+  (…/views/<view>/images/<file>); the node link must target the *view page* that
+  shows it (…/views/<view>.html), not the file path with a stray trailing slash
+  (which 404s). A separate ↗ links the image itself. {%- endcomment -%}
+  {%- assign leaf = it.path | split: '/' | last -%}
+  {%- assign ext = leaf | split: '.' | last | downcase -%}
+  {%- assign is_img = false -%}
+  {%- if it.node == 'child' and it.path contains '/images/' and imgexts contains ext -%}
+    {%- assign is_img = true -%}
+    {%- assign view_url = it.path | split: '/images/' | first | prepend: '/research/' | append: '.html' | relative_url -%}
+    {%- assign img_url = it.path | prepend: '/research/' | relative_url -%}
+  {%- endif -%}
   <ul class="health-findings">
     {%- for f in it.findings -%}
-    <li><code class="health-cat">{{ f.category }}</code>{% if it.node == 'child' %} <a class="health-node" href="{{ it.path | prepend: '/research/' | append: '/' | relative_url }}">{{ it.path | split: '/' | last }}</a>{% endif %} — {{ f.detail }}</li>
+    <li><code class="health-cat">{{ f.category }}</code>{% if it.node == 'child' %} {% if is_img %}<a class="health-node" href="{{ view_url }}">{{ leaf }}</a> <a class="health-img" href="{{ img_url }}" title="open image directly">↗</a>{% else %}<a class="health-node" href="{{ it.path | prepend: '/research/' | append: '/' | relative_url }}">{{ leaf }}</a>{% endif %}{% endif %} — {{ f.detail }}</li>
     {%- endfor -%}
   </ul>
   {%- endfor -%}
